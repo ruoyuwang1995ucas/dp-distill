@@ -13,6 +13,6 @@ Fig.1 shows the schematic of fine-tuning workflow. Given the initial structures 
 ### Distillation
 A lightweight model can be generated from a fine-tuned model through distillation, which enables much faster simulation. The distilled model can be generated with training data labeled by the fine-tuned model. Figure 2 shows the schematic of the distillation workflow.
  <div>
-    <img src="../_static/distillation.png" alt="Fig2" style="zoom: 35%;">
+    <img src="../_static/distillation.png" alt="Fig2" style="zoom: 25%;">
     <p style='font-size:1.0rem; font-weight:none'>Figure 2. Distillation workflow.</p>
 </div>
