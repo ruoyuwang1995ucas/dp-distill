@@ -12,14 +12,14 @@ documentation for details.
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: The Basics
 
    basics/overview
    basics/getting-started
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: User guide
 
    usage/guide-on-cli
@@ -27,7 +27,7 @@ documentation for details.
    usage/examples
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Developer guide
 
    development/api
