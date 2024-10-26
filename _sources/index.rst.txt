@@ -6,10 +6,9 @@
 pfd-kit documentation
 =====================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+PFD-kit is a cloud-based workflow written in Python for fine-tune and distillation of pre-trained atomic models such as [DPA-2](https://github.com/deepmodeling/deepmd-kit.git).  
+The main features of PFD-kit include automated data generation, model training, and evaluation, making it a powerful tool for researchers in the field
+of computational materials science.
 
 .. toctree::
    :maxdepth: 2
