@@ -6,7 +6,10 @@
 pfd-kit documentation
 =====================
 
-PFD-kit is a cloud-based workflow written in Python for fine-tune and distillation of pre-trained atomic models such as [DPA-2](https://github.com/deepmodeling/deepmd-kit.git).  
+PFD-kit version |version| documentation
+----------------------------------------
+
+PFD-kit is a cloud-based workflow written in Python for fine-tune and distillation of pre-trained atomic models.  
 The main features of PFD-kit include automated data generation, model training, and evaluation, making it a powerful tool for researchers in the field
 of computational materials science.
 

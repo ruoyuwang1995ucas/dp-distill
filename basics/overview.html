@@ -98,14 +98,14 @@
 <h3>Fine-tune<a class="headerlink" href="#fine-tune" title="Link to this heading"></a></h3>
 <p>Fig.1 shows the schematic of fine-tuning workflow. Given the initial structures of fine-tuning systems, the workflow generates perturbed structures, and executes a series of short <em>ab initio</em> molecular dynamics (AIMD) simulation based upon randomly perturbed structures. The pre-trained model is firstly fine-tuned by the AIMD dataset, then MD simulation with the fine-tuned model searches new configurations, which are then labeled by first-principle calculation softwares. If the fine-tuned model cannot predict the labeled dataset with sufficient accuracy, the collected dataset would be added to the fine-tuning training set, and the <em>train-search-label</em> process would iterate until convergence.</p>
 <div>
-    <img src="../images/fine-tune.png" alt="Fig1" style="zoom: 35%;">
+    <img src="fine-tune.png" alt="Fig1" style="zoom: 35%;">
     <p style='font-size:1.0rem; font-weight:none'>Figure 1. Fine-tune workflow.</p>
 </div></section>
 <section id="distillation">
 <h3>Distillation<a class="headerlink" href="#distillation" title="Link to this heading"></a></h3>
 <p>A lightweight model can be generated from a fine-tuned model through distillation, which enables much faster simulation. The distilled model can be generated with training data labeled by the fine-tuned model. Figure 2 shows the schematic of the distillation workflow.</p>
  <div>
-    <img src="../images/distillation.png" alt="Fig2" style="zoom: 35%;">
+    <img src="distillation.png" alt="Fig2" style="zoom: 35%;">
     <p style='font-size:1.0rem; font-weight:none'>Figure 2. Distillation workflow.</p>
 </div></section>
 </section>
