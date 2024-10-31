@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User guide for PFD-kit input script &mdash; pfd-kit 0.0.14 documentation</title>
+  <title>Input script guide &mdash; pfd-kit 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=544df88d"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -50,7 +50,12 @@
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="guide-on-cli.html">Command guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">User guide for PFD-kit input script</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Input script guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basics">Basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#workflow-host">Workflow host</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-setting">Node setting</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#fine-tune-task">Fine-tune task</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#distillation-task">Distillation task</a></li>
 </ul>
@@ -76,7 +81,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">User guide for PFD-kit input script</li>
+      <li class="breadcrumb-item active">Input script guide</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/usage/guide-on-script.md.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,14 +91,203 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="user-guide-for-pfd-kit-input-script">
-<h1>User guide for PFD-kit input script<a class="headerlink" href="#user-guide-for-pfd-kit-input-script" title="Link to this heading"></a></h1>
-<p>Some general remarks, like how many parts are there?</p>
+  <section id="input-script-guide">
+<h1>Input script guide<a class="headerlink" href="#input-script-guide" title="Link to this heading"></a></h1>
+<p>This part gives a concise description for writing the input script of PFD-kit. The input parameter is very similar to that of <a class="reference external" href="https://github.com/deepmodeling/dpgen2.git">DPGEN2</a>, whose online <a class="reference external" href="https://docs.deepmodeling.com/projects/dpgen2/en/latest/index.html">documantation</a> might also be useful.</p>
+<section id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Link to this heading"></a></h2>
+<section id="workflow-host">
+<h3>Workflow host<a class="headerlink" href="#workflow-host" title="Link to this heading"></a></h3>
+<p>PFD-kit is built upon the dflow package, which is in turn based on the Python API of ARGO workflow. Thus, one needs to specify the address of dflow host as well as the storage server for artifacts.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;dflow_config&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="nt">&quot;host&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://address.of.the.host:port&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="nt">&quot;dflow_s3_config&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">	</span><span class="nt">&quot;endpoint&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;address.of.the.s3.sever:port&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<p>This is only neccesary when submitting to a custom server, there is no need to specify workflow server when running on Bohrium platform. Instead, one needs to input their Bohrium account details:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;bohrium_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;urname&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123456&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123456</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_comment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<p>The workflow would be then hosted on <code class="docutils literal notranslate"><span class="pre">https://workflows.deepmodeling.com</span></code> and the workflow progress can be accessed via <code class="docutils literal notranslate"><span class="pre">https://workflows.deepmodeling.com/workflows</span></code>.</p>
+</section>
+<section id="node-setting">
+<h3>Node setting<a class="headerlink" href="#node-setting" title="Link to this heading"></a></h3>
+<p>The one has to specify the computation resources, i.e., image and machine type for each step as PFD-kit executes computation tasks within each step via a docker container managed by the workflow host.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">default_step_config</span></code> define the default step setting, for example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;default_step_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;template_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.dp.tech/dptech/deepmd-kit:2024Q1-d23cf3e&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;executor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dispatcher&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;image_pull_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IfNotPresent&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;machine_dict&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;batch_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bohrium&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;context_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bohrium&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;remote_profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;input_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;job_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;container&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ali&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;scass_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c2_m4_cpu&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">image</span></code> entry in the <code class="docutils literal notranslate"><span class="pre">template_config</span></code> defines the image on which the container would be generated. The <code class="docutils literal notranslate"><span class="pre">executor</span></code> entry defines the machine and relevant parameters. In this case, a container node with two CPU core and 4GB memory would be instantiated via the Bohrium platform.</p>
+<p>Similary, to set the step performing, say, the DFT calculation with ABACUS software, one can add the <code class="docutils literal notranslate"><span class="pre">run_fp_config</span></code> setting in the <code class="docutils literal notranslate"><span class="pre">step_configs</span></code> entry:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;step_configs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;run_fp_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;template_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.dp.tech/dptech/vasp:5.4.4&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;continue_on_success_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;executor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dispatcher&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;image_pull_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IfNotPresent&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;machine_dict&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;batch_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bohrium&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;context_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bohrium&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;remote_profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;input_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                            </span><span class="nt">&quot;job_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;container&quot;</span><span class="p">,</span>
+<span class="w">                            </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ali&quot;</span><span class="p">,</span>
+<span class="w">                            </span><span class="nt">&quot;scass_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c32_m64_cpu&quot;</span><span class="p">}}}}}</span>
+<span class="w">                            </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>One can see that the VASP image and a more powerful machine with 32 cores and 64GB memories are selected.</p>
+</section>
+</section>
 <section id="fine-tune-task">
 <h2>Fine-tune task<a class="headerlink" href="#fine-tune-task" title="Link to this heading"></a></h2>
+<p>A model fine-tune workflow is defined by the following paramters. One first specifies the workflow type in the <code class="docutils literal notranslate"><span class="pre">task</span></code> section,
+which is <code class="docutils literal notranslate"><span class="pre">finetune</span></code> in this case.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;finetune&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">inputs</span></code> section includes essential user input parameters. Here one needs to specify <code class="docutils literal notranslate"><span class="pre">type_map</span></code>, which maps the type embedding of pretrained model
+to corresponding element name.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;Li&quot;</span><span class="p">,</span><span class="s2">&quot;...&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">conf_generation</span></code> section defines how perturbed structures are generated from initial structure files. Multiple input structure files can be
+present in the <code class="docutils literal notranslate"><span class="pre">init_configuration</span></code> sub-section, and the <code class="docutils literal notranslate"><span class="pre">pert_generation</span></code> defines the rule for generating perturbed structures.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;conf_generation&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;init_configurations&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;fmt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vasp/poscar&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;LGPS.vasp&quot;</span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;pert_generation&quot;</span><span class="p">:[{</span>
+<span class="w">        </span><span class="nt">&quot;conf_idx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;atom_pert_distance&quot;</span><span class="p">:</span><span class="mf">0.15</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;cell_pert_fraction&quot;</span><span class="p">:</span><span class="mf">0.03</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pert_num&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section defines the parameters for molecular dynamics (MD) simulations, which iteratively add new data to the fine-tune training set. In this example, the MD exploration is performed using the LAMMPS package. Multiple exploration <code class="docutils literal notranslate"><span class="pre">stages</span></code> can be specified, each executed sequentially. Within each stage, various task groups with different settings can be defined. In this case, the workflow consists of a single stage with one task group.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;exploration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp -var restart 0&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;stages&quot;</span><span class="p">:[[</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;_comment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;group 1 stage 1 of finetune-exploration&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;conf_idx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;n_sample&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;exploration&quot;</span><span class="p">:{</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp-md&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;ensemble&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npt&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;dt&quot;</span><span class="p">:</span><span class="mf">0.005</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;nsteps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;temps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">500</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;press&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;trj_freq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;max_sample&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">}]</span>
+<span class="w">                </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;max_iter&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;convergence&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;energy_rmse&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;RMSE&quot;</span><span class="p">:</span><span class="mf">0.01</span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;filter&quot;</span><span class="p">:[{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;distance&quot;</span><span class="p">}]</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Within the task group settings, you define the configuration index number, the number of samples, simulation temperatures, pressures, time step, number of simulation steps, etc. In the mentioned task group, each MD simulation starts from 3 randomly chosen frames of the perturbed structures of the first initial configuration, as indicated in the <code class="docutils literal notranslate"><span class="pre">conf_idx</span></code> setting.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">fp</span></code> part sets the first principle calculation. Detailed parameters can be referenced in the DPGEN2 documentation. Below is an example configuration for running VASP:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;fp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fpop_abacus&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_max&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;extra_output_files:&quot;</span><span class="p">:[],</span>
+<span class="w">    </span><span class="nt">&quot;run_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;source /opt/intel/oneapi/setvars.sh &amp;&amp; mpirun -n 32 vasp_std&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;inputs_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;incar&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INPUT.scf&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pp_files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;Li&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;POTCAR-Li&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="s2">&quot;POTCAR-S&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;Ge&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;POTCAR-Ge&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;P&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;POTCAR-P&quot;</span>
+<span class="w">            </span><span class="p">}}</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You need to specify the path to the ABACUS input file and the pseudopotential file for each element. The ABACUS command should be configured according to the machine type for optimal performance.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">train</span></code> section defines the type of pretrained model and the specific training configuration. The detailed training script can be provided either as a <code class="docutils literal notranslate"><span class="pre">dict</span></code> or in an additional script (as shown below). It is crucial to provide the path to the pretrained model in the <code class="docutils literal notranslate"><span class="pre">init_models_paths</span></code> entry.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;train&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;impl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;init_model_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;no&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;init_model_with_finetune&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;template_script&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;train.json&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;init_models_paths&quot;</span><span class="p">:[</span><span class="s2">&quot;OpenLAM_2.1.0_27heads_2024Q1.pt&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
 </section>
 <section id="distillation-task">
 <h2>Distillation task<a class="headerlink" href="#distillation-task" title="Link to this heading"></a></h2>
+<p>The input script for tdistillation is actually very similar to that of fine-tune, but there all a few difference:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;dist&quot;</span><span class="p">},</span>
+<span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;teacher_models_paths&quot;</span><span class="p">:</span><span class="s2">&quot;path_to_teacher_model&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;teacher_models_styles&quot;</span><span class="p">:</span><span class="s2">&quot;dp&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="nt">&quot;conf_generation&quot;</span><span class="p">:{</span><span class="err">...</span><span class="p">},</span>
+<span class="nt">&quot;train&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;init_model_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;no&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;template_script&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;train.json&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;exploration&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="err">...</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;test_set_config&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="mf">0.2</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You need to specify the teacher model style and path to the teacher model file at the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune.</p>
+<p>Moreover, a new entry <code class="docutils literal notranslate"><span class="pre">test_set_config</span></code> would be available in the <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section, this setting determines how many labeled frame would serve as the test set (20 % in this case).</p>
 </section>
 </section>
 
