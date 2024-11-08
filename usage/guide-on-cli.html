@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command guide &mdash; pfd-kit 0.1.0 documentation</title>
+  <title>Command guide &mdash; pfd-kit 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/documentation_options.js?v=a58bc63e"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -50,13 +50,19 @@
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Command guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#submitting-workflow">Submitting workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#restarting-from-checkpoint">Restarting from checkpoint</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#downloading-results">Downloading results</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#details-of-pfd-kit-command">Details of PFD-kit command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#submitting-a-workflow">Submitting a Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#restarting-from-a-checkpoint">Restarting from a Checkpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#downloading-results">Downloading Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pfd-kit-command-arguments">PFD-kit Command Arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subcommand-submit">Subcommand: <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subcommand-resubmit">Subcommand: <code class="docutils literal notranslate"><span class="pre">resubmit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subcommand-download">Subcommand: <code class="docutils literal notranslate"><span class="pre">download</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="argument-for-script.html">Arguments of the input script</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of PFD-kit</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
@@ -90,49 +96,91 @@
              
   <section id="command-guide">
 <h1>Command guide<a class="headerlink" href="#command-guide" title="Link to this heading"></a></h1>
-<p>Various tasks can be performed through the command line interface of PFD-kit. Here is a thorough introduction to the availiable commands.</p>
-<section id="submitting-workflow">
-<h2>Submitting workflow<a class="headerlink" href="#submitting-workflow" title="Link to this heading"></a></h2>
-<p>To submit a workflow, navigate to the working directory and run the <code class="docutils literal notranslate"><span class="pre">submit</span></code> command:</p>
+<p>Various tasks can be performed through the command line interface of PFD-kit. Here is a guide to the available commands.</p>
+<section id="submitting-a-workflow">
+<h2>Submitting a Workflow<a class="headerlink" href="#submitting-a-workflow" title="Link to this heading"></a></h2>
+<p>To submit a workflow, navigate to the working directory and run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>submit<span class="w"> </span>input.json
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">input.json</span></code> is the input file which contains workflow definitions, and the corresponding workflow (either fine-tune or distillation) would be submitted based on the input file. Upon successful submission, the workflow id would be printed out to the console.</p>
+<p><code class="docutils literal notranslate"><span class="pre">input.json</span></code> contains workflow definitions. The workflow ID will be printed upon successful submission.</p>
 </section>
-<section id="restarting-from-checkpoint">
-<h2>Restarting from checkpoint<a class="headerlink" href="#restarting-from-checkpoint" title="Link to this heading"></a></h2>
-<p>Occasionally it might be neccessary to restart from, for example, a failed workflow with modified input parameters, then the <code class="docutils literal notranslate"><span class="pre">resubmit</span></code> command comes in handy.</p>
+<section id="restarting-from-a-checkpoint">
+<h2>Restarting from a Checkpoint<a class="headerlink" href="#restarting-from-a-checkpoint" title="Link to this heading"></a></h2>
+<p>To restart a workflow with modified input parameters, use:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>resubmit<span class="w"> </span>input.json<span class="w"> </span>old_workflow_id<span class="w"> </span>-u<span class="w"> </span><span class="m">0</span>-100
 </pre></div>
 </div>
-<p>This command submits a new workflow, but it reuses the results of the first 100 steps of an old workflow without repeating the same calculation. By adding the <code class="docutils literal notranslate"><span class="pre">-l</span></code> argument, completed steps of <code class="docutils literal notranslate"><span class="pre">old_workflow_id</span></code> can be shown with an index number for each step.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pfd<span class="w"> </span>resubmit<span class="w"> </span>input.json<span class="w"> </span>old_workflow_id<span class="w"> </span>-l
-<span class="w">                   </span><span class="m">0</span><span class="w"> </span>:<span class="w"> </span>init--pert-gen
-<span class="w">                   </span><span class="m">1</span><span class="w"> </span>:<span class="w"> </span>init--prep-fp
-<span class="w">             </span><span class="m">2</span><span class="w"> </span>-&gt;<span class="w"> </span><span class="m">31</span><span class="w"> </span>:<span class="w"> </span>init--run-fp-000000<span class="w"> </span>-&gt;<span class="w"> </span>init--run-fp-000029
-<span class="w">                  </span><span class="m">32</span><span class="w"> </span>:<span class="w"> </span>init--sample-aimd
-<span class="w">                  </span>...
+<p>This reuses the results of the first 100 steps of an old workflow. To list completed steps:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>resubmit<span class="w"> </span>input.json<span class="w"> </span>old_workflow_id<span class="w"> </span>-l
 </pre></div>
 </div>
 </section>
 <section id="downloading-results">
-<h2>Downloading results<a class="headerlink" href="#downloading-results" title="Link to this heading"></a></h2>
-<p>To download the output model file, use the <code class="docutils literal notranslate"><span class="pre">download</span></code> command:</p>
+<h2>Downloading Results<a class="headerlink" href="#downloading-results" title="Link to this heading"></a></h2>
+<p>To download the output model file, use:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>download<span class="w"> </span>input.json<span class="w"> </span>workflow_id
 </pre></div>
 </div>
-<p>This would download the model file if the workflow has successfully completed. For more advanced usage, output of a specific step can be downloaded using the <code class="docutils literal notranslate"><span class="pre">-k</span> <span class="pre">&lt;step_key&gt;</span></code> argument. Another advanced download option is to “download by definition”. For example, the following command downloads the models of the <code class="docutils literal notranslate"><span class="pre">prep-run-train</span></code> step of the <code class="docutils literal notranslate"><span class="pre">iter-000</span></code> iteration:</p>
+<p>For advanced usage, download a specific step’s output:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>download<span class="w"> </span>input.json<span class="w"> </span>workflow_id<span class="w"> </span>-i<span class="w"> </span><span class="m">0</span><span class="w"> </span>-d<span class="w"> </span>prep-run-train/input/models
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">prep-run-train/input/models</span></code> argument is exactly the “download definition”. The <code class="docutils literal notranslate"><span class="pre">-l</span></code> argument would list the available download definition:</p>
+<p>List available download definitions:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>download<span class="w"> </span>input.json<span class="w"> </span>workflow_id<span class="w"> </span>-l
 </pre></div>
 </div>
 </section>
-<section id="details-of-pfd-kit-command">
-<h2>Details of PFD-kit command<a class="headerlink" href="#details-of-pfd-kit-command" title="Link to this heading"></a></h2>
-<p>Users can using the <code class="docutils literal notranslate"><span class="pre">-h</span></code> or <code class="docutils literal notranslate"><span class="pre">--help</span></code> options for each command to check the detailed information of PFD-kit command.</p>
+<section id="pfd-kit-command-arguments">
+<h2>PFD-kit Command Arguments<a class="headerlink" href="#pfd-kit-command-arguments" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p>Note: Use <code class="docutils literal notranslate"><span class="pre">-h</span></code> or <code class="docutils literal notranslate"><span class="pre">--help</span></code> to list all possible arguments for PFD-kit subcommands.</p>
+</div></blockquote>
+<section id="subcommand-submit">
+<h3>Subcommand: <code class="docutils literal notranslate"><span class="pre">submit</span></code><a class="headerlink" href="#subcommand-submit" title="Link to this heading"></a></h3>
+<p>Usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>submit<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="o">]</span><span class="w"> </span>CONFIG
+</pre></div>
+</div>
+<p>Arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>: Path to the configuration script in <code class="docutils literal notranslate"><span class="pre">json</span></code> format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m,</span> <span class="pre">--monitoring</span></code>: Monitor workflow progress and auto-download the output model upon successful completion.</p></li>
+</ul>
+</section>
+<section id="subcommand-resubmit">
+<h3>Subcommand: <code class="docutils literal notranslate"><span class="pre">resubmit</span></code><a class="headerlink" href="#subcommand-resubmit" title="Link to this heading"></a></h3>
+<p>Usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>resubmit<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="o">]</span><span class="w"> </span>CONFIG<span class="w"> </span>ID
+</pre></div>
+</div>
+<p>Arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>: Path to the configuration script in <code class="docutils literal notranslate"><span class="pre">json</span></code> format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ID</span></code>: Workflow ID of an existing PFD workflow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-l,</span> <span class="pre">--list</span></code>: List completed steps of an existing workflow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-u,</span> <span class="pre">--reuse</span> <span class="pre">REUSE</span></code>: Reuse completed steps from an existing workflow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-f,</span> <span class="pre">--fold</span></code>: Reuse complex steps as a whole.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m,</span> <span class="pre">--monitoring</span></code>: Monitor workflow progress and auto-download the output model upon successful completion.</p></li>
+</ul>
+</section>
+<section id="subcommand-download">
+<h3>Subcommand: <code class="docutils literal notranslate"><span class="pre">download</span></code><a class="headerlink" href="#subcommand-download" title="Link to this heading"></a></h3>
+<p>Usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>download<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-l<span class="o">]</span><span class="w"> </span><span class="o">[</span>-k<span class="w"> </span>KEYS<span class="o">]</span><span class="w"> </span><span class="o">[</span>-i<span class="w"> </span>ITERATIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>-d<span class="w"> </span>STEP_DEFINITIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>-p<span class="w"> </span>PREFIX<span class="o">]</span><span class="w"> </span><span class="o">[</span>-n<span class="o">]</span><span class="w"> </span>CONFIG<span class="w"> </span>ID
+</pre></div>
+</div>
+<p>Arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>: Path to the configuration script in <code class="docutils literal notranslate"><span class="pre">json</span></code> format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ID</span></code>: Workflow ID of an existing PFD workflow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-k,</span> <span class="pre">--keys</span> <span class="pre">KEYS</span></code>: Download artifacts by step key(s).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-d,</span> <span class="pre">--step-definitions</span> <span class="pre">STEP_DEFINITIONS</span></code>: Download artifacts by <em>step definitions</em>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-l,</span> <span class="pre">--list-supported</span></code>: List all supported step definitions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-i,</span> <span class="pre">--iterations</span> <span class="pre">ITERATIONS</span></code>: Specify steps from which iterations are to be downloaded. Used in conjuntion with <code class="docutils literal notranslate"><span class="pre">-d</span> <span class="pre">STEP_DEFINITIONS</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-p,</span> <span class="pre">--prefix</span> <span class="pre">PREFIX</span></code>: Prefix for the download path.</p></li>
+</ul>
+</section>
 </section>
 </section>
 

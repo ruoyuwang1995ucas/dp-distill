@@ -26,6 +26,7 @@ of computational materials science.
 
    usage/guide-on-cli
    usage/guide-on-script
+   usage/argument-for-script
    usage/examples
 
 .. toctree::

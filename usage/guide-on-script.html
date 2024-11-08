@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Input script guide &mdash; pfd-kit 0.1.0 documentation</title>
+  <title>Input script guide &mdash; pfd-kit 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/documentation_options.js?v=a58bc63e"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Examples of PFD-kit" href="examples.html" />
+    <link rel="next" title="Arguments of the input script" href="argument-for-script.html" />
     <link rel="prev" title="Command guide" href="guide-on-cli.html" /> 
 </head>
 
@@ -58,8 +58,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#fine-tune-task">Fine-tune task</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#distillation-task">Distillation task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters-of-input-script">Parameters of input script</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="argument-for-script.html">Arguments of the input script</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">Examples of PFD-kit</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
@@ -283,11 +285,17 @@ present in the <code class="docutils literal notranslate"><span class="pre">init
 <span class="w">    </span><span class="nt">&quot;test_set_config&quot;</span><span class="p">:{</span>
 <span class="w">        </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="mf">0.2</span>
 <span class="w">    </span><span class="p">}</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="nt">&quot;inference&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;max_force&quot;</span><span class="p">:</span><span class="mf">10.0</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>You need to specify the teacher model style and path to the teacher model file at the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune.</p>
-<p>Moreover, a new entry <code class="docutils literal notranslate"><span class="pre">test_set_config</span></code> would be available in the <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section, this setting determines how many labeled frame would serve as the test set (20 % in this case).</p>
+<p>A new entry <code class="docutils literal notranslate"><span class="pre">test_set_config</span></code> would be available in the <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section, this setting determines how many labeled frame would serve as the test set (20 % in this case). Moreover, you can add additional parameters into the <code class="docutils literal notranslate"><span class="pre">inference</span></code> section, where configurations with excess atomic forces would be filtered out.</p>
+</section>
+<section id="parameters-of-input-script">
+<h2>Parameters of input script<a class="headerlink" href="#parameters-of-input-script" title="Link to this heading"></a></h2>
 </section>
 </section>
 
@@ -296,7 +304,7 @@ present in the <code class="docutils literal notranslate"><span class="pre">init
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="guide-on-cli.html" class="btn btn-neutral float-left" title="Command guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="examples.html" class="btn btn-neutral float-right" title="Examples of PFD-kit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="argument-for-script.html" class="btn btn-neutral float-right" title="Arguments of the input script" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

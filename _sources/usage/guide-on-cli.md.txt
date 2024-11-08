@@ -1,56 +1,90 @@
 # Command guide
 
-Various tasks can be performed through the command line interface of PFD-kit. Here is a thorough introduction to the availiable commands.
+Various tasks can be performed through the command line interface of PFD-kit. Here is a guide to the available commands.
 
-## Submitting workflow
+## Submitting a Workflow
 
-To submit a workflow, navigate to the working directory and run the `submit` command:
+To submit a workflow, navigate to the working directory and run:
 
 ```bash
 pfd submit input.json
 ```
 
-`input.json` is the input file which contains workflow definitions, and the corresponding workflow (either fine-tune or distillation) would be submitted based on the input file. Upon successful submission, the workflow id would be printed out to the console.
+`input.json` contains workflow definitions. The workflow ID will be printed upon successful submission.
 
-## Restarting from checkpoint
+## Restarting from a Checkpoint
 
-Occasionally it might be neccessary to restart from, for example, a failed workflow with modified input parameters, then the `resubmit` command comes in handy.  
+To restart a workflow with modified input parameters, use:
 
 ```bash
 pfd resubmit input.json old_workflow_id -u 0-100
 ```
 
-This command submits a new workflow, but it reuses the results of the first 100 steps of an old workflow without repeating the same calculation. By adding the `-l` argument, completed steps of `old_workflow_id` can be shown with an index number for each step.
+This reuses the results of the first 100 steps of an old workflow. To list completed steps:
 
 ```bash
-$ pfd resubmit input.json old_workflow_id -l
-                   0 : init--pert-gen
-                   1 : init--prep-fp
-             2 -> 31 : init--run-fp-000000 -> init--run-fp-000029
-                  32 : init--sample-aimd
-                  ...
+pfd resubmit input.json old_workflow_id -l
 ```
 
-## Downloading results
+## Downloading Results
 
-To download the output model file, use the `download` command:
+To download the output model file, use:
 
 ```bash
 pfd download input.json workflow_id
 ```
 
-This would download the model file if the workflow has successfully completed. For more advanced usage, output of a specific step can be downloaded using the `-k <step_key>` argument. Another advanced download option is to "download by definition". For example, the following command downloads the models of the `prep-run-train` step of the `iter-000` iteration:
+For advanced usage, download a specific step's output:
 
 ```bash
 pfd download input.json workflow_id -i 0 -d prep-run-train/input/models
 ```
 
-The `-d prep-run-train/input/models` argument is exactly the "download definition". The `-l` argument would list the available download definition:
+List available download definitions:
 
 ```bash
 pfd download input.json workflow_id -l
 ```
 
-## Details of PFD-kit command
+## PFD-kit Command Arguments
 
-Users can using the `-h` or `--help` options for each command to check the detailed information of PFD-kit command.
+> Note: Use `-h` or `--help` to list all possible arguments for PFD-kit subcommands.
+
+### Subcommand: `submit`
+Usage:
+```bash
+pfd submit [-h] [-m] CONFIG
+```
+Arguments:
+
+- `CONFIG`: Path to the configuration script in `json` format.
+- `-m, --monitoring`: Monitor workflow progress and auto-download the output model upon successful completion.
+
+### Subcommand: `resubmit`
+Usage:
+```bash
+pfd resubmit [-h] [-m] CONFIG ID
+```
+Arguments:
+
+- `CONFIG`: Path to the configuration script in `json` format.
+- `ID`: Workflow ID of an existing PFD workflow.
+- `-l, --list`: List completed steps of an existing workflow.
+- `-u, --reuse REUSE`: Reuse completed steps from an existing workflow.
+- `-f, --fold`: Reuse complex steps as a whole.
+- `-m, --monitoring`: Monitor workflow progress and auto-download the output model upon successful completion.
+
+### Subcommand: `download`
+Usage:
+```bash
+pfd download [-h] [-l] [-k KEYS] [-i ITERATIONS] [-d STEP_DEFINITIONS] [-p PREFIX] [-n] CONFIG ID
+```
+Arguments:
+
+- `CONFIG`: Path to the configuration script in `json` format.
+- `ID`: Workflow ID of an existing PFD workflow.
+- `-k, --keys KEYS`: Download artifacts by step key(s).
+- `-d, --step-definitions STEP_DEFINITIONS`: Download artifacts by *step definitions*.
+- `-l, --list-supported`: List all supported step definitions.
+- `-i, --iterations ITERATIONS`: Specify steps from which iterations are to be downloaded. Used in conjuntion with `-d STEP_DEFINITIONS`.
+- `-p, --prefix PREFIX`: Prefix for the download path.

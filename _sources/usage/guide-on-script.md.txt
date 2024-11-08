@@ -200,10 +200,13 @@ The input script for tdistillation is actually very similar to that of fine-tune
     "test_set_config":{
         "test_size":0.2
     }
-    }
+    },
+"inference":{
+    "max_force":10.0
+}
 ```
 You need to specify the teacher model style and path to the teacher model file at the `inputs` part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune. 
 
-Moreover, a new entry `test_set_config` would be available in the `exploration` section, this setting determines how many labeled frame would serve as the test set (20 % in this case). 
+A new entry `test_set_config` would be available in the `exploration` section, this setting determines how many labeled frame would serve as the test set (20 % in this case). Moreover, you can add additional parameters into the `inference` section, where configurations with excess atomic forces would be filtered out.
 
-
+## Parameters of input script
