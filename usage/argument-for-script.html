@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arguments of the input script &mdash; pfd-kit 0.1.1 documentation</title>
+  <title>Arguments of the input script &mdash; pfd-kit 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../_static/documentation_options.js?v=92734c54"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -52,8 +52,16 @@
 <li class="toctree-l1"><a class="reference internal" href="guide-on-cli.html">Command guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide-on-script.html">Input script guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Arguments of the input script</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#task-group-definition">Task group definition</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#lammps-task-group">LAMMPS task group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#host-and-nodes">Host and nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#task-definition">Task definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure-generation">Structure generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-training">Model training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inference-labeling">Inference &amp; labeling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exploration">Exploration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#explore-task-group-definition">Explore task group definition</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lammps-task-group">LAMMPS task group</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -91,6 +99,16 @@
              
   <section id="arguments-of-the-input-script">
 <span id="submitargs"></span><h1>Arguments of the input script<a class="headerlink" href="#arguments-of-the-input-script" title="Link to this heading"></a></h1>
+<section id="host-and-nodes">
+<h2>Host and nodes<a class="headerlink" href="#host-and-nodes" title="Link to this heading"></a></h2>
+<dl id="name">
+<dt>name:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">pfd</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">name</span></code></div>
+</div>
+<p>The workflow name, ‘pfd’ for default</p>
+</dd>
+</dl>
 <dl id="dflow-config">
 <dt>dflow_config:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
@@ -236,6 +254,14 @@
 <p id="default-step-config-executor-dispatcher">When <a class="reference internal" href="#default-step-config-executor-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">dispatcher</span></code>:</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<dl id="parallelism">
+<dt>parallelism:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">parallelism</span></code></div>
+</div>
+<p>The parallelism for the workflow. Accept an int that stands for the maximum number of running pods for the workflow. None for default</p>
 </dd>
 </dl>
 <dl id="bohrium-config">
@@ -1367,100 +1393,15 @@
 </dl>
 <dl id="upload-python-packages">
 <dt>upload_python_packages:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>upload_python_package</em></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>upload_python_package</em></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">upload_python_packages</span></code></div>
 </div>
 <p>Upload python package, for debug purpose</p>
 </dd>
 </dl>
-<dl id="conf-generation">
-<dt>conf_generation:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation</span></code></div>
-</div>
-<p>The inputparameter and artifacts for confs generation</p>
-<dl id="conf-generation-init-configurations">
-<dt>init_configurations:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, aliases: <em>confs</em>, <em>init_confs</em></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_configurations</span></code></div>
-</div>
-<dl id="conf-generation-init-configurations-type">
-<dt>type:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">file</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_configurations/type</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="conf-generation-init-configurations-prefix">
-<dt>prefix:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_configurations/prefix</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="conf-generation-init-configurations-fmt">
-<dt>fmt:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">vasp/poscar</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_configurations/fmt</span></code></div>
-</div>
-<p>Format of input structure files</p>
-</dd>
-</dl>
-<dl id="conf-generation-init-configurations-files">
-<dt>files:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional</div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_configurations/files</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="conf-generation-init-configurations-confs-uri">
-<dt>confs_uri:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_configurations/confs_uri</span></code></div>
-</div>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl id="conf-generation-pert-generation">
-<dt>pert_generation:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation</span></code></div>
-</div>
-<dl id="conf-generation-pert-generation-conf-idx">
-<dt>conf_idx:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/conf_idx</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="conf-generation-pert-generation-atom-pert-distance">
-<dt>atom_pert_distance:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.1</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/atom_pert_distance</span></code></div>
-</div>
-<p>Perturb distance for atoms, in Angstrom</p>
-</dd>
-</dl>
-<dl id="conf-generation-pert-generation-atom-pert-fraction">
-<dt>atom_pert_fraction:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.03</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/atom_pert_fraction</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="conf-generation-pert-generation-pert-num">
-<dt>pert_num:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/pert_num</span></code></div>
-</div>
-<p>Number of perturbed structures</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
+</section>
+<section id="task-definition">
+<h2>Task definition<a class="headerlink" href="#task-definition" title="Link to this heading"></a></h2>
 <dl id="task">
 <dt>task:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
@@ -1507,7 +1448,7 @@
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/type_map</span></code></div>
 </div>
-<p>The type map. e.g. [“Al”, “Mg”]. Al and Mg will have type 0 and 1, respectively.</p>
+<p>The type map. e.g. [“Al”, “Mg”]. Element in dpdata format.</p>
 </dd>
 </dl>
 <dl id="inputs-mass-map">
@@ -1526,25 +1467,9 @@
 <p>The prefix of initial data systems</p>
 </dd>
 </dl>
-<dl id="inputs-mixed-type">
-<dt>mixed_type:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/mixed_type</span></code></div>
-</div>
-<p>Use <cite>deepmd/npy/mixed</cite> format for storing training data.</p>
-</dd>
-</dl>
-<dl id="inputs-do-finetune">
-<dt>do_finetune:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/do_finetune</span></code></div>
-</div>
-<p>Finetune the pretrained model before the first iteration. If it is set to True, then an additional step, finetune-step, which is based on a branch of “PrepRunDPTrain,” will be added before the dpgen_step. In the finetune-step, the internal flag finetune_mode is set to “finetune,” which means SuperOP “PrepRunDPTrain” is now used as the “Finetune.” In this step, we finetune the pretrained model in the train step and modify the template after training. After that, in the normal dpgen-step, the flag do_finetune is set as “train-init,” which means we use <cite>–init-frz-model</cite> to train based on models from the previous iteration. The “do_finetune” flag is set to False by default, while the internal flag finetune_mode is set to “no,” which means anything related to finetuning will not be done.</p>
-</dd>
-</dl>
 <dl id="inputs-init-data-sys">
 <dt>init_data_sys:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/init_data_sys</span></code></div>
 </div>
 <p>The inital data systems</p>
@@ -1558,38 +1483,6 @@
 <p>The URI of initial data</p>
 </dd>
 </dl>
-<dl id="inputs-multitask">
-<dt>multitask:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/multitask</span></code></div>
-</div>
-<p>Do multitask training</p>
-</dd>
-</dl>
-<dl id="inputs-head">
-<dt>head:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/head</span></code></div>
-</div>
-<p>Head to use in the multitask training</p>
-</dd>
-</dl>
-<dl id="inputs-multi-init-data">
-<dt>multi_init_data:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/multi_init_data</span></code></div>
-</div>
-<p>The inital data for multitask, it should be a dict, whose keys are task names and each value is a dictcontaining fields <cite>prefix</cite> and <cite>sys</cite> for initial data of each task</p>
-</dd>
-</dl>
-<dl id="inputs-multi-init-data-uri">
-<dt>multi_init_data_uri:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/multi_init_data_uri</span></code></div>
-</div>
-<p>The URI of initial data for multitask</p>
-</dd>
-</dl>
 <dl id="inputs-valid-data-prefix">
 <dt>valid_data_prefix:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
@@ -1600,7 +1493,7 @@
 </dl>
 <dl id="inputs-valid-data-sys">
 <dt>valid_data_sys:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/valid_data_sys</span></code></div>
 </div>
 <p>The validation data systems</p>
@@ -1614,72 +1507,121 @@
 <p>The URI of validation data</p>
 </dd>
 </dl>
-<dl id="inputs-teacher-models-paths">
-<dt>teacher_models_paths:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/teacher_models_paths</span></code></div>
+<dl id="inputs-base-model-path">
+<dt>base_model_path:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, aliases: <em>teacher_model_path</em>, <em>pretrain_model_path</em>, <em>teacher_models_paths</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/base_model_path</span></code></div>
 </div>
-<p>Path(s) for the teacher model</p>
+<p>Path to the base model.In <cite>finetune</cite> task, this is the path to the pretrained model.In <cite>distillation</cite> task, this is the path to the teacher model.</p>
 </dd>
 </dl>
-<dl id="inputs-teacher-models-uri">
-<dt>teacher_models_uri:</dt><dd><div class="line-block">
+<dl id="inputs-base-model-uri">
+<dt>base_model_uri:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, aliases: <em>teacher_model_uri</em>, <em>pretrain_model_uri</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/base_model_uri</span></code></div>
+</div>
+<p>URI of the base model.</p>
+</dd>
+</dl>
+<dl id="inputs-base-model-style">
+<dt>base_model_style:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">dp</span></code>, alias: <em>teacher_model_style</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/base_model_style</span></code></div>
+</div>
+<p>Type of the base model</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="structure-generation">
+<h2>Structure generation<a class="headerlink" href="#structure-generation" title="Link to this heading"></a></h2>
+<dl id="conf-generation">
+<dt>conf_generation:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, alias: <em>configurations</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation</span></code></div>
+</div>
+<p>The inputparameter and artifacts for confs generation</p>
+<dl id="conf-generation-init-confs">
+<dt>init_confs:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, aliases: <em>confs</em>, <em>init_configurations</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs</span></code></div>
+</div>
+<p>The initial configurations for PFD workflow</p>
+<dl id="conf-generation-init-confs-prefix">
+<dt>prefix:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/teacher_models_uri</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/prefix</span></code></div>
 </div>
-<p>URI of the teacher model</p>
 </dd>
 </dl>
-<dl id="inputs-teacher-model-style">
-<dt>teacher_model_style:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">dp</span></code>, aliases: <em>teacher_stype</em>, <em>teacher_models_stype</em></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/teacher_model_style</span></code></div>
+<dl id="conf-generation-init-confs-fmt">
+<dt>fmt:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">vasp/poscar</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/fmt</span></code></div>
 </div>
-<p>Type of the teacher model</p>
+<p>Format of input structure files</p>
+</dd>
+</dl>
+<dl id="conf-generation-init-confs-confs-paths">
+<dt>confs_paths:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, alias: <em>files</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/confs_paths</span></code></div>
+</div>
+</dd>
+</dl>
+<dl id="conf-generation-init-confs-confs-uri">
+<dt>confs_uri:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/confs_uri</span></code></div>
+</div>
 </dd>
 </dl>
 </dd>
 </dl>
-<dl id="aimd">
-<dt>aimd:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional</div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd</span></code></div>
+<dl id="conf-generation-pert-generation">
+<dt>pert_generation:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation</span></code></div>
 </div>
-<p>The parameter for initial fp calculation</p>
-<dl id="aimd-confs">
-<dt>confs:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/confs</span></code></div>
+<p>Generation of perturbed structures for PFD exploration</p>
+<dl id="conf-generation-pert-generation-conf-idx">
+<dt>conf_idx:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/conf_idx</span></code></div>
 </div>
-<p>The systems selected for initial fp calculation</p>
 </dd>
 </dl>
-<dl id="aimd-n-sample">
-<dt>n_sample:</dt><dd><div class="line-block">
+<dl id="conf-generation-pert-generation-atom-pert-distance">
+<dt>atom_pert_distance:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.1</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/atom_pert_distance</span></code></div>
+</div>
+<p>Perturb distance for atoms, in Angstrom</p>
+</dd>
+</dl>
+<dl id="conf-generation-pert-generation-atom-pert-fraction">
+<dt>atom_pert_fraction:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.03</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/atom_pert_fraction</span></code></div>
+</div>
+</dd>
+</dl>
+<dl id="conf-generation-pert-generation-pert-num">
+<dt>pert_num:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/n_sample</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/pert_num</span></code></div>
 </div>
-<p>The number of configurations selected for fp calculation within each system</p>
+<p>Number of perturbed structures</p>
 </dd>
 </dl>
 </dd>
 </dl>
-<dl id="inference">
-<dt>inference:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inference</span></code></div>
-</div>
-<p>The parameters for inference settings</p>
-<dl id="inference-max-force">
-<dt>max_force:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inference/max_force</span></code></div>
-</div>
-<p>The max value of allowed atomic force</p>
 </dd>
 </dl>
-</dd>
-</dl>
+</section>
+<section id="model-training">
+<h2>Model training<a class="headerlink" href="#model-training" title="Link to this heading"></a></h2>
 <dl id="train">
 <dt>train:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
@@ -1842,7 +1784,7 @@
 </dl>
 <dl id="train-dp-init-models-paths">
 <dt>init_models_paths:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>training_iter0_model_path</em></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>training_iter0_model_path</em></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">train[dp]/init_models_paths</span></code></div>
 </div>
 <p>the paths to initial models</p>
@@ -1866,205 +1808,9 @@
 </dl>
 </dd>
 </dl>
-<dl id="exploration">
-<dt>exploration:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, alias: <em>explore</em></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration</span></code></div>
-</div>
-<p>The configuration for exploration</p>
-<dl id="exploration-test-set-config">
-<dt>test_set_config:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{'test_size':</span> <span class="pre">0.1}</span></code>, alias: <em>test_set</em></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration/test_set_config</span></code></div>
-</div>
-<p>Set the portion of test set. Only available for <cite>dist</cite></p>
-</dd>
-</dl>
-<p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
-<dl id="exploration-type">
-<dt>type:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> (flag key)</div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration/type</span></code></div>
-<div class="line">possible choices: <a class="reference internal" href="#exploration-lmp"><code class="docutils literal notranslate"><span class="pre">lmp</span></code></a></div>
-</div>
-<p>The type of the exploration</p>
-</dd>
-</dl>
-<p id="exploration-lmp">When <a class="reference internal" href="#exploration-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">lmp</span></code>:</p>
-<p>The exploration by LAMMPS simulations</p>
-<dl id="exploration-lmp-config">
-<dt>config:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{'command':</span> <span class="pre">'lmp',</span> <span class="pre">'teacher_model_path':</span> <span class="pre">None,</span> <span class="pre">'shuffle_models':</span> <span class="pre">False,</span> <span class="pre">'head':</span> <span class="pre">None,</span> <span class="pre">'use_ele_temp':</span> <span class="pre">0,</span> <span class="pre">'model_frozen_head':</span> <span class="pre">None,</span> <span class="pre">'use_hdf5':</span> <span class="pre">False}</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config</span></code></div>
-</div>
-<p>Configuration of lmp exploration</p>
-<dl id="exploration-lmp-config-command">
-<dt>command:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">lmp</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/command</span></code></div>
-</div>
-<p>The command of LAMMPS</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-config-teacher-model-path">
-<dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
-</div>
-<p>The teacher model in <cite>Knowledge Distillation</cite></p>
-</dd>
-</dl>
-<dl id="exploration-lmp-config-shuffle-models">
-<dt>shuffle_models:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/shuffle_models</span></code></div>
-</div>
-<p>Randomly pick a model from the group of models to drive theexploration MD simulation</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-config-head">
-<dt>head:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/head</span></code></div>
-</div>
-<p>Select a head from multitask</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-config-use-ele-temp">
-<dt>use_ele_temp:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/use_ele_temp</span></code></div>
-</div>
-<p>Whether to use electronic temperature, 0 for no, 1 for frame temperature, and 2 for atomic temperature</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-config-model-frozen-head">
-<dt>model_frozen_head:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/model_frozen_head</span></code></div>
-</div>
-<p>Select a head from multitask</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-config-use-hdf5">
-<dt>use_hdf5:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/use_hdf5</span></code></div>
-</div>
-<p>Use HDF5 to store trajs and model_devis</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl id="exploration-lmp-max-numb-iter">
-<dt>max_numb_iter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">10</span></code>, alias: <em>max_iter</em></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/max_numb_iter</span></code></div>
-</div>
-<p>Maximum number of iterations per stage</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-fatal-at-max">
-<dt>fatal_at_max:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">True</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/fatal_at_max</span></code></div>
-</div>
-<p>Fatal when the number of iteration per stage reaches the <cite>max_numb_iter</cite></p>
-</dd>
-</dl>
-<dl id="exploration-lmp-output-nopbc">
-<dt>output_nopbc:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/output_nopbc</span></code></div>
-</div>
-<p>Remove pbc of the output configurations</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-convergence">
-<dt>convergence:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, alias: <em>converge_config</em></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence</span></code></div>
-</div>
-<p>The method of convergence check.</p>
-<dl id="exploration-lmp-convergence-conf-filter">
-<dt>conf_filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter</span></code></div>
-</div>
-<p>Filtering configurations with too larger or too small prediction error</p>
-</dd>
-</dl>
-<p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
-<dl id="exploration-lmp-convergence-type">
-<dt>type:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> (flag key)</div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/type</span></code></div>
-<div class="line">possible choices: <a class="reference internal" href="#exploration-lmp-convergence-force-rmse"><code class="docutils literal notranslate"><span class="pre">force_rmse</span></code></a>, <a class="reference internal" href="#exploration-lmp-convergence-force-rmse-idv"><code class="docutils literal notranslate"><span class="pre">force_rmse_idv</span></code></a>, <a class="reference internal" href="#exploration-lmp-convergence-energy-rmse"><code class="docutils literal notranslate"><span class="pre">energy_rmse</span></code></a></div>
-</div>
-<p>the type of the condidate selection and convergence check method.</p>
-</dd>
-</dl>
-<p id="exploration-lmp-convergence-force-rmse">When <a class="reference internal" href="#exploration-lmp-convergence-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">force_rmse</span></code>:</p>
-<p>Converge by RMSE of atomic forces</p>
-<dl id="exploration-lmp-convergence-force-rmse-rmse">
-<dt>RMSE:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse]/RMSE</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="exploration-lmp-convergence-force-rmse-adaptive">
-<dt>adaptive:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse]/adaptive</span></code></div>
-</div>
-</dd>
-</dl>
-<p id="exploration-lmp-convergence-force-rmse-idv">When <a class="reference internal" href="#exploration-lmp-convergence-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">force_rmse_idv</span></code>:</p>
-<p>Converge by RMSE of atomic forces</p>
-<dl id="exploration-lmp-convergence-force-rmse-idv-rmse">
-<dt>RMSE:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse_idv]/RMSE</span></code></div>
-</div>
-</dd>
-</dl>
-<dl id="exploration-lmp-convergence-force-rmse-idv-adaptive">
-<dt>adaptive:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse_idv]/adaptive</span></code></div>
-</div>
-</dd>
-</dl>
-<p id="exploration-lmp-convergence-energy-rmse">When <a class="reference internal" href="#exploration-lmp-convergence-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">energy_rmse</span></code>:</p>
-<p>Converge by RMSE of energy per atom</p>
-<dl id="exploration-lmp-convergence-energy-rmse-rmse">
-<dt>RMSE:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[energy_rmse]/RMSE</span></code></div>
-</div>
-</dd>
-</dl>
-</dd>
-</dl>
-<dl id="exploration-lmp-filter">
-<dt>filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter</span></code></div>
-</div>
-<p>Filter configuration for DFT calculation</p>
-</dd>
-</dl>
-<dl id="exploration-lmp-stages">
-<dt>stages:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[typing.List[dict]]</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/stages</span></code></div>
-</div>
-<p>The definition of exploration stages of type <cite>List[List[ExplorationTaskGroup]</cite>. The outer list provides the enumeration of the exploration stages. Then each stage is defined by a list of exploration task groups. Each task group is described in <span class="xref std std-ref">the task group definition</span></p>
-</dd>
-</dl>
-</dd>
-</dl>
+</section>
+<section id="inference-labeling">
+<h2>Inference &amp; labeling<a class="headerlink" href="#inference-labeling" title="Link to this heading"></a></h2>
 <dl id="fp">
 <dt>fp:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional</div>
@@ -2485,26 +2231,252 @@
 </dl>
 </dd>
 </dl>
-<dl id="name">
-<dt>name:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">pfd</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">name</span></code></div>
+<dl id="aimd">
+<dt>aimd:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional</div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd</span></code></div>
 </div>
-<p>The workflow name, ‘pfd’ for default</p>
+<p>The parameter for initial fp calculation</p>
+<dl id="aimd-confs">
+<dt>confs:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/confs</span></code></div>
+</div>
+<p>The systems selected for initial fp calculation</p>
 </dd>
 </dl>
-<dl id="parallelism">
-<dt>parallelism:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
-<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">parallelism</span></code></div>
+<dl id="aimd-n-sample">
+<dt>n_sample:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/n_sample</span></code></div>
 </div>
-<p>The parallelism for the workflow. Accept an int that stands for the maximum number of running pods for the workflow. None for default</p>
+<p>The number of configurations selected for fp calculation within each system</p>
 </dd>
 </dl>
-<section id="task-group-definition">
-<h2>Task group definition<a class="headerlink" href="#task-group-definition" title="Link to this heading"></a></h2>
+</dd>
+</dl>
+<dl id="inference">
+<dt>inference:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inference</span></code></div>
+</div>
+<p>The parameters for inference settings</p>
+<dl id="inference-max-force">
+<dt>max_force:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inference/max_force</span></code></div>
+</div>
+<p>The max value of allowed atomic force</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="exploration">
+<h2>Exploration<a class="headerlink" href="#exploration" title="Link to this heading"></a></h2>
+<dl id="id1">
+<dt>exploration:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, alias: <em>explore</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration</span></code></div>
+</div>
+<p>The configuration for exploration</p>
+<dl id="exploration-test-set-config">
+<dt>test_set_config:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{'test_size':</span> <span class="pre">0.1}</span></code>, alias: <em>test_set</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration/test_set_config</span></code></div>
+</div>
+<p>Set the portion of test set. Only available for <cite>dist</cite></p>
+</dd>
+</dl>
+<p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
+<dl id="exploration-type">
+<dt>type:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> (flag key)</div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration/type</span></code></div>
+<div class="line">possible choices: <a class="reference internal" href="#exploration-lmp"><code class="docutils literal notranslate"><span class="pre">lmp</span></code></a></div>
+</div>
+<p>The type of the exploration</p>
+</dd>
+</dl>
+<p id="exploration-lmp">When <a class="reference internal" href="#exploration-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">lmp</span></code>:</p>
+<p>The exploration by LAMMPS simulations</p>
+<dl id="exploration-lmp-config">
+<dt>config:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{'command':</span> <span class="pre">'lmp',</span> <span class="pre">'teacher_model_path':</span> <span class="pre">None,</span> <span class="pre">'shuffle_models':</span> <span class="pre">False,</span> <span class="pre">'head':</span> <span class="pre">None,</span> <span class="pre">'use_ele_temp':</span> <span class="pre">0,</span> <span class="pre">'model_frozen_head':</span> <span class="pre">None,</span> <span class="pre">'use_hdf5':</span> <span class="pre">False}</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config</span></code></div>
+</div>
+<p>Configuration of lmp exploration</p>
+<dl id="exploration-lmp-config-command">
+<dt>command:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">lmp</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/command</span></code></div>
+</div>
+<p>The command of LAMMPS</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-config-teacher-model-path">
+<dt>teacher_model_path:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
+</div>
+<p>The teacher model in <cite>Knowledge Distillation</cite></p>
+</dd>
+</dl>
+<dl id="exploration-lmp-config-shuffle-models">
+<dt>shuffle_models:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/shuffle_models</span></code></div>
+</div>
+<p>Randomly pick a model from the group of models to drive theexploration MD simulation</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-config-head">
+<dt>head:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/head</span></code></div>
+</div>
+<p>Select a head from multitask</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-config-use-ele-temp">
+<dt>use_ele_temp:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/use_ele_temp</span></code></div>
+</div>
+<p>Whether to use electronic temperature, 0 for no, 1 for frame temperature, and 2 for atomic temperature</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-config-model-frozen-head">
+<dt>model_frozen_head:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/model_frozen_head</span></code></div>
+</div>
+<p>Select a head from multitask</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-config-use-hdf5">
+<dt>use_hdf5:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/use_hdf5</span></code></div>
+</div>
+<p>Use HDF5 to store trajs and model_devis</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl id="exploration-lmp-max-numb-iter">
+<dt>max_numb_iter:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">10</span></code>, alias: <em>max_iter</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/max_numb_iter</span></code></div>
+</div>
+<p>Maximum number of iterations per stage</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-fatal-at-max">
+<dt>fatal_at_max:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">True</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/fatal_at_max</span></code></div>
+</div>
+<p>Fatal when the number of iteration per stage reaches the <cite>max_numb_iter</cite></p>
+</dd>
+</dl>
+<dl id="exploration-lmp-output-nopbc">
+<dt>output_nopbc:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/output_nopbc</span></code></div>
+</div>
+<p>Remove pbc of the output configurations</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-convergence">
+<dt>convergence:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, alias: <em>converge_config</em></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence</span></code></div>
+</div>
+<p>The method of convergence check.</p>
+<dl id="exploration-lmp-convergence-conf-filter">
+<dt>conf_filter:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter</span></code></div>
+</div>
+<p>Filtering configurations with too larger or too small prediction error</p>
+</dd>
+</dl>
+<p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
+<dl id="exploration-lmp-convergence-type">
+<dt>type:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> (flag key)</div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/type</span></code></div>
+<div class="line">possible choices: <a class="reference internal" href="#exploration-lmp-convergence-force-rmse"><code class="docutils literal notranslate"><span class="pre">force_rmse</span></code></a>, <a class="reference internal" href="#exploration-lmp-convergence-force-rmse-idv"><code class="docutils literal notranslate"><span class="pre">force_rmse_idv</span></code></a>, <a class="reference internal" href="#exploration-lmp-convergence-energy-rmse"><code class="docutils literal notranslate"><span class="pre">energy_rmse</span></code></a></div>
+</div>
+<p>the type of the condidate selection and convergence check method.</p>
+</dd>
+</dl>
+<p id="exploration-lmp-convergence-force-rmse">When <a class="reference internal" href="#exploration-lmp-convergence-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">force_rmse</span></code>:</p>
+<p>Converge by RMSE of atomic forces</p>
+<dl id="exploration-lmp-convergence-force-rmse-rmse">
+<dt>RMSE:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse]/RMSE</span></code></div>
+</div>
+</dd>
+</dl>
+<dl id="exploration-lmp-convergence-force-rmse-adaptive">
+<dt>adaptive:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse]/adaptive</span></code></div>
+</div>
+</dd>
+</dl>
+<p id="exploration-lmp-convergence-force-rmse-idv">When <a class="reference internal" href="#exploration-lmp-convergence-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">force_rmse_idv</span></code>:</p>
+<p>Converge by RMSE of atomic forces</p>
+<dl id="exploration-lmp-convergence-force-rmse-idv-rmse">
+<dt>RMSE:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse_idv]/RMSE</span></code></div>
+</div>
+</dd>
+</dl>
+<dl id="exploration-lmp-convergence-force-rmse-idv-adaptive">
+<dt>adaptive:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[force_rmse_idv]/adaptive</span></code></div>
+</div>
+</dd>
+</dl>
+<p id="exploration-lmp-convergence-energy-rmse">When <a class="reference internal" href="#exploration-lmp-convergence-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">energy_rmse</span></code>:</p>
+<p>Converge by RMSE of energy per atom</p>
+<dl id="exploration-lmp-convergence-energy-rmse-rmse">
+<dt>RMSE:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.01</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence[energy_rmse]/RMSE</span></code></div>
+</div>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl id="exploration-lmp-filter">
+<dt>filter:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter</span></code></div>
+</div>
+<p>Filter configuration for DFT calculation</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-stages">
+<dt>stages:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[typing.List[dict]]</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/stages</span></code></div>
+</div>
+<p>The definition of exploration stages of type <cite>List[List[ExplorationTaskGroup]</cite>. The outer list provides the enumeration of the exploration stages. Then each stage is defined by a list of exploration task groups. Each task group is described in <span class="xref std std-ref">the task group definition</span></p>
+</dd>
+</dl>
+</dd>
+</dl>
+<section id="explore-task-group-definition">
+<h3>Explore task group definition<a class="headerlink" href="#explore-task-group-definition" title="Link to this heading"></a></h3>
 <section id="lammps-task-group">
-<h3>LAMMPS task group<a class="headerlink" href="#lammps-task-group" title="Link to this heading"></a></h3>
+<h4>LAMMPS task group<a class="headerlink" href="#lammps-task-group" title="Link to this heading"></a></h4>
 <dl id="task-group">
 <dt>task_group:</dt><dd><div class="line-block">
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
@@ -2807,6 +2779,7 @@
 </dl>
 </dd>
 </dl>
+</section>
 </section>
 </section>
 </section>

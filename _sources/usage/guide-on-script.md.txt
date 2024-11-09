@@ -89,11 +89,12 @@ which is `finetune` in this case.
     }
 ```
 The `inputs` section includes essential user input parameters. Here one needs to specify `type_map`, which maps the type embedding of pretrained model 
-to corresponding element name.
+to corresponding element name. The path to pretrained base model also needs to be provided.
 
 ```json
 "inputs":{
-    "type_map":["Li","..."]
+    "type_map":["Li","..."],
+    "base_model_path":["path_to_base_model"]
 }
 ```
 
@@ -184,8 +185,8 @@ The input script for tdistillation is actually very similar to that of fine-tune
 "task":{"type":"dist"},
 "inputs":{
     "type_map":["..."],
-    "teacher_models_paths":"path_to_teacher_model",
-    "teacher_models_styles":"dp"
+    "teacher_model_path":"path_to_teacher_model",
+    "teacher_model_style":"dp"
     },
 "conf_generation":{...},
 "train":{
@@ -208,5 +209,3 @@ The input script for tdistillation is actually very similar to that of fine-tune
 You need to specify the teacher model style and path to the teacher model file at the `inputs` part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune. 
 
 A new entry `test_set_config` would be available in the `exploration` section, this setting determines how many labeled frame would serve as the test set (20 % in this case). Moreover, you can add additional parameters into the `inference` section, where configurations with excess atomic forces would be filtered out.
-
-## Parameters of input script

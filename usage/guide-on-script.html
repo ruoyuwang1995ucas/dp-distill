@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Input script guide &mdash; pfd-kit 0.1.1 documentation</title>
+  <title>Input script guide &mdash; pfd-kit 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../_static/documentation_options.js?v=92734c54"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -58,7 +58,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#fine-tune-task">Fine-tune task</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#distillation-task">Distillation task</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#parameters-of-input-script">Parameters of input script</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="argument-for-script.html">Arguments of the input script</a></li>
@@ -180,9 +179,10 @@ which is <code class="docutils literal notranslate"><span class="pre">finetune</
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">inputs</span></code> section includes essential user input parameters. Here one needs to specify <code class="docutils literal notranslate"><span class="pre">type_map</span></code>, which maps the type embedding of pretrained model
-to corresponding element name.</p>
+to corresponding element name. The path to pretrained base model also needs to be provided.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
-<span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;Li&quot;</span><span class="p">,</span><span class="s2">&quot;...&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;Li&quot;</span><span class="p">,</span><span class="s2">&quot;...&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;base_model_path&quot;</span><span class="p">:[</span><span class="s2">&quot;path_to_base_model&quot;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -269,8 +269,8 @@ present in the <code class="docutils literal notranslate"><span class="pre">init
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;dist&quot;</span><span class="p">},</span>
 <span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
 <span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;teacher_models_paths&quot;</span><span class="p">:</span><span class="s2">&quot;path_to_teacher_model&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;teacher_models_styles&quot;</span><span class="p">:</span><span class="s2">&quot;dp&quot;</span>
+<span class="w">    </span><span class="nt">&quot;teacher_model_path&quot;</span><span class="p">:</span><span class="s2">&quot;path_to_teacher_model&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;teacher_model_style&quot;</span><span class="p">:</span><span class="s2">&quot;dp&quot;</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="nt">&quot;conf_generation&quot;</span><span class="p">:{</span><span class="err">...</span><span class="p">},</span>
 <span class="nt">&quot;train&quot;</span><span class="p">:{</span>
@@ -293,9 +293,6 @@ present in the <code class="docutils literal notranslate"><span class="pre">init
 </div>
 <p>You need to specify the teacher model style and path to the teacher model file at the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune.</p>
 <p>A new entry <code class="docutils literal notranslate"><span class="pre">test_set_config</span></code> would be available in the <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section, this setting determines how many labeled frame would serve as the test set (20 % in this case). Moreover, you can add additional parameters into the <code class="docutils literal notranslate"><span class="pre">inference</span></code> section, where configurations with excess atomic forces would be filtered out.</p>
-</section>
-<section id="parameters-of-input-script">
-<h2>Parameters of input script<a class="headerlink" href="#parameters-of-input-script" title="Link to this heading"></a></h2>
 </section>
 </section>
 
