@@ -6,20 +6,20 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examples of PFD-kit &mdash; pfd-kit 0.1.2 documentation</title>
+  <title>Examples &mdash; pfd-kit 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=92734c54"></script>
+      <script src="../_static/documentation_options.js?v=360bc84d"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API of PFD-kit" href="../development/api.html" />
+    <link rel="next" title="六元掺杂钙钛矿的模型微调示例" href="zto-ft.html" />
     <link rel="prev" title="Arguments of the input script" href="argument-for-script.html" /> 
 </head>
 
@@ -52,9 +52,18 @@
 <li class="toctree-l1"><a class="reference internal" href="guide-on-cli.html">Command guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide-on-script.html">Input script guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="argument-for-script.html">Arguments of the input script</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples of PFD-kit</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#lpscl">1. LPSCl</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bto">2. BTO</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bnbzto-fine-tune">BNBZTO fine-tune</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html">六元掺杂钙钛矿的模型微调示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id2">示例背景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id3">目录以及文件介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id6">训练思路介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id7">微调流程部分参数解读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id8">训练部分参数解读</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id9">效果展示</a></li>
+<li class="toctree-l3"><a class="reference internal" href="zto-ft.html#id10">总结</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -77,9 +86,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Examples of PFD-kit</li>
+      <li class="breadcrumb-item active">Examples</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/usage/examples.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/usage/examples.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -87,13 +96,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="examples-of-pfd-kit">
-<h1>Examples of PFD-kit<a class="headerlink" href="#examples-of-pfd-kit" title="Link to this heading"></a></h1>
-<section id="lpscl">
-<h2>1. LPSCl<a class="headerlink" href="#lpscl" title="Link to this heading"></a></h2>
-</section>
-<section id="bto">
-<h2>2. BTO<a class="headerlink" href="#bto" title="Link to this heading"></a></h2>
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
+<section id="bnbzto-fine-tune">
+<h2>BNBZTO fine-tune<a class="headerlink" href="#bnbzto-fine-tune" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">BNTZTO fine-tune</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html">六元掺杂钙钛矿的模型微调示例</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id2">示例背景</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id3">目录以及文件介绍</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="zto-ft.html#id4">目录</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zto-ft.html#id5">文件</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id6">训练思路介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id7">微调流程部分参数解读</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id8">训练部分参数解读</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id9">效果展示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zto-ft.html#id10">总结</a></li>
+</ul>
+</div>
 </section>
 </section>
 
@@ -102,7 +125,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="argument-for-script.html" class="btn btn-neutral float-left" title="Arguments of the input script" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../development/api.html" class="btn btn-neutral float-right" title="API of PFD-kit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="zto-ft.html" class="btn btn-neutral float-right" title="六元掺杂钙钛矿的模型微调示例" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
