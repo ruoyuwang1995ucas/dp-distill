@@ -1393,7 +1393,7 @@
 </dl>
 <dl id="upload-python-packages">
 <dt>upload_python_packages:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>upload_python_package</em></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>upload_python_package</em></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">upload_python_packages</span></code></div>
 </div>
 <p>Upload python package, for debug purpose</p>
@@ -1470,7 +1470,7 @@
 </dl>
 <dl id="inputs-init-data-sys">
 <dt>init_data_sys:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/init_data_sys</span></code></div>
 </div>
 <p>The inital data systems</p>
@@ -1494,7 +1494,7 @@
 </dl>
 <dl id="inputs-valid-data-sys">
 <dt>valid_data_sys:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/valid_data_sys</span></code></div>
 </div>
 <p>The validation data systems</p>
@@ -1510,7 +1510,7 @@
 </dl>
 <dl id="inputs-base-model-path">
 <dt>base_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, aliases: <em>teacher_model_path</em>, <em>pretrain_model_path</em>, <em>teacher_models_paths</em></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, aliases: <em>teacher_model_path</em>, <em>pretrain_model_path</em>, <em>teacher_models_paths</em></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">inputs/base_model_path</span></code></div>
 </div>
 <p>Path to the base model.In <cite>finetune</cite> task, this is the path to the pretrained model.In <cite>distillation</cite> task, this is the path to the teacher model.</p>
@@ -1573,7 +1573,7 @@
 </dl>
 <dl id="conf-generation-init-confs-confs-uri">
 <dt>confs_uri:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/confs_uri</span></code></div>
 </div>
 </dd>
@@ -1777,7 +1777,7 @@
 </dl>
 <dl id="train-dp-template-script">
 <dt>template_script:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">train[dp]/template_script</span></code></div>
 </div>
 <p>File names of the template training script. It can be a <cite>List[str]</cite>, the length of which is the same as <cite>numb_models</cite>. Each template script in the list is used to train a model. Can be a <cite>str</cite>, the models share the same template training script.</p>
@@ -1785,7 +1785,7 @@
 </dl>
 <dl id="train-dp-init-models-paths">
 <dt>init_models_paths:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>training_iter0_model_path</em></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, alias: <em>training_iter0_model_path</em></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">train[dp]/init_models_paths</span></code></div>
 </div>
 <p>the paths to initial models</p>
@@ -2245,7 +2245,7 @@
 <p>The parameter for initial fp calculation</p>
 <dl id="aimd-confs">
 <dt>confs:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/confs</span></code></div>
 </div>
 <p>The systems selected for initial fp calculation</p>
@@ -2322,7 +2322,7 @@
 </dl>
 <dl id="exploration-lmp-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
 </div>
 <p>The teacher model in <cite>Knowledge Distillation</cite></p>
