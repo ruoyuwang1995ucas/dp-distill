@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arguments of the input script &mdash; pfd-kit 0.2.0 documentation</title>
+  <title>Arguments of the input script &mdash; pfd-kit 0.3.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+      <script src="../_static/documentation_options.js?v=e259d695"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -1566,14 +1566,14 @@
 </dl>
 <dl id="conf-generation-init-confs-confs-paths">
 <dt>confs_paths:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, alias: <em>files</em></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, alias: <em>files</em></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/confs_paths</span></code></div>
 </div>
 </dd>
 </dl>
 <dl id="conf-generation-init-confs-confs-uri">
 <dt>confs_uri:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/init_confs/confs_uri</span></code></div>
 </div>
 </dd>
@@ -1582,7 +1582,7 @@
 </dl>
 <dl id="conf-generation-pert-generation">
 <dt>pert_generation:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation</span></code></div>
 </div>
 <p>Generation of perturbed structures for PFD exploration</p>
@@ -2322,7 +2322,7 @@
 </dl>
 <dl id="exploration-lmp-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
 </div>
 <p>The teacher model in <cite>Knowledge Distillation</cite></p>
@@ -2402,10 +2402,56 @@
 <p>The method of convergence check.</p>
 <dl id="exploration-lmp-convergence-conf-filter">
 <dt>conf_filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter</span></code></div>
 </div>
 <p>Filtering configurations with too larger or too small prediction error</p>
+<p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
+<dl id="exploration-lmp-convergence-conf-filter-type">
+<dt>type:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> (flag key)</div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter/type</span></code></div>
+<div class="line">possible choices: <a class="reference internal" href="#exploration-lmp-convergence-conf-filter-energy-delta"><code class="docutils literal notranslate"><span class="pre">energy_delta</span></code></a>, <a class="reference internal" href="#exploration-lmp-convergence-conf-filter-force-delta"><code class="docutils literal notranslate"><span class="pre">force_delta</span></code></a></div>
+</div>
+<p>frame filters based on model test</p>
+</dd>
+</dl>
+<p id="exploration-lmp-convergence-conf-filter-energy-delta">When <a class="reference internal" href="#exploration-lmp-convergence-conf-filter-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">energy_delta</span></code>:</p>
+<p>allowed prediction error of energy/atom, in eV/atom</p>
+<dl id="exploration-lmp-convergence-conf-filter-energy-delta-thr-l">
+<dt>thr_l:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter[energy_delta]/thr_l</span></code></div>
+</div>
+<p>The lower threshold of the energy/atom prediction error</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-convergence-conf-filter-energy-delta-thr-h">
+<dt>thr_h:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter[energy_delta]/thr_h</span></code></div>
+</div>
+<p>The higher threshold of the energy/atom prediction error</p>
+</dd>
+</dl>
+<p id="exploration-lmp-convergence-conf-filter-force-delta">When <a class="reference internal" href="#exploration-lmp-convergence-conf-filter-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">force_delta</span></code>:</p>
+<p>allowed prediction error of average atomic forces, in eV/Angstrom</p>
+<dl id="exploration-lmp-convergence-conf-filter-force-delta-thr-l">
+<dt>thr_l:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter[force_delta]/thr_l</span></code></div>
+</div>
+<p>The lower threshold of the atomic forces prediction error</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-convergence-conf-filter-force-delta-thr-h">
+<dt>thr_h:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.3</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter[force_delta]/thr_h</span></code></div>
+</div>
+<p>The higher threshold of the atomic forces prediction error</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
@@ -2463,10 +2509,58 @@
 </dl>
 <dl id="exploration-lmp-filter">
 <dt>filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter</span></code></div>
 </div>
 <p>Filter configuration for DFT calculation</p>
+<p>Depending on the value of <em>type</em>, different sub args are accepted.</p>
+<dl id="exploration-lmp-filter-type">
+<dt>type:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> (flag key)</div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter/type</span></code></div>
+<div class="line">possible choices: <a class="reference internal" href="#exploration-lmp-filter-distance"><code class="docutils literal notranslate"><span class="pre">distance</span></code></a>, <a class="reference internal" href="#exploration-lmp-filter-box-skewness"><code class="docutils literal notranslate"><span class="pre">box_skewness</span></code></a>, <a class="reference internal" href="#exploration-lmp-filter-box-length"><code class="docutils literal notranslate"><span class="pre">box_length</span></code></a></div>
+</div>
+<p>the type of the frame selector</p>
+</dd>
+</dl>
+<p id="exploration-lmp-filter-distance">When <a class="reference internal" href="#exploration-lmp-filter-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">distance</span></code>:</p>
+<p>The parameters of atom distance filter</p>
+<dl id="exploration-lmp-filter-distance-custom-safe-dist">
+<dt>custom_safe_dist:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter[distance]/custom_safe_dist</span></code></div>
+</div>
+<p>Custom safe distance (in unit of bohr) for each element</p>
+</dd>
+</dl>
+<dl id="exploration-lmp-filter-distance-safe-dist-ratio">
+<dt>safe_dist_ratio:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1.0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter[distance]/safe_dist_ratio</span></code></div>
+</div>
+<p>The ratio multiplied to the safe distance</p>
+</dd>
+</dl>
+<p id="exploration-lmp-filter-box-skewness">When <a class="reference internal" href="#exploration-lmp-filter-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">box_skewness</span></code>:</p>
+<p>The parameters of box skewness filter</p>
+<dl id="exploration-lmp-filter-box-skewness-theta">
+<dt>theta:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">60.0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter[box_skewness]/theta</span></code></div>
+</div>
+<p>The threshold for angles between the edges of the cell. If all angles are larger than this value the check is passed</p>
+</dd>
+</dl>
+<p id="exploration-lmp-filter-box-length">When <a class="reference internal" href="#exploration-lmp-filter-type"><em>type</em></a> is set to <code class="docutils literal notranslate"><span class="pre">box_length</span></code>:</p>
+<p>The parameters of box length filter</p>
+<dl id="exploration-lmp-filter-box-length-length-ratio">
+<dt>length_ratio:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">5.0</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter[box_length]/length_ratio</span></code></div>
+</div>
+<p>The threshold for the length ratio between the edges of the cell. If all length ratios are smaller than this value the check is passed</p>
+</dd>
+</dl>
 </dd>
 </dl>
 <dl id="exploration-lmp-stages">
