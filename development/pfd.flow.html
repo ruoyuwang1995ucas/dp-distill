@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.flow package &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pfd.fp package" href="pfd.fp.html" />
+    <link rel="prev" title="pfd.exploration.task.lmp package" href="pfd.exploration.task.lmp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pfd.html">pfd package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pfd.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pfd.entrypoint.html">pfd.entrypoint package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.html">pfd.exploration package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pfd.flow package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.fp.html">pfd.fp package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.op.html">pfd.op package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.superop.html">pfd.superop package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.train.html">pfd.train package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.utils.html">pfd.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd.constants">pfd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pfd.html">pfd package</a></li>
+      <li class="breadcrumb-item active">pfd.flow package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pfd.flow.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfd-flow-package">
+<h1>pfd.flow package<a class="headerlink" href="#pfd-flow-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pfd.flow.data_gen">
+<span id="pfd-flow-data-gen-module"></span><h2>pfd.flow.data_gen module<a class="headerlink" href="#module-pfd.flow.data_gen" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.flow.data_gen.</span></span><span class="sig-name descname"><span class="pre">DataGen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">OP</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_run_fp_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPTemplate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">OP</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_python_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/flow/data_gen.html#DataGen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.flow.data_gen.DataGen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Steps</span></code></p>
+<p>A class to represent the DataGen operation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.name" title="Link to this definition"></a></dt>
+<dd><p>The name of the DataGen operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.pert_gen_op">
+<span class="sig-name descname"><span class="pre">pert_gen_op</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.pert_gen_op" title="Link to this definition"></a></dt>
+<dd><p>The perturbation generation operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Type[OP]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.prep_run_fp_op">
+<span class="sig-name descname"><span class="pre">prep_run_fp_op</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.prep_run_fp_op" title="Link to this definition"></a></dt>
+<dd><p>The preparation and run force field operation template.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>OPTemplate</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.collect_data_op">
+<span class="sig-name descname"><span class="pre">collect_data_op</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.collect_data_op" title="Link to this definition"></a></dt>
+<dd><p>The data collection operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Type[OP]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.pert_gen_step_config">
+<span class="sig-name descname"><span class="pre">pert_gen_step_config</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.pert_gen_step_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the perturbation generation step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.collect_data_config">
+<span class="sig-name descname"><span class="pre">collect_data_config</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.collect_data_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the data collection step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.upload_python_packages">
+<span class="sig-name descname"><span class="pre">upload_python_packages</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.upload_python_packages" title="Link to this definition"></a></dt>
+<dd><p>List of Python packages to upload.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[List[os.PathLike]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.input_artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_artifacts</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.input_artifacts" title="Link to this definition"></a></dt>
+<dd><p>Returns the input artifacts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The input artifacts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.input_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_parameters</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.input_parameters" title="Link to this definition"></a></dt>
+<dd><p>Returns the input parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The input parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.output_artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_artifacts</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.output_artifacts" title="Link to this definition"></a></dt>
+<dd><p>Returns the output artifacts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The output artifacts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.data_gen.DataGen.output_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_parameters</span></span><a class="headerlink" href="#pfd.flow.data_gen.DataGen.output_parameters" title="Link to this definition"></a></dt>
+<dd><p>Returns the output parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The output parameters.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.flow.distillation">
+<span id="pfd-flow-distillation-module"></span><h2>pfd.flow.distillation module<a class="headerlink" href="#module-pfd.flow.distillation" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.flow.distillation.Distillation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.flow.distillation.</span></span><span class="sig-name descname"><span class="pre">Distillation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">OP</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expl_dist_loop_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPTemplate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_python_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/flow/distillation.html#Distillation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.flow.distillation.Distillation" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Steps</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.distillation.Distillation.input_artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_artifacts</span></span><a class="headerlink" href="#pfd.flow.distillation.Distillation.input_artifacts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.distillation.Distillation.input_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_parameters</span></span><a class="headerlink" href="#pfd.flow.distillation.Distillation.input_parameters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.distillation.Distillation.output_artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_artifacts</span></span><a class="headerlink" href="#pfd.flow.distillation.Distillation.output_artifacts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.distillation.Distillation.output_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_parameters</span></span><a class="headerlink" href="#pfd.flow.distillation.Distillation.output_parameters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.flow.fine_tune">
+<span id="pfd-flow-fine-tune-module"></span><h2>pfd.flow.fine_tune module<a class="headerlink" href="#module-pfd.flow.fine_tune" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.flow.fine_tune.FineTune">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.flow.fine_tune.</span></span><span class="sig-name descname"><span class="pre">FineTune</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">OP</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_run_fp_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPTemplate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">OP</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_run_dp_train_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPTemplate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expl_finetune_loop_op</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPTemplate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_python_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_training</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_aimd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/flow/fine_tune.html#FineTune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.flow.fine_tune.FineTune" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Steps</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.fine_tune.FineTune.input_artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_artifacts</span></span><a class="headerlink" href="#pfd.flow.fine_tune.FineTune.input_artifacts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.fine_tune.FineTune.input_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input_parameters</span></span><a class="headerlink" href="#pfd.flow.fine_tune.FineTune.input_parameters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.fine_tune.FineTune.output_artifacts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_artifacts</span></span><a class="headerlink" href="#pfd.flow.fine_tune.FineTune.output_artifacts" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.flow.fine_tune.FineTune.output_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_parameters</span></span><a class="headerlink" href="#pfd.flow.fine_tune.FineTune.output_parameters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.flow">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pfd.flow" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfd.exploration.task.lmp.html" class="btn btn-neutral float-left" title="pfd.exploration.task.lmp package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pfd.fp.html" class="btn btn-neutral float-right" title="pfd.fp package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

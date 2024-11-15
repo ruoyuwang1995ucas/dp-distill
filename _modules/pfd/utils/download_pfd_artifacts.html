@@ -1,0 +1,546 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.utils.download_pfd_artifacts &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.utils.download_pfd_artifacts</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.utils.download_pfd_artifacts</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Path</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">dflow</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Workflow</span><span class="p">,</span>
+    <span class="n">download_artifact</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pfd.utils.dflow_query</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_iteration</span><span class="p">,</span>
+    <span class="n">get_subkey</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">global_step_def_split</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+
+
+<div class="viewcode-block" id="DownloadDefinition">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.DownloadDefinition">[docs]</a>
+<span class="k">class</span> <span class="nc">DownloadDefinition</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_def</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_def</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="DownloadDefinition.add_def">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_def">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_def</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">tdict</span><span class="p">,</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">tdict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">suffix</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="DownloadDefinition.add_input">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_input">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_input</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">input_key</span><span class="p">,</span>
+        <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_def</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_def</span><span class="p">,</span> <span class="n">input_key</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DownloadDefinition.add_output">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_output">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">output_key</span><span class="p">,</span>
+        <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_def</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_def</span><span class="p">,</span> <span class="n">output_key</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">op_download_setting</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;pert-gen&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span><span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;confs&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;prep-run-train&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;init_models&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;init_data&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;iter_data&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;scripts&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;models&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;lcurves&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;prep-run-dp&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;init_models&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;init_data&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;iter_data&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;scripts&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;models&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;lcurves&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;trajs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;model_devis&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;prep-run-lmp&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;trajs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;model_devis&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;confs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;labeled_data&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;collect-data&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;multi_systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;test_systems&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;collect-data-fp&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;multi_systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;test_systems&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;validation-test&quot;</span><span class="p">:</span> <span class="n">DownloadDefinition</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;systems&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_input</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;test_report&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">add_output</span><span class="p">(</span><span class="s2">&quot;test_res_dir&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="print_op_download_setting">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.print_op_download_setting">[docs]</a>
+<span class="k">def</span> <span class="nf">print_op_download_setting</span><span class="p">(</span><span class="n">op_download_setting</span><span class="o">=</span><span class="n">op_download_setting</span><span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">op_download_setting</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;step: </span><span class="si">{</span><span class="n">kk</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">idef</span> <span class="o">=</span> <span class="n">op_download_setting</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">input_def</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idef</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  input:&quot;</span><span class="p">)</span>
+            <span class="n">str_keys</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="n">idef</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">str_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ik</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">str_keys</span><span class="p">))</span>
+        <span class="n">odef</span> <span class="o">=</span> <span class="n">op_download_setting</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span><span class="o">.</span><span class="n">output_def</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">odef</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  output:&quot;</span><span class="p">)</span>
+            <span class="n">str_keys</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">ik</span> <span class="ow">in</span> <span class="n">odef</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">str_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ik</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;    &quot;</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">str_keys</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="download_dpgen2_artifacts">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.download_dpgen2_artifacts">[docs]</a>
+<span class="k">def</span> <span class="nf">download_dpgen2_artifacts</span><span class="p">(</span>
+    <span class="n">wf</span><span class="p">:</span> <span class="n">Workflow</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">chk_pnt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    download the artifacts of a step.</span>
+<span class="sd">    the key should be of format &#39;iter-xxxxxx--subkey-of-step-xxxxxx&#39;</span>
+<span class="sd">    the input and output artifacts will be downloaded to</span>
+<span class="sd">    prefix/iter-xxxxxx/key-of-step/inputs/ and</span>
+<span class="sd">    prefix/iter-xxxxxx/key-of-step/outputs/</span>
+
+<span class="sd">    the downloaded input and output artifacts of steps are defined by</span>
+<span class="sd">    `op_download_setting`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">iteration</span> <span class="o">=</span> <span class="n">get_iteration</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">subkey</span> <span class="o">=</span> <span class="n">get_subkey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">mypath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">iteration</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mypath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">/</span> <span class="n">mypath</span>
+
+    <span class="n">dsetting</span> <span class="o">=</span> <span class="n">op_download_setting</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">subkey</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dsetting</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cannot find download settings for </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">input_def</span> <span class="o">=</span> <span class="n">dsetting</span><span class="o">.</span><span class="n">input_def</span>
+    <span class="n">output_def</span> <span class="o">=</span> <span class="n">dsetting</span><span class="o">.</span><span class="n">output_def</span>
+
+    <span class="n">dld_input</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">input_def</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">chk_pnt</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mypath</span> <span class="o">/</span> <span class="n">subkey</span> <span class="o">/</span> <span class="s2">&quot;inputs&quot;</span> <span class="o">/</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
+    <span class="p">)</span>
+    <span class="n">dld_output</span> <span class="o">=</span> <span class="ow">not</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">output_def</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">chk_pnt</span> <span class="ow">and</span> <span class="p">(</span><span class="n">mypath</span> <span class="o">/</span> <span class="n">subkey</span> <span class="o">/</span> <span class="s2">&quot;outputs&quot;</span> <span class="o">/</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">())</span>
+    <span class="p">)</span>
+
+    <span class="n">step</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">dld_input</span> <span class="ow">or</span> <span class="n">dld_output</span><span class="p">:</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">query_step</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">step</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;key </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> does not match any step&quot;</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">dld_input</span><span class="p">:</span>
+        <span class="n">_dload_input_lower</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">mypath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">input_def</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">chk_pnt</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">mypath</span> <span class="o">/</span> <span class="n">subkey</span> <span class="o">/</span> <span class="s2">&quot;inputs&quot;</span> <span class="o">/</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">dld_output</span><span class="p">:</span>
+        <span class="n">_dload_output_lower</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">mypath</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">output_def</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">chk_pnt</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">mypath</span> <span class="o">/</span> <span class="n">subkey</span> <span class="o">/</span> <span class="s2">&quot;outputs&quot;</span> <span class="o">/</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+    <span class="k">return</span></div>
+
+
+
+<div class="viewcode-block" id="download_dpgen2_artifacts_by_def">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.download_pfd_artifacts.download_dpgen2_artifacts_by_def">[docs]</a>
+<span class="k">def</span> <span class="nf">download_dpgen2_artifacts_by_def</span><span class="p">(</span>
+    <span class="n">wf</span><span class="p">:</span> <span class="n">Workflow</span><span class="p">,</span>
+    <span class="n">iterations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">step_defs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">chk_pnt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    download selected artifacts give iteration numbers and step definition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wf_step_keys</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">query_keys_of_steps</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span>
+    <span class="k">if</span> <span class="n">iterations</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">iterations</span> <span class="o">=</span> <span class="n">_get_all_iterations</span><span class="p">(</span><span class="n">wf_step_keys</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">step_defs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">step_defs</span> <span class="o">=</span> <span class="n">_get_all_step_defs</span><span class="p">()</span>
+    <span class="n">step_defs</span> <span class="o">=</span> <span class="n">_filter_def_by_availability</span><span class="p">(</span><span class="n">step_defs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">step_defs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># mk download items</span>
+    <span class="n">dld_items</span> <span class="o">=</span> <span class="n">_get_dld_items</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="n">step_defs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">chk_pnt</span><span class="p">:</span>
+        <span class="n">dld_items</span> <span class="o">=</span> <span class="n">_filter_if_complished</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">dld_items</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">dld_items</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dld_items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># get all steps</span>
+    <span class="n">step_keys</span> <span class="o">=</span> <span class="n">_get_all_queried_steps</span><span class="p">(</span><span class="n">wf_step_keys</span><span class="p">,</span> <span class="n">dld_items</span><span class="p">)</span>
+    <span class="n">wf_steps</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">query_step_by_key</span><span class="p">(</span><span class="n">step_keys</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wf_steps</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">step_keys</span><span class="p">)):</span>
+        <span class="c1"># fall back to the wf.query to get the steps.</span>
+        <span class="n">wf_info</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
+        <span class="n">wf_steps</span> <span class="o">=</span> <span class="p">[</span><span class="n">wf_info</span><span class="o">.</span><span class="n">get_step</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">kk</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">step_keys</span><span class="p">]</span>
+    <span class="c1"># make step dict</span>
+    <span class="n">step_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">wf_step</span><span class="o">.</span><span class="n">key</span><span class="p">:</span> <span class="n">wf_step</span> <span class="k">for</span> <span class="n">wf_step</span> <span class="ow">in</span> <span class="n">wf_steps</span><span class="p">}</span>
+
+    <span class="c1"># download all items</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">dld_items</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hit&quot;</span><span class="p">)</span>
+        <span class="p">[</span><span class="n">step_key</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="n">ii</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">global_step_def_split</span><span class="p">)</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="n">step_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">step_key</span><span class="p">)</span>
+        <span class="c1"># skip all problematic steps</span>
+        <span class="k">if</span> <span class="n">step</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">step</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;Succeeded&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">_dl_step_item</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">chk_pnt</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_dload_input_lower</span><span class="p">(</span>
+    <span class="n">step</span><span class="p">,</span>
+    <span class="n">mypath</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">,</span>
+    <span class="n">subkey</span><span class="p">,</span>
+    <span class="n">input_def</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">input_def</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">pref</span> <span class="o">=</span> <span class="n">mypath</span> <span class="o">/</span> <span class="n">subkey</span> <span class="o">/</span> <span class="s2">&quot;inputs&quot;</span>
+        <span class="n">ksuff</span> <span class="o">=</span> <span class="n">input_def</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ksuff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pref</span> <span class="o">=</span> <span class="n">pref</span> <span class="o">/</span> <span class="n">ksuff</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">download_artifact</span><span class="p">(</span>
+                <span class="n">step</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="n">kk</span><span class="p">],</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">pref</span><span class="p">,</span>
+                <span class="n">skip_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
+            <span class="c1"># NotImplementedError to be compatible with old versions of dflow</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cannot download input artifact  </span><span class="si">{</span><span class="n">kk</span><span class="si">}</span><span class="s2">  of  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, it may be empty&quot;</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_dload_output_lower</span><span class="p">(</span>
+    <span class="n">step</span><span class="p">,</span>
+    <span class="n">mypath</span><span class="p">,</span>
+    <span class="n">key</span><span class="p">,</span>
+    <span class="n">subkey</span><span class="p">,</span>
+    <span class="n">output_def</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">output_def</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">pref</span> <span class="o">=</span> <span class="n">mypath</span> <span class="o">/</span> <span class="n">subkey</span> <span class="o">/</span> <span class="s2">&quot;outputs&quot;</span>
+        <span class="n">ksuff</span> <span class="o">=</span> <span class="n">output_def</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ksuff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pref</span> <span class="o">=</span> <span class="n">pref</span> <span class="o">/</span> <span class="n">ksuff</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">download_artifact</span><span class="p">(</span>
+                <span class="n">step</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="n">kk</span><span class="p">],</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">pref</span><span class="p">,</span>
+                <span class="n">skip_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
+            <span class="c1"># NotImplementedError to be compatible with old versions of dflow</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;cannot download input artifact  </span><span class="si">{</span><span class="n">kk</span><span class="si">}</span><span class="s2">  of  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">, it may be empty&quot;</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_get_all_step_defs</span><span class="p">(</span><span class="n">op_download_setting</span><span class="o">=</span><span class="n">op_download_setting</span><span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">op_download_setting</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">idef</span> <span class="o">=</span> <span class="n">vv</span><span class="o">.</span><span class="n">input_def</span>
+        <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">iv</span> <span class="ow">in</span> <span class="n">idef</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kk</span><span class="si">}{</span><span class="n">global_step_def_split</span><span class="si">}</span><span class="s2">input</span><span class="si">{</span><span class="n">global_step_def_split</span><span class="si">}{</span><span class="n">ik</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">odef</span> <span class="o">=</span> <span class="n">vv</span><span class="o">.</span><span class="n">output_def</span>
+        <span class="k">for</span> <span class="n">ik</span><span class="p">,</span> <span class="n">iv</span> <span class="ow">in</span> <span class="n">odef</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kk</span><span class="si">}{</span><span class="n">global_step_def_split</span><span class="si">}</span><span class="s2">output</span><span class="si">{</span><span class="n">global_step_def_split</span><span class="si">}{</span><span class="n">ik</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_get_all_iterations</span><span class="p">(</span><span class="n">step_keys</span><span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">step_keys</span><span class="p">:</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="n">get_iteration</span><span class="p">(</span><span class="n">kk</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ii</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;iter-&quot;</span><span class="p">):</span>
+            <span class="n">ii</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ret</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_get_all_queried_steps</span><span class="p">(</span><span class="n">wf_step_keys</span><span class="p">,</span> <span class="n">dld_items</span><span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">dld_items</span><span class="p">:</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">global_step_def_split</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">wf_step_keys</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ret</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_get_dld_items</span><span class="p">(</span>
+    <span class="n">iterations</span><span class="p">,</span>
+    <span class="n">step_defs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ii</span><span class="p">,</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="n">step_defs</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;iter-</span><span class="si">{</span><span class="n">ii</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">--&quot;</span> <span class="o">+</span> <span class="n">jj</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">items</span>
+
+
+<span class="k">def</span> <span class="nf">_item_path</span><span class="p">(</span>
+    <span class="n">prefix</span><span class="p">,</span>
+    <span class="n">item</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">global_step_def_split</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="n">ii</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;--&quot;</span><span class="p">):</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">/</span> <span class="n">jj</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_if_complished</span><span class="p">(</span>
+    <span class="n">prefix</span><span class="p">,</span>
+    <span class="n">items</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">tt</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">item_path</span> <span class="o">=</span> <span class="n">_item_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">tt</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">item_path</span> <span class="o">/</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item_path</span><span class="si">}</span><span class="s2"> exists&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_def_by_availability</span><span class="p">(</span>
+    <span class="n">defs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dd</span> <span class="ow">in</span> <span class="n">defs</span><span class="p">:</span>
+        <span class="n">splitted</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">global_step_def_split</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splitted</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;the step definition should be in format &quot;</span>
+                <span class="s2">&quot;stepkey/input_or_output/item_name.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;for example prep-run-dp-train/output/logs&quot;</span>
+            <span class="p">)</span>
+        <span class="p">[</span><span class="n">subkey</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">splitted</span>
+        <span class="k">if</span> <span class="n">io</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]:</span>
+            <span class="n">avail</span> <span class="o">=</span> <span class="p">(</span><span class="n">subkey</span> <span class="ow">in</span> <span class="n">op_download_setting</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">name</span> <span class="ow">in</span> <span class="n">op_download_setting</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span><span class="o">.</span><span class="n">input_def</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">io</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]:</span>
+            <span class="n">avail</span> <span class="o">=</span> <span class="p">(</span><span class="n">subkey</span> <span class="ow">in</span> <span class="n">op_download_setting</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">name</span> <span class="ow">in</span> <span class="n">op_download_setting</span><span class="p">[</span><span class="n">subkey</span><span class="p">]</span><span class="o">.</span><span class="n">output_def</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown io style </span><span class="si">{</span><span class="n">io</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">avail</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cannot find download settings for </span><span class="si">{</span><span class="n">dd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<span class="k">def</span> <span class="nf">_dl_step_item</span><span class="p">(</span>
+    <span class="n">step</span><span class="p">,</span>
+    <span class="n">item</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">,</span>
+    <span class="n">ckpt</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="p">[</span><span class="n">step_key</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">global_step_def_split</span><span class="p">)</span>
+    <span class="n">pref</span> <span class="o">=</span> <span class="n">_item_path</span><span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">io</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;input&quot;</span><span class="p">]:</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">io</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]:</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;unknown io style </span><span class="si">{io}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">download_artifact</span><span class="p">(</span>
+            <span class="n">target</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">pref</span><span class="p">,</span>
+            <span class="n">skip_exists</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">,</span> <span class="ne">FileNotFoundError</span><span class="p">):</span>
+        <span class="c1"># NotImplementedError to be compatible with old versions of dflow</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cannot download item </span><span class="si">{</span><span class="n">pref</span><span class="si">}</span><span class="s2">, it may be empty&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ckpt</span><span class="p">:</span>
+        <span class="n">pref</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">(</span><span class="n">pref</span> <span class="o">/</span> <span class="s2">&quot;done&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">touch</span><span class="p">()</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pref</span><span class="si">}</span><span class="s2"> downloaded&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

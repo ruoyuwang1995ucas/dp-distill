@@ -33,4 +33,4 @@ of computational materials science.
    :maxdepth: 2
    :caption: Developer guide
 
-   development/api
+   development/modules

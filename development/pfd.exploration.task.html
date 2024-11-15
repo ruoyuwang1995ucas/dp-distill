@@ -1,0 +1,586 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task package &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pfd.exploration.task.calypso package" href="pfd.exploration.task.calypso.html" />
+    <link rel="prev" title="pfd.exploration.selector package" href="pfd.exploration.selector.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pfd.html">pfd package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pfd.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pfd.entrypoint.html">pfd.entrypoint package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pfd.exploration.html">pfd.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.flow.html">pfd.flow package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.fp.html">pfd.fp package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.op.html">pfd.op package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.superop.html">pfd.superop package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.train.html">pfd.train package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.utils.html">pfd.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd.constants">pfd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pfd.html">pfd package</a></li>
+          <li class="breadcrumb-item"><a href="pfd.exploration.html">pfd.exploration package</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pfd.exploration.task.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfd-exploration-task-package">
+<h1>pfd.exploration.task package<a class="headerlink" href="#pfd-exploration-task-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.task.calypso.html">pfd.exploration.task.calypso package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.calypso.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.calypso.html#module-pfd.exploration.task.calypso.caly_input">pfd.exploration.task.calypso.caly_input module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.calypso.html#pfd.exploration.task.calypso.caly_input.make_calypso_input"><code class="docutils literal notranslate"><span class="pre">make_calypso_input()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.calypso.html#module-pfd.exploration.task.calypso">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.task.lmp.html">pfd.exploration.task.lmp package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.lmp.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.lmp.html#module-pfd.exploration.task.lmp.lmp_input">pfd.exploration.task.lmp.lmp_input module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.lmp.html#pfd.exploration.task.lmp.lmp_input.make_lmp_input"><code class="docutils literal notranslate"><span class="pre">make_lmp_input()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.lmp.html#module-pfd.exploration.task.lmp">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pfd.exploration.task.caly_task_group">
+<span id="pfd-exploration-task-caly-task-group-module"></span><h2>pfd.exploration.task.caly_task_group module<a class="headerlink" href="#module-pfd.exploration.task.caly_task_group" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.caly_task_group.CalyTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.caly_task_group.</span></span><span class="sig-name descname"><span class="pre">CalyTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/caly_task_group.html#CalyTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.caly_task_group.CalyTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExplorationTaskGroup</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.caly_task_group.CalyTaskGroup.make_task">
+<span class="sig-name descname"><span class="pre">make_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><span class="pre">ExplorationTaskGroup</span></a></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/caly_task_group.html#CalyTaskGroup.make_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.caly_task_group.CalyTaskGroup.make_task" title="Link to this definition"></a></dt>
+<dd><p>Make the CALYPSO task group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task_grp</strong> – Return one calypso task group.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup">ExplorationTaskGroup</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.caly_task_group.CalyTaskGroup.set_params">
+<span class="sig-name descname"><span class="pre">set_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numb_of_species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_of_atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numb_of_atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_of_ions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atomic_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'CALYPSO'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numb_of_formula</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pressure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ialgo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pso_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">icode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numb_of_lbest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numb_of_local_optim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sh</span> <span class="pre">submit.sh'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">9000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gen_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick_up</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parallel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spec_space_group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[2,</span> <span class="pre">230]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vsc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ctrl_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[[1,</span> <span class="pre">10]]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_numb_atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/caly_task_group.html#CalyTaskGroup.set_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.caly_task_group.CalyTaskGroup.set_params" title="Link to this definition"></a></dt>
+<dd><p>Set calypso parameters</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.conf_sampling_task_group">
+<span id="pfd-exploration-task-conf-sampling-task-group-module"></span><h2>pfd.exploration.task.conf_sampling_task_group module<a class="headerlink" href="#module-pfd.exploration.task.conf_sampling_task_group" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.conf_sampling_task_group.</span></span><span class="sig-name descname"><span class="pre">ConfSamplingTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/conf_sampling_task_group.html#ConfSamplingTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExplorationTaskGroup</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup.set_conf">
+<span class="sig-name descname"><span class="pre">set_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/conf_sampling_task_group.html#ConfSamplingTaskGroup.set_conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup.set_conf" title="Link to this definition"></a></dt>
+<dd><p>Set the configurations of exploration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>str</strong> (<em>conf_list</em>) – A list of file contents</p></li>
+<li><p><strong>int</strong> (<em>n_sample</em>) – Number of samples drawn from the conf list each time
+<cite>make_task</cite> is called. If set to <cite>None</cite>,
+<cite>n_sample</cite> is set to length of the conf_list.</p></li>
+<li><p><strong>bool</strong> (<em>random_sample</em>) – If true the confs are randomly sampled, otherwise are
+consecutively sampled from the conf_list</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.customized_lmp_template_task_group">
+<span id="pfd-exploration-task-customized-lmp-template-task-group-module"></span><h2>pfd.exploration.task.customized_lmp_template_task_group module<a class="headerlink" href="#module-pfd.exploration.task.customized_lmp_template_task_group" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.customized_lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">CustomizedLmpTemplateTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/customized_lmp_template_task_group.html#CustomizedLmpTemplateTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup" title="pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfSamplingTaskGroup</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.make_task">
+<span class="sig-name descname"><span class="pre">make_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup" title="pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup"><span class="pre">CustomizedLmpTemplateTaskGroup</span></a></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/customized_lmp_template_task_group.html#CustomizedLmpTemplateTaskGroup.make_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.make_task" title="Link to this definition"></a></dt>
+<dd><p>Make the task group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.set_lmp">
+<span class="sig-name descname"><span class="pre">set_lmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numb_models</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_shell_commands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revisions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_lmp_conf_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'conf.lmp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_lmp_tmpl_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'in.lammps'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_plm_tmpl_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_extra_files</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_lmp_conf_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'conf.lmp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_lmp_tmpl_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'in.lammps'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_plm_tmpl_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/customized_lmp_template_task_group.html#CustomizedLmpTemplateTaskGroup.set_lmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.set_lmp" title="Link to this definition"></a></dt>
+<dd><p>Set lammps task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numb_models</strong> (<em>int</em>) – Number of models</p></li>
+<li><p><strong>custom_shell_commands</strong> (<em>str</em>) – Customized shell commands to be run for each configuration.
+The commands require <cite>input_lmp_conf_name</cite> as input conf file,
+<cite>input_lmp_tmpl_name</cite> and <cite>input_plm_tmpl_name</cite> as templates,
+and <cite>input_extra_files</cite> as extra input files.
+By running the commands a series folders in pattern
+<cite>output_dir_pattern</cite> are supposed to be generated,
+and each folder is supposed to contain a configuration file
+<cite>output_lmp_conf_name</cite>, a lammps template file <cite>output_lmp_tmpl_name</cite>
+and a plumed template file <cite>output_plm_tmpl_name</cite>.</p></li>
+<li><p><strong>revisions</strong> (<em>dict</em>) – Revision dictionary. Provided in {key: [enumerated values]} format</p></li>
+<li><p><strong>traj_freq</strong> (<em>int</em>) – Frequency along trajectory of checking model deviation</p></li>
+<li><p><strong>input_lmp_conf_name</strong> (<em>str</em>) – Input conf file name for the shell commands.</p></li>
+<li><p><strong>input_lmp_tmpl_name</strong> (<em>str</em>) – Template file name of lammps input</p></li>
+<li><p><strong>input_plm_tmpl_name</strong> (<em>str</em>) – Template file name of the plumed input</p></li>
+<li><p><strong>input_extra_files</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Extra files that may be needed to execute the shell commands</p></li>
+<li><p><strong>output_dir_pattern</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – Pattern of resultant folders generated by the shell commands.</p></li>
+<li><p><strong>output_lmp_conf_name</strong> (<em>str</em>) – Generated conf file name.</p></li>
+<li><p><strong>output_lmp_tmpl_name</strong> (<em>str</em>) – Generated lmp input file name.</p></li>
+<li><p><strong>output_plm_tmpl_name</strong> (<em>str</em>) – Generated plm input file name.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.gen_task_group">
+<span id="pfd-exploration-task-gen-task-group-module"></span><h2>pfd.exploration.task.gen_task_group module<a class="headerlink" href="#module-pfd.exploration.task.gen_task_group" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.gen_task_group.expl_grp_args_lmps">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.gen_task_group.</span></span><span class="sig-name descname"><span class="pre">expl_grp_args_lmps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/gen_task_group.html#expl_grp_args_lmps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.gen_task_group.expl_grp_args_lmps" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.gen_task_group.gen_expl_grp_lmps">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.gen_task_group.</span></span><span class="sig-name descname"><span class="pre">gen_expl_grp_lmps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/gen_task_group.html#gen_expl_grp_lmps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.gen_task_group.gen_expl_grp_lmps" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.lmp_template_task_group">
+<span id="pfd-exploration-task-lmp-template-task-group-module"></span><h2>pfd.exploration.task.lmp_template_task_group module<a class="headerlink" href="#module-pfd.exploration.task.lmp_template_task_group" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">LmpTemplateTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#LmpTemplateTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup" title="pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfSamplingTaskGroup</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_cont">
+<span class="sig-name descname"><span class="pre">make_cont</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">templates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revisions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#LmpTemplateTaskGroup.make_cont"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_cont" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_task">
+<span class="sig-name descname"><span class="pre">make_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup" title="pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup"><span class="pre">LmpTemplateTaskGroup</span></a></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#LmpTemplateTaskGroup.make_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_task" title="Link to this definition"></a></dt>
+<dd><p>Make the task group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.set_lmp">
+<span class="sig-name descname"><span class="pre">set_lmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numb_models</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lmp_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plm_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">revisions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traj_freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#LmpTemplateTaskGroup.set_lmp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.set_lmp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.find_only_one_key">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">find_only_one_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmp_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#find_only_one_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.find_only_one_key" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.revise_by_keys">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">revise_by_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmp_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#revise_by_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.revise_by_keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.revise_lmp_input_dump">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">revise_lmp_input_dump</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmp_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trj_freq</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#revise_lmp_input_dump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_dump" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.revise_lmp_input_model">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">revise_lmp_input_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmp_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task_model_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trj_freq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deepmd_version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#revise_lmp_input_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_model" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.lmp_template_task_group.revise_lmp_input_plm">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.lmp_template_task_group.</span></span><span class="sig-name descname"><span class="pre">revise_lmp_input_plm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lmp_lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_plm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_plm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.plumed'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/lmp_template_task_group.html#revise_lmp_input_plm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_plm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.make_task_group_from_config">
+<span id="pfd-exploration-task-make-task-group-from-config-module"></span><h2>pfd.exploration.task.make_task_group_from_config module<a class="headerlink" href="#module-pfd.exploration.task.make_task_group_from_config" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.caly_normalize">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">caly_normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#caly_normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.caly_normalize" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.caly_task_group_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">caly_task_group_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#caly_task_group_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.caly_task_group_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.caly_task_grp_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">caly_task_grp_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#caly_task_grp_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.caly_task_grp_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.config_strip_confidx">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">config_strip_confidx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#config_strip_confidx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.config_strip_confidx" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.customized_lmp_template_task_group_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">customized_lmp_template_task_group_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#customized_lmp_template_task_group_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.customized_lmp_template_task_group_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.lmp_normalize">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">lmp_normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#lmp_normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.lmp_normalize" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.lmp_task_group_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">lmp_task_group_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#lmp_task_group_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.lmp_task_group_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.lmp_template_task_group_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">lmp_template_task_group_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#lmp_template_task_group_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.lmp_template_task_group_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.make_calypso_task_group_from_config">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">make_calypso_task_group_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#make_calypso_task_group_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.make_calypso_task_group_from_config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.make_lmp_task_group_from_config">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">make_lmp_task_group_from_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numb_models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#make_lmp_task_group_from_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.make_lmp_task_group_from_config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.npt_task_group_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">npt_task_group_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#npt_task_group_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.npt_task_group_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.exploration.task.make_task_group_from_config.variant_task_group">
+<span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.make_task_group_from_config.</span></span><span class="sig-name descname"><span class="pre">variant_task_group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/make_task_group_from_config.html#variant_task_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.make_task_group_from_config.variant_task_group" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.npt_task_group">
+<span id="pfd-exploration-task-npt-task-group-module"></span><h2>pfd.exploration.task.npt_task_group module<a class="headerlink" href="#module-pfd.exploration.task.npt_task_group" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.npt_task_group.NPTTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.npt_task_group.</span></span><span class="sig-name descname"><span class="pre">NPTTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/npt_task_group.html#NPTTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.npt_task_group.NPTTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup" title="pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">ConfSamplingTaskGroup</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.npt_task_group.NPTTaskGroup.make_task">
+<span class="sig-name descname"><span class="pre">make_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pfd.exploration.task.npt_task_group.NPTTaskGroup" title="pfd.exploration.task.npt_task_group.NPTTaskGroup"><span class="pre">NPTTaskGroup</span></a></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/npt_task_group.html#NPTTaskGroup.make_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.npt_task_group.NPTTaskGroup.make_task" title="Link to this definition"></a></dt>
+<dd><p>Make the LAMMPS task group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task_grp</strong> – The returned lammps task group. The number of tasks is nconf*nT*nP.
+nconf is set by <cite>n_sample</cite> parameter of <cite>set_conf</cite>.
+nT and nP are lengths of the <cite>temps</cite> and <cite>press</cite> parameters of <cite>set_md</cite>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup">ExplorationTaskGroup</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.npt_task_group.NPTTaskGroup.set_md">
+<span class="sig-name descname"><span class="pre">set_md</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numb_models</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_map</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">press</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ens</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'npt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsteps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trj_freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau_p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pka_e</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neidelay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_pbc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_clusters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_f_epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_v_epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ele_temp_f</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ele_temp_a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'model.%03d.pb'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/npt_task_group.html#NPTTaskGroup.set_md"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.npt_task_group.NPTTaskGroup.set_md" title="Link to this definition"></a></dt>
+<dd><p>Set MD parameters</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.stage">
+<span id="pfd-exploration-task-stage-module"></span><h2>pfd.exploration.task.stage module<a class="headerlink" href="#module-pfd.exploration.task.stage" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.stage.ExplorationStage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.stage.</span></span><span class="sig-name descname"><span class="pre">ExplorationStage</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/stage.html#ExplorationStage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.stage.ExplorationStage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The exploration stage.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.stage.ExplorationStage.add_task_group">
+<span class="sig-name descname"><span class="pre">add_task_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><span class="pre">ExplorationTaskGroup</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/stage.html#ExplorationStage.add_task_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.stage.ExplorationStage.add_task_group" title="Link to this definition"></a></dt>
+<dd><p>Add an exploration group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>grp</strong> (<a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><em>ExplorationTaskGroup</em></a>) – The added exploration task group</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.stage.ExplorationStage.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/stage.html#ExplorationStage.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.stage.ExplorationStage.clear" title="Link to this definition"></a></dt>
+<dd><p>Clear all exploration group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.stage.ExplorationStage.make_task">
+<span class="sig-name descname"><span class="pre">make_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup" title="pfd.exploration.task.task_group.BaseExplorationTaskGroup"><span class="pre">BaseExplorationTaskGroup</span></a></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/stage.html#ExplorationStage.make_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.stage.ExplorationStage.make_task" title="Link to this definition"></a></dt>
+<dd><p>Make the LAMMPS task group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>task_grp</strong> – The returned lammps task group. The number of tasks is equal to
+the summation of task groups defined by all the exploration groups
+added to the stage.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup" title="pfd.exploration.task.task_group.BaseExplorationTaskGroup">BaseExplorationTaskGroup</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.task">
+<span id="pfd-exploration-task-task-module"></span><h2>pfd.exploration.task.task module<a class="headerlink" href="#module-pfd.exploration.task.task" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.task.ExplorationTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.task.</span></span><span class="sig-name descname"><span class="pre">ExplorationTask</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/task.html#ExplorationTask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task.ExplorationTask" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define the files needed by an exploration task.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># this example dumps all files needed by the task.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">exploration_task</span><span class="o">.</span><span class="n">files</span><span class="p">()</span>
+<span class="gp">... </span><span class="k">for</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">file_content</span> <span class="ow">in</span> <span class="n">files</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.task.ExplorationTask.add_file">
+<span class="sig-name descname"><span class="pre">add_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fcont</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/task.html#ExplorationTask.add_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task.ExplorationTask.add_file" title="Link to this definition"></a></dt>
+<dd><p>Add file to the task</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<em>str</em>) – The name of the file</p></li>
+<li><p><strong>fcont</strong> (<em>str</em>) – The content of the file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.task.ExplorationTask.files">
+<span class="sig-name descname"><span class="pre">files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/task.html#ExplorationTask.files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task.ExplorationTask.files" title="Link to this definition"></a></dt>
+<dd><p>Get all files for the task.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>files</strong> – The dict storing all files for the task. The file name is a key of the dict, and the file content is the corresponding value.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task.task_group">
+<span id="pfd-exploration-task-task-group-module"></span><h2>pfd.exploration.task.task_group module<a class="headerlink" href="#module-pfd.exploration.task.task_group" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.BaseExplorationTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.task_group.</span></span><span class="sig-name descname"><span class="pre">BaseExplorationTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#BaseExplorationTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Sequence</span></code></p>
+<p>A group of exploration tasks. Implemented as a <cite>list</cite> of <cite>ExplorationTask</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_group">
+<span class="sig-name descname"><span class="pre">add_group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><span class="pre">ExplorationTaskGroup</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#BaseExplorationTaskGroup.add_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_group" title="Link to this definition"></a></dt>
+<dd><p>Add another group to the group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_task">
+<span class="sig-name descname"><span class="pre">add_task</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">task</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pfd.exploration.task.task.ExplorationTask" title="pfd.exploration.task.task.ExplorationTask"><span class="pre">ExplorationTask</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#BaseExplorationTaskGroup.add_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_task" title="Link to this definition"></a></dt>
+<dd><p>Add one task to the group.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.BaseExplorationTaskGroup.clear">
+<span class="sig-name descname"><span class="pre">clear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#BaseExplorationTaskGroup.clear"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup.clear" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.BaseExplorationTaskGroup.task_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">task_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pfd.exploration.task.task.ExplorationTask" title="pfd.exploration.task.task.ExplorationTask"><span class="pre">ExplorationTask</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup.task_list" title="Link to this definition"></a></dt>
+<dd><p>Get the <cite>list</cite> of <cite>ExplorationTask</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.ExplorationTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.task_group.</span></span><span class="sig-name descname"><span class="pre">ExplorationTaskGroup</span></span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#ExplorationTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code>, <a class="reference internal" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup" title="pfd.exploration.task.task_group.BaseExplorationTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.ExplorationTaskGroup.make_task">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pfd.exploration.task.task_group.ExplorationTaskGroup" title="pfd.exploration.task.task_group.ExplorationTaskGroup"><span class="pre">ExplorationTaskGroup</span></a></span></span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#ExplorationTaskGroup.make_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.ExplorationTaskGroup.make_task" title="Link to this definition"></a></dt>
+<dd><p>Make the task group.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.FooTask">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.task_group.</span></span><span class="sig-name descname"><span class="pre">FooTask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'conf.lmp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_cont</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inpu_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'in.lammps'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inpu_cont</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#FooTask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.FooTask" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.task.ExplorationTask" title="pfd.exploration.task.task.ExplorationTask"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExplorationTask</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.FooTaskGroup">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.exploration.task.task_group.</span></span><span class="sig-name descname"><span class="pre">FooTaskGroup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">numb_task</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/exploration/task/task_group.html#FooTaskGroup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.exploration.task.task_group.FooTaskGroup" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pfd.exploration.task.task_group.BaseExplorationTaskGroup" title="pfd.exploration.task.task_group.BaseExplorationTaskGroup"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.exploration.task.task_group.FooTaskGroup.task_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">task_list</span></span><a class="headerlink" href="#pfd.exploration.task.task_group.FooTaskGroup.task_list" title="Link to this definition"></a></dt>
+<dd><p>Get the <cite>list</cite> of <cite>ExplorationTask</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.exploration.task">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pfd.exploration.task" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfd.exploration.selector.html" class="btn btn-neutral float-left" title="pfd.exploration.selector package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pfd.exploration.task.calypso.html" class="btn btn-neutral float-right" title="pfd.exploration.task.calypso package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

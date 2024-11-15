@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.utils.step_config &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.utils.step_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.utils.step_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">dargs</span>
+<span class="kn">from</span> <span class="nn">dargs</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Argument</span><span class="p">,</span>
+    <span class="n">Variant</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dflow.config</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">config</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dflow.plugins.dispatcher</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DispatcherExecutor</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">default_image</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="dispatcher_args">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.dispatcher_args">[docs]</a>
+<span class="k">def</span> <span class="nf">dispatcher_args</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;free style dispatcher args&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_executor">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.variant_executor">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_executor</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;The type of the executor.&quot;</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;dispatcher&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">dispatcher_args</span><span class="p">()),</span>
+        <span class="p">],</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="template_conf_args">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.template_conf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">template_conf_args</span><span class="p">():</span>
+    <span class="n">doc_image</span> <span class="o">=</span> <span class="s2">&quot;The image to run the step.&quot;</span>
+    <span class="n">doc_timeout</span> <span class="o">=</span> <span class="s2">&quot;The time limit of the OP. Unit is second.&quot;</span>
+    <span class="n">doc_retry_on_transient_error</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The number of retry times if a TransientError is raised.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_timeout_as_transient_error</span> <span class="o">=</span> <span class="s2">&quot;Treat the timeout as TransientError.&quot;</span>
+    <span class="n">doc_envs</span> <span class="o">=</span> <span class="s2">&quot;The environmental variables.&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;image&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default_image</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_image</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;timeout&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_timeout</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;retry_on_transient_error&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_retry_on_transient_error</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;timeout_as_transient_error&quot;</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_timeout_as_transient_error</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;envs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_envs</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="template_slice_conf_args">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.template_slice_conf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">template_slice_conf_args</span><span class="p">():</span>
+    <span class="n">doc_group_size</span> <span class="o">=</span> <span class="s2">&quot;The number of tasks running on a single node. It is efficient for a large number of short tasks.&quot;</span>
+    <span class="n">doc_pool_size</span> <span class="o">=</span> <span class="s2">&quot;The number of tasks running at the same time on one node.&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;group_size&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_group_size</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;pool_size&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_pool_size</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="step_conf_args">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.step_conf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">step_conf_args</span><span class="p">():</span>
+    <span class="n">doc_template</span> <span class="o">=</span> <span class="s2">&quot;The configs passed to the PythonOPTemplate.&quot;</span>
+    <span class="n">doc_template_slice</span> <span class="o">=</span> <span class="s2">&quot;The configs passed to the Slices.&quot;</span>
+    <span class="n">doc_executor</span> <span class="o">=</span> <span class="s2">&quot;The executor of the step.&quot;</span>
+    <span class="n">doc_continue_on_failed</span> <span class="o">=</span> <span class="s2">&quot;If continue the the step is failed (FatalError, TransientError, A certain number of retrial is reached...).&quot;</span>
+    <span class="n">doc_continue_on_num_success</span> <span class="o">=</span> <span class="s2">&quot;Only in the sliced OP case. Continue the workflow if a certain number of the sliced jobs are successful.&quot;</span>
+    <span class="n">doc_continue_on_success_ratio</span> <span class="o">=</span> <span class="s2">&quot;Only in the sliced OP case. Continue the workflow if a certain ratio of the sliced jobs are successful.&quot;</span>
+    <span class="n">doc_parallelism</span> <span class="o">=</span> <span class="s2">&quot;The parallelism for the step&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;template_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">template_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">default_image</span><span class="p">},</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_template</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;template_slice_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">template_slice_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_template_slice</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;continue_on_failed&quot;</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_continue_on_failed</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;continue_on_num_success&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_continue_on_num_success</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;continue_on_success_ratio&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_continue_on_success_ratio</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;parallelism&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_parallelism</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;executor&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="p">[],</span>
+            <span class="p">[</span><span class="n">variant_executor</span><span class="p">()],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_executor</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="normalize">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.normalize">[docs]</a>
+<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">sca</span> <span class="o">=</span> <span class="n">step_conf_args</span><span class="p">()</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">sca</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">normalize_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">trim_pattern</span><span class="o">=</span><span class="s2">&quot;_*&quot;</span><span class="p">)</span>
+    <span class="c1"># not possible to strictly check dispatcher arguments, dirty hack!</span>
+    <span class="n">base</span><span class="o">.</span><span class="n">check_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="gen_doc">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.gen_doc">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_doc</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">make_anchor</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">make_link</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">make_link</span><span class="p">:</span>
+        <span class="n">make_anchor</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">sca</span> <span class="o">=</span> <span class="n">step_conf_args</span><span class="p">()</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;step_config&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">sca</span><span class="p">)</span>
+    <span class="n">ptr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ptr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">gen_doc</span><span class="p">(</span><span class="n">make_anchor</span><span class="o">=</span><span class="n">make_anchor</span><span class="p">,</span> <span class="n">make_link</span><span class="o">=</span><span class="n">make_link</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+
+    <span class="n">key_words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;argument path&quot;</span> <span class="ow">in</span> <span class="n">ii</span><span class="p">:</span>
+            <span class="n">key_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;`&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="init_executor">
+<a class="viewcode-back" href="../../../development/pfd.utils.html#pfd.utils.step_config.init_executor">[docs]</a>
+<span class="k">def</span> <span class="nf">init_executor</span><span class="p">(</span>
+    <span class="n">executor_dict</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="n">executor_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">etype</span> <span class="o">=</span> <span class="n">executor_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">etype</span> <span class="o">==</span> <span class="s2">&quot;dispatcher&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">DispatcherExecutor</span><span class="p">(</span><span class="o">**</span><span class="n">executor_dict</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;unknown executor type&quot;</span><span class="p">,</span> <span class="n">etype</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

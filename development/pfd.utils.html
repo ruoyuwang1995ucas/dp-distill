@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.utils package &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="pfd.train package" href="pfd.train.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pfd.html">pfd package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pfd.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pfd.entrypoint.html">pfd.entrypoint package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.html">pfd.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.flow.html">pfd.flow package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.fp.html">pfd.fp package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.op.html">pfd.op package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.superop.html">pfd.superop package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.train.html">pfd.train package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pfd.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd.constants">pfd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pfd.html">pfd package</a></li>
+      <li class="breadcrumb-item active">pfd.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pfd.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfd-utils-package">
+<h1>pfd.utils package<a class="headerlink" href="#pfd-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pfd.utils.artifact_uri">
+<span id="pfd-utils-artifact-uri-module"></span><h2>pfd.utils.artifact_uri module<a class="headerlink" href="#module-pfd.utils.artifact_uri" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.artifact_uri.get_artifact_from_uri">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.artifact_uri.</span></span><span class="sig-name descname"><span class="pre">get_artifact_from_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/artifact_uri.html#get_artifact_from_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.artifact_uri.get_artifact_from_uri" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.artifact_uri.upload_artifact_and_print_uri">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.artifact_uri.</span></span><span class="sig-name descname"><span class="pre">upload_artifact_and_print_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/artifact_uri.html#upload_artifact_and_print_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.artifact_uri.upload_artifact_and_print_uri" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.utils.binary_file_input">
+<span id="pfd-utils-binary-file-input-module"></span><h2>pfd.utils.binary_file_input module<a class="headerlink" href="#module-pfd.utils.binary_file_input" title="Link to this heading"></a></h2>
+<p>Binary file inputs</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.utils.binary_file_input.BinaryFileInput">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.utils.binary_file_input.</span></span><span class="sig-name descname"><span class="pre">BinaryFileInput</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/binary_file_input.html#BinaryFileInput"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.binary_file_input.BinaryFileInput" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.utils.binary_file_input.BinaryFileInput.save_as_file">
+<span class="sig-name descname"><span class="pre">save_as_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/pfd/utils/binary_file_input.html#BinaryFileInput.save_as_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.binary_file_input.BinaryFileInput.save_as_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.utils.bohrium_config">
+<span id="pfd-utils-bohrium-config-module"></span><h2>pfd.utils.bohrium_config module<a class="headerlink" href="#module-pfd.utils.bohrium_config" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.bohrium_config.bohrium_config_from_dict">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.bohrium_config.</span></span><span class="sig-name descname"><span class="pre">bohrium_config_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bohrium_config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/bohrium_config.html#bohrium_config_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.bohrium_config.bohrium_config_from_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.utils.chdir">
+<span id="pfd-utils-chdir-module"></span><h2>pfd.utils.chdir module<a class="headerlink" href="#module-pfd.utils.chdir" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.chdir.chdir">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.chdir.</span></span><span class="sig-name descname"><span class="pre">chdir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/chdir.html#chdir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.chdir.chdir" title="Link to this definition"></a></dt>
+<dd><p>Returns a decorator that can change the current working path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_key</strong> (<em>str</em>) – key to OPIO</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">SomeOP</span><span class="p">(</span><span class="n">OP</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nd">@chdir</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="n">OPIO</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">do_something</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.chdir.set_directory">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.chdir.</span></span><span class="sig-name descname"><span class="pre">set_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/chdir.html#set_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.chdir.set_directory" title="Link to this definition"></a></dt>
+<dd><p>Sets the current working path within the context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>Path</em>) – The path to the cwd</p>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>None</em></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">set_directory</span><span class="p">(</span><span class="s2">&quot;some_path&quot;</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">do_something</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-pfd.utils.dflow_config">
+<span id="pfd-utils-dflow-config-module"></span><h2>pfd.utils.dflow_config module<a class="headerlink" href="#module-pfd.utils.dflow_config" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_config.dflow_config">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_config.</span></span><span class="sig-name descname"><span class="pre">dflow_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_config.html#dflow_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_config.dflow_config" title="Link to this definition"></a></dt>
+<dd><p>set the dflow config by <cite>config_data</cite></p>
+<p>the keys starting with “<a href="#id1"><span class="problematic" id="id2">s3_</span></a>” will be treated as s3_config keys,
+other keys are treated as config keys.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_config.dflow_config_lower">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_config.</span></span><span class="sig-name descname"><span class="pre">dflow_config_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dflow_config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_config.html#dflow_config_lower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_config.dflow_config_lower" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_config.dflow_s3_config">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_config.</span></span><span class="sig-name descname"><span class="pre">dflow_s3_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_config.html#dflow_s3_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_config.dflow_s3_config" title="Link to this definition"></a></dt>
+<dd><p>set the s3 config by <cite>config_data</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_config.dflow_s3_config_lower">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_config.</span></span><span class="sig-name descname"><span class="pre">dflow_s3_config_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dflow_s3_config_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_config.html#dflow_s3_config_lower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_config.dflow_s3_config_lower" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_config.workflow_config_from_dict">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_config.</span></span><span class="sig-name descname"><span class="pre">workflow_config_from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf_config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_config.html#workflow_config_from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_config.workflow_config_from_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.utils.dflow_query">
+<span id="pfd-utils-dflow-query-module"></span><h2>pfd.utils.dflow_query module<a class="headerlink" href="#module-pfd.utils.dflow_query" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.find_slice_ranges">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">find_slice_ranges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliced_subkey</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#find_slice_ranges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.find_slice_ranges" title="Link to this definition"></a></dt>
+<dd><p>find range of sliced OPs that matches the pattern ‘iter-[0-9]*–{sliced_subkey}-[0-9]*’</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.get_all_schedulers">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">get_all_schedulers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#get_all_schedulers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.get_all_schedulers" title="Link to this definition"></a></dt>
+<dd><p>get the output Scheduler of the all the iterations</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.get_iteration">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">get_iteration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#get_iteration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.get_iteration" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.get_last_iteration">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">get_last_iteration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#get_last_iteration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.get_last_iteration" title="Link to this definition"></a></dt>
+<dd><p>get the index of the last iteraction from a list of step keys.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.get_last_scheduler">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">get_last_scheduler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#get_last_scheduler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.get_last_scheduler" title="Link to this definition"></a></dt>
+<dd><p>get the output Scheduler of the last successful iteration</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.get_subkey">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">get_subkey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#get_subkey"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.get_subkey" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.matched_step_key">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">matched_step_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#matched_step_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.matched_step_key" title="Link to this definition"></a></dt>
+<dd><p>returns the keys in <cite>all_keys</cite> that matches any of the <cite>step_keys</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.print_keys_in_nice_format">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">print_keys_in_nice_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliced_subkey</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx_fmt_len</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#print_keys_in_nice_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.print_keys_in_nice_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.dflow_query.sort_slice_ops">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.dflow_query.</span></span><span class="sig-name descname"><span class="pre">sort_slice_ops</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sliced_subkey</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/dflow_query.html#sort_slice_ops"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.dflow_query.sort_slice_ops" title="Link to this definition"></a></dt>
+<dd><p>sort the keys of the sliced ops. the keys of the sliced ops contains sliced_subkey</p>
+</dd></dl>
+
+</section>
+<section id="module-pfd.utils.download_pfd_artifacts">
+<span id="pfd-utils-download-pfd-artifacts-module"></span><h2>pfd.utils.download_pfd_artifacts module<a class="headerlink" href="#module-pfd.utils.download_pfd_artifacts" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.DownloadDefinition">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.utils.download_pfd_artifacts.</span></span><span class="sig-name descname"><span class="pre">DownloadDefinition</span></span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#DownloadDefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.DownloadDefinition" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.DownloadDefinition.add_def">
+<span class="sig-name descname"><span class="pre">add_def</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tdict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#DownloadDefinition.add_def"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_def" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.DownloadDefinition.add_input">
+<span class="sig-name descname"><span class="pre">add_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#DownloadDefinition.add_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_input" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.DownloadDefinition.add_output">
+<span class="sig-name descname"><span class="pre">add_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#DownloadDefinition.add_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_output" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.download_dpgen2_artifacts">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.download_pfd_artifacts.</span></span><span class="sig-name descname"><span class="pre">download_dpgen2_artifacts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chk_pnt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#download_dpgen2_artifacts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.download_dpgen2_artifacts" title="Link to this definition"></a></dt>
+<dd><p>download the artifacts of a step.
+the key should be of format ‘iter-xxxxxx–subkey-of-step-xxxxxx’
+the input and output artifacts will be downloaded to
+prefix/iter-xxxxxx/key-of-step/inputs/ and
+prefix/iter-xxxxxx/key-of-step/outputs/</p>
+<p>the downloaded input and output artifacts of steps are defined by
+<cite>op_download_setting</cite></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.download_dpgen2_artifacts_by_def">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.download_pfd_artifacts.</span></span><span class="sig-name descname"><span class="pre">download_dpgen2_artifacts_by_def</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Workflow</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_defs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chk_pnt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#download_dpgen2_artifacts_by_def"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.download_dpgen2_artifacts_by_def" title="Link to this definition"></a></dt>
+<dd><p>download selected artifacts give iteration numbers and step definition</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.download_pfd_artifacts.print_op_download_setting">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.download_pfd_artifacts.</span></span><span class="sig-name descname"><span class="pre">print_op_download_setting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">op_download_setting={'collect-data':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'collect-data-fp':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'pert-gen':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'prep-run-dp':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'prep-run-explore':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'prep-run-fp':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'prep-run-lmp':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'prep-run-train':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'validation-test':</span> <span class="pre">&lt;pfd.utils.download_pfd_artifacts.DownloadDefinition</span> <span class="pre">object&gt;}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/download_pfd_artifacts.html#print_op_download_setting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.download_pfd_artifacts.print_op_download_setting" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.utils.obj_artifact">
+<span id="pfd-utils-obj-artifact-module"></span><h2>pfd.utils.obj_artifact module<a class="headerlink" href="#module-pfd.utils.obj_artifact" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.obj_artifact.dump_object_to_file">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.obj_artifact.</span></span><span class="sig-name descname"><span class="pre">dump_object_to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/obj_artifact.html#dump_object_to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.obj_artifact.dump_object_to_file" title="Link to this definition"></a></dt>
+<dd><p>pickle dump object to a file</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.obj_artifact.load_object_from_file">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.obj_artifact.</span></span><span class="sig-name descname"><span class="pre">load_object_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/obj_artifact.html#load_object_from_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.obj_artifact.load_object_from_file" title="Link to this definition"></a></dt>
+<dd><p>pickle load object from a file</p>
+</dd></dl>
+
+</section>
+<section id="module-pfd.utils.run_command">
+<span id="pfd-utils-run-command-module"></span><h2>pfd.utils.run_command module<a class="headerlink" href="#module-pfd.utils.run_command" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.run_command.run_command">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.run_command.</span></span><span class="sig-name descname"><span class="pre">run_command</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pfd/utils/run_command.html#run_command"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.run_command.run_command" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.utils.step_config">
+<span id="pfd-utils-step-config-module"></span><h2>pfd.utils.step_config module<a class="headerlink" href="#module-pfd.utils.step_config" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.dispatcher_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">dispatcher_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#dispatcher_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.dispatcher_args" title="Link to this definition"></a></dt>
+<dd><p>free style dispatcher args</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.gen_doc">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">gen_doc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_anchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#gen_doc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.gen_doc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.init_executor">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">init_executor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">executor_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#init_executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.init_executor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.normalize">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.normalize" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.step_conf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">step_conf_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#step_conf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.step_conf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.template_conf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">template_conf_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#template_conf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.template_conf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.template_slice_conf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">template_slice_conf_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#template_slice_conf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.template_slice_conf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.utils.step_config.variant_executor">
+<span class="sig-prename descclassname"><span class="pre">pfd.utils.step_config.</span></span><span class="sig-name descname"><span class="pre">variant_executor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/utils/step_config.html#variant_executor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.utils.step_config.variant_executor" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pfd.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfd.train.html" class="btn btn-neutral float-left" title="pfd.train package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

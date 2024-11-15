@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.entrypoint.args &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.entrypoint.args</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.entrypoint.args</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">textwrap</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">dargs</span>
+<span class="kn">from</span> <span class="nn">dargs</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Argument</span><span class="p">,</span>
+    <span class="n">Variant</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pfd.exploration.converge</span> <span class="kn">import</span> <span class="n">CheckConv</span><span class="p">,</span> <span class="n">ConfFilterConv</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.selector</span> <span class="kn">import</span> <span class="n">conf_filter_styles</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.inference</span> <span class="kn">import</span> <span class="n">EvalModel</span>
+<span class="kn">from</span> <span class="nn">dpgen2.fp</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">fp_styles</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.train</span> <span class="kn">import</span> <span class="n">train_styles</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.op.run_lmp</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RunLmp</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">normalize_step_dict</span><span class="p">,</span>
+    <span class="n">step_conf_args</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="make_link">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.make_link">[docs]</a>
+<span class="k">def</span> <span class="nf">make_link</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">ref_key</span><span class="p">):</span>
+    <span class="n">raw_anchor</span> <span class="o">=</span> <span class="n">dargs</span><span class="o">.</span><span class="n">dargs</span><span class="o">.</span><span class="n">RAW_ANCHOR</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s2"> &lt;</span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s2">_&gt;`_&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">raw_anchor</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;`</span><span class="si">{</span><span class="n">content</span><span class="si">}</span><span class="s2"> &lt;#</span><span class="si">{</span><span class="n">ref_key</span><span class="si">}</span><span class="s2">&gt;`_&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="task_finetune">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.task_finetune">[docs]</a>
+<span class="k">def</span> <span class="nf">task_finetune</span><span class="p">():</span>
+    <span class="n">doc_init_train</span> <span class="o">=</span> <span class="s2">&quot;Training before exploration&quot;</span>
+    <span class="n">doc_skip_aimd</span> <span class="o">=</span> <span class="s2">&quot;Skip aimd exploration&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_training&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_train</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;skip_aimd&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_skip_aimd</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_task">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_task">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_task</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;finetune&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">task_finetune</span><span class="p">(),</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ft&quot;</span><span class="p">]),</span>
+            <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;dist&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;distillation&quot;</span><span class="p">]),</span>
+            <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;data_gen&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="p">[],</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;data generation&quot;</span><span class="p">]),</span>
+        <span class="p">],</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="conf_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.conf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">conf_args</span><span class="p">():</span>
+    <span class="n">doc_fmt</span> <span class="o">=</span> <span class="s2">&quot;Format of input structure files&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="c1"># Argument(&quot;type&quot;, str, optional=True, default=&quot;file&quot;),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;prefix&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;fmt&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;vasp/poscar&quot;</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_fmt</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;files&quot;</span><span class="p">]),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="pert_gen">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.pert_gen">[docs]</a>
+<span class="k">def</span> <span class="nf">pert_gen</span><span class="p">():</span>
+    <span class="n">doc_atom_pert_distance</span> <span class="o">=</span> <span class="s2">&quot;Perturb distance for atoms, in Angstrom&quot;</span>
+    <span class="n">doc_pert_num</span> <span class="o">=</span> <span class="s2">&quot;Number of perturbed structures&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;conf_idx&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;atom_pert_distance&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_atom_pert_distance</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;atom_pert_fraction&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.03</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;pert_num&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_pert_num</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="conf_gen_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.conf_gen_args">[docs]</a>
+<span class="k">def</span> <span class="nf">conf_gen_args</span><span class="p">():</span>
+    <span class="n">doc_init_conf</span> <span class="o">=</span> <span class="s2">&quot;The initial configurations for PFD workflow&quot;</span>
+    <span class="n">doc_pert_gen</span> <span class="o">=</span> <span class="s2">&quot;Generation of perturbed structures for PFD exploration&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_confs&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">conf_args</span><span class="p">(),</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;confs&quot;</span><span class="p">,</span> <span class="s2">&quot;init_configurations&quot;</span><span class="p">],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_conf</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">,</span> <span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span> <span class="n">pert_gen</span><span class="p">(),</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_pert_gen</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="train_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.train_args">[docs]</a>
+<span class="k">def</span> <span class="nf">train_args</span><span class="p">(</span><span class="n">run_train</span><span class="p">):</span>
+    <span class="n">doc_numb_models</span> <span class="o">=</span> <span class="s2">&quot;Number of models trained for evaluating the model deviation&quot;</span>
+    <span class="n">doc_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration of training&quot;</span>
+    <span class="n">doc_template_script</span> <span class="o">=</span> <span class="s2">&quot;File names of the template training script. It can be a `List[str]`, the length of which is the same as `numb_models`. Each template script in the list is used to train a model. Can be a `str`, the models share the same template training script. &quot;</span>
+    <span class="n">doc_init_models_paths</span> <span class="o">=</span> <span class="s2">&quot;the paths to initial models&quot;</span>
+    <span class="n">doc_init_models_uri</span> <span class="o">=</span> <span class="s2">&quot;The URI of initial models&quot;</span>
+    <span class="n">doc_optional_files</span> <span class="o">=</span> <span class="s2">&quot;Optional files for training&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">run_train</span><span class="o">.</span><span class="n">training_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">run_train</span><span class="o">.</span><span class="n">normalize_config</span><span class="p">({}),</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;numb_models&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_numb_models</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;template_script&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_template_script</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_models_paths&quot;</span><span class="p">,</span>
+            <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_models_paths</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;training_iter0_model_path&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_models_uri&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_models_uri</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;optional_files&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_optional_files</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_train">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_train">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_train</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;the type of the training model&quot;</span>
+    <span class="n">train_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">train_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">train_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Argument</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">train_args</span><span class="p">(</span><span class="n">train_styles</span><span class="p">[</span><span class="n">kk</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">])))</span>
+
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="n">train_list</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="variant_conv">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_conv">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_conv</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;the type of the condidate selection and convergence check method.&quot;</span>
+    <span class="n">var_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">CheckConv</span><span class="o">.</span><span class="n">get_checkers</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">var_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Argument</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vv</span><span class="o">.</span><span class="n">args</span><span class="p">(),</span> <span class="n">doc</span><span class="o">=</span><span class="n">vv</span><span class="o">.</span><span class="n">doc</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="n">var_list</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="variant_frame_selector">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_frame_selector">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_frame_selector</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;the type of the frame selector&quot;</span>
+    <span class="n">var_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">conf_filter_styles</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">var_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Argument</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vv</span><span class="o">.</span><span class="n">args</span><span class="p">(),</span> <span class="n">doc</span><span class="o">=</span><span class="n">vv</span><span class="o">.</span><span class="n">doc</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">var_list</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="variant_conv_filter">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_conv_filter">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_conv_filter</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;frame filters based on model test&quot;</span>
+    <span class="n">var_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">ConfFilterConv</span><span class="o">.</span><span class="n">get_filters</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">var_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Argument</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vv</span><span class="o">.</span><span class="n">args</span><span class="p">(),</span> <span class="n">doc</span><span class="o">=</span><span class="n">vv</span><span class="o">.</span><span class="n">doc</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">var_list</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="lmp_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.lmp_args">[docs]</a>
+<span class="k">def</span> <span class="nf">lmp_args</span><span class="p">():</span>
+    <span class="n">doc_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration of lmp exploration&quot;</span>
+    <span class="n">doc_max_numb_iter</span> <span class="o">=</span> <span class="s2">&quot;Maximum number of iterations per stage&quot;</span>
+    <span class="n">doc_fatal_at_max</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Fatal when the number of iteration per stage reaches the `max_numb_iter`&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_output_nopbc</span> <span class="o">=</span> <span class="s2">&quot;Remove pbc of the output configurations&quot;</span>
+    <span class="n">doc_convergence</span> <span class="o">=</span> <span class="s2">&quot;The method of convergence check.&quot;</span>
+    <span class="n">doc_stages</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The definition of exploration stages of type `List[List[ExplorationTaskGroup]`. &quot;</span>
+        <span class="s2">&quot;The outer list provides the enumeration of the exploration stages. &quot;</span>
+        <span class="s2">&quot;Then each stage is defined by a list of exploration task groups. &quot;</span>
+        <span class="s2">&quot;Each task group is described in :ref:`the task group definition&lt;task_group_sec&gt;` &quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_filter</span> <span class="o">=</span> <span class="s2">&quot;Filter configuration for DFT calculation&quot;</span>
+    <span class="n">doc_conf_filter</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Filtering configurations with too larger or too small prediction error&quot;</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">RunLmp</span><span class="o">.</span><span class="n">lmp_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">RunLmp</span><span class="o">.</span><span class="n">normalize_config</span><span class="p">({}),</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;max_numb_iter&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_max_numb_iter</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;max_iter&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;fatal_at_max&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_fatal_at_max</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;output_nopbc&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_output_nopbc</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;convergence&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="p">[</span>
+                <span class="n">Argument</span><span class="p">(</span>
+                    <span class="s2">&quot;conf_filter&quot;</span><span class="p">,</span>
+                    <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+                    <span class="p">[],</span>
+                    <span class="p">[</span><span class="n">variant_conv_filter</span><span class="p">()],</span>
+                    <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="n">doc_conf_filter</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+            <span class="p">[</span><span class="n">variant_conv</span><span class="p">()],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_convergence</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;converge_config&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;filter&quot;</span><span class="p">,</span>
+            <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+            <span class="p">[],</span>
+            <span class="p">[</span><span class="n">variant_frame_selector</span><span class="p">()],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;distance&quot;</span><span class="p">}],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_filter</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;stages&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_stages</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_explore">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_explore">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_explore</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;The type of the exploration&quot;</span>
+    <span class="n">doc_lmp</span> <span class="o">=</span> <span class="s2">&quot;The exploration by LAMMPS simulations&quot;</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;lmp&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">lmp_args</span><span class="p">(),</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_lmp</span><span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="fp_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.fp_args">[docs]</a>
+<span class="k">def</span> <span class="nf">fp_args</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">run</span><span class="p">):</span>
+    <span class="n">doc_inputs_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for preparing vasp inputs&quot;</span>
+    <span class="n">doc_run_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for running vasp tasks&quot;</span>
+    <span class="n">doc_task_max</span> <span class="o">=</span> <span class="s2">&quot;Maximum number of vasp tasks for each iteration&quot;</span>
+    <span class="n">doc_extra_output_files</span> <span class="o">=</span> <span class="s2">&quot;Extra output file names, support wildcards&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;inputs_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="o">.</span><span class="n">args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_inputs_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;run_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">run</span><span class="o">.</span><span class="n">args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_run_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;task_max&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_task_max</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;extra_output_files&quot;</span><span class="p">,</span>
+            <span class="n">List</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_extra_output_files</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_fp">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_fp">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_fp</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;the type of the fp&quot;</span>
+
+    <span class="n">fp_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">fp_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">fp_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="n">kk</span><span class="p">,</span>
+                <span class="nb">dict</span><span class="p">,</span>
+                <span class="n">fp_args</span><span class="p">(</span><span class="n">fp_styles</span><span class="p">[</span><span class="n">kk</span><span class="p">][</span><span class="s2">&quot;inputs&quot;</span><span class="p">],</span> <span class="n">fp_styles</span><span class="p">[</span><span class="n">kk</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">]),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="n">fp_list</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="input_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.input_args">[docs]</a>
+<span class="k">def</span> <span class="nf">input_args</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The input parameters and artifacts of PFD workflow</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_type_map</span> <span class="o">=</span> <span class="s1">&#39;The type map. e.g. [&quot;Al&quot;, &quot;Mg&quot;]. Element in dpdata format.&#39;</span>
+    <span class="n">doc_mass_map</span> <span class="o">=</span> <span class="s2">&quot;The mass map. e.g. [27., 24.]. Al and Mg will be set with mass 27. and 24. amu, respectively.&quot;</span>
+    <span class="c1"># doc_mixed_type = &quot;Use `deepmd/npy/mixed` format for storing training data.&quot;</span>
+    <span class="n">doc_init_data_prefix</span> <span class="o">=</span> <span class="s2">&quot;The prefix of initial data systems&quot;</span>
+    <span class="n">doc_init_sys</span> <span class="o">=</span> <span class="s2">&quot;The inital data systems&quot;</span>
+    <span class="n">doc_init_data_uri</span> <span class="o">=</span> <span class="s2">&quot;The URI of initial data&quot;</span>
+    <span class="c1"># Hide these settings in the input section</span>
+    <span class="c1"># doc_multitask = &quot;Do multitask training&quot;</span>
+    <span class="c1"># doc_head = &quot;Head to use in the multitask training&quot;</span>
+    <span class="c1"># doc_multi_init_data = (</span>
+    <span class="c1">#    &quot;The inital data for multitask, it should be a dict, whose keys are task names and each value is a dict&quot;</span>
+    <span class="c1">#    &quot;containing fields `prefix` and `sys` for initial data of each task&quot;</span>
+    <span class="c1"># )</span>
+    <span class="c1"># doc_multi_init_data_uri = &quot;The URI of initial data for multitask&quot;</span>
+    <span class="n">doc_valid_data_prefix</span> <span class="o">=</span> <span class="s2">&quot;The prefix of validation data systems&quot;</span>
+    <span class="n">doc_valid_sys</span> <span class="o">=</span> <span class="s2">&quot;The validation data systems&quot;</span>
+    <span class="n">doc_valid_data_uri</span> <span class="o">=</span> <span class="s2">&quot;The URI of validation data&quot;</span>
+    <span class="n">doc_base_model_paths</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Path to the base model.&quot;</span>
+        <span class="s2">&quot;In `finetune` task, this is the path to the pretrained model.&quot;</span>
+        <span class="s2">&quot;In `distillation` task, this is the path to the teacher model.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_base_model_paths</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">doc_base_model_paths</span><span class="p">)</span>
+    <span class="n">doc_base_model_uri</span> <span class="o">=</span> <span class="s2">&quot;URI of the base model.&quot;</span>
+    <span class="n">doc_base_model_style</span> <span class="o">=</span> <span class="s2">&quot;Type of the base model&quot;</span>
+    <span class="c1"># doc_student_model_style = &quot;Type of the student model in `distillation` task&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;type_map&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_type_map</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;mass_map&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_mass_map</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_data_prefix&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_data_prefix</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="c1"># Argument(&quot;mixed_type&quot;, bool, optional=True, default=False, doc=doc_mixed_type),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_data_sys&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_sys</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;init_data_uri&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_init_data_uri</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;valid_data_prefix&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_valid_data_prefix</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;valid_data_sys&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_valid_sys</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;valid_data_uri&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_valid_data_uri</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;base_model_path&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;teacher_model_path&quot;</span><span class="p">,</span> <span class="s2">&quot;pretrain_model_path&quot;</span><span class="p">,</span> <span class="s2">&quot;teacher_models_paths&quot;</span><span class="p">],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_base_model_paths</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;base_model_uri&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;teacher_model_uri&quot;</span><span class="p">,</span> <span class="s2">&quot;pretrain_model_uri&quot;</span><span class="p">],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_base_model_uri</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;base_model_style&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_base_model_style</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;teacher_model_style&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="aimd_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.aimd_args">[docs]</a>
+<span class="k">def</span> <span class="nf">aimd_args</span><span class="p">():</span>
+    <span class="n">doc_conf</span> <span class="o">=</span> <span class="s2">&quot;The systems selected for initial fp calculation&quot;</span>
+    <span class="n">doc_n_sample</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The number of configurations selected for fp calculation within each system&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;confs&quot;</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_conf</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;n_sample&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_n_sample</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="infer_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.infer_args">[docs]</a>
+<span class="k">def</span> <span class="nf">infer_args</span><span class="p">():</span>
+    <span class="n">doc_max_force</span> <span class="o">=</span> <span class="s2">&quot;The max value of allowed atomic force&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;max_force&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_max_force</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_infer">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.variant_infer">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_infer</span><span class="p">():</span>
+    <span class="n">doc_model_type</span> <span class="o">=</span> <span class="s2">&quot;The supported model type for inference&quot;</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">EvalModel</span><span class="o">.</span><span class="n">get_drivers</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">var</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Argument</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vv</span><span class="o">.</span><span class="n">args</span><span class="p">(),</span> <span class="n">doc</span><span class="o">=</span><span class="n">vv</span><span class="o">.</span><span class="n">doc</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_model_type</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="normalize_infer_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.normalize_infer_args">[docs]</a>
+<span class="k">def</span> <span class="nf">normalize_infer_args</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">infer_args</span><span class="p">(),</span> <span class="p">[</span><span class="n">variant_infer</span><span class="p">()])</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">normalize_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">trim_pattern</span><span class="o">=</span><span class="s2">&quot;_*&quot;</span><span class="p">)</span>
+    <span class="n">base</span><span class="o">.</span><span class="n">check_value</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="dflow_conf_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.dflow_conf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">dflow_conf_args</span><span class="p">():</span>
+    <span class="n">doc_dflow_config</span> <span class="o">=</span> <span class="s2">&quot;The configuration passed to dflow&quot;</span>
+    <span class="n">doc_dflow_s3_config</span> <span class="o">=</span> <span class="s2">&quot;The S3 configuration passed to dflow&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;dflow_config&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_dflow_config</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;dflow_s3_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_dflow_s3_config</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="bohrium_conf_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.bohrium_conf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">bohrium_conf_args</span><span class="p">():</span>
+    <span class="n">doc_username</span> <span class="o">=</span> <span class="s2">&quot;The username of the Bohrium platform&quot;</span>
+    <span class="n">doc_password</span> <span class="o">=</span> <span class="s2">&quot;The password of the Bohrium platform&quot;</span>
+    <span class="n">doc_project_id</span> <span class="o">=</span> <span class="s2">&quot;The project ID of the Bohrium platform&quot;</span>
+    <span class="n">doc_host</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;The host name of the Bohrium platform. Will overwrite `dflow_config[&#39;host&#39;]`&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_k8s_api_server</span> <span class="o">=</span> <span class="s2">&quot;The k8s server of the Bohrium platform. Will overwrite `dflow_config[&#39;k8s_api_server&#39;]`&quot;</span>
+    <span class="n">doc_repo_key</span> <span class="o">=</span> <span class="s2">&quot;The repo key of the Bohrium platform. Will overwrite `dflow_s3_config[&#39;repo_key&#39;]`&quot;</span>
+    <span class="n">doc_storage_client</span> <span class="o">=</span> <span class="s2">&quot;The storage client of the Bohrium platform. Will overwrite `dflow_s3_config[&#39;storage_client&#39;]`&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_username</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_password</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;project_id&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_project_id</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;ticket&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;host&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://workflows.deepmodeling.com&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_host</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;k8s_api_server&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;https://workflows.deepmodeling.com&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_k8s_api_server</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;repo_key&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;oss-bohrium&quot;</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_repo_key</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;storage_client&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;dflow.plugins.bohrium.TiefblueClient&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_storage_client</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="default_step_config_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.default_step_config_args">[docs]</a>
+<span class="k">def</span> <span class="nf">default_step_config_args</span><span class="p">():</span>
+    <span class="n">doc_default_step_config</span> <span class="o">=</span> <span class="s2">&quot;The default step configuration.&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;default_step_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_default_step_config</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="pfd_step_config_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.pfd_step_config_args">[docs]</a>
+<span class="k">def</span> <span class="nf">pfd_step_config_args</span><span class="p">(</span><span class="n">default_config</span><span class="p">):</span>
+    <span class="n">doc_prep_train_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for prepare train&quot;</span>
+    <span class="n">doc_run_train_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for run train&quot;</span>
+    <span class="n">doc_prep_explore_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for prepare exploration&quot;</span>
+    <span class="n">doc_run_explore_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for run exploration&quot;</span>
+    <span class="n">doc_prep_fp_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for prepare fp&quot;</span>
+    <span class="n">doc_run_fp_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for run fp&quot;</span>
+    <span class="n">doc_select_confs_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for the select confs&quot;</span>
+    <span class="n">doc_collect_data_config</span> <span class="o">=</span> <span class="s2">&quot;Configuration for the collect data&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;prep_train_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_prep_train_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;run_train_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_run_train_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;prep_explore_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_prep_explore_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;run_explore_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_run_explore_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;prep_fp_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_prep_fp_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;run_fp_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_run_fp_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;select_confs_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_select_confs_config</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;collect_data_config&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">step_conf_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">default_config</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_collect_data_config</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="wf_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.wf_args">[docs]</a>
+<span class="k">def</span> <span class="nf">wf_args</span><span class="p">(</span><span class="n">default_step_config</span><span class="o">=</span><span class="n">normalize_step_dict</span><span class="p">({})):</span>
+    <span class="n">doc_name</span> <span class="o">=</span> <span class="s2">&quot;The workflow name, &#39;pfd&#39; for default&quot;</span>
+    <span class="n">doc_bohrium_config</span> <span class="o">=</span> <span class="s2">&quot;Configurations for the Bohrium platform.&quot;</span>
+    <span class="n">doc_step_configs</span> <span class="o">=</span> <span class="s2">&quot;Configurations for executing dflow steps&quot;</span>
+    <span class="n">doc_upload_python_packages</span> <span class="o">=</span> <span class="s2">&quot;Upload python package, for debug purpose&quot;</span>
+    <span class="n">doc_parallelism</span> <span class="o">=</span> <span class="s2">&quot;The parallelism for the workflow. Accept an int that stands for the maximum number of running pods for the workflow. None for default&quot;</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">[</span><span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;pfd&quot;</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_name</span><span class="p">)]</span>
+        <span class="o">+</span> <span class="n">dflow_conf_args</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">default_step_config_args</span><span class="p">()</span>
+        <span class="o">+</span> <span class="p">[</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;parallelism&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_parallelism</span>
+            <span class="p">),</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;bohrium_config&quot;</span><span class="p">,</span>
+                <span class="nb">dict</span><span class="p">,</span>
+                <span class="n">bohrium_conf_args</span><span class="p">(),</span>
+                <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">doc</span><span class="o">=</span><span class="n">doc_bohrium_config</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;step_configs&quot;</span><span class="p">,</span>
+                <span class="nb">dict</span><span class="p">,</span>
+                <span class="n">pfd_step_config_args</span><span class="p">(</span><span class="n">default_step_config</span><span class="p">),</span>
+                <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="p">{},</span>
+                <span class="n">doc</span><span class="o">=</span><span class="n">doc_step_configs</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;upload_python_packages&quot;</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+                <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                <span class="n">doc</span><span class="o">=</span><span class="n">doc_upload_python_packages</span><span class="p">,</span>
+                <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;upload_python_package&quot;</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="task_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.task_args">[docs]</a>
+<span class="k">def</span> <span class="nf">task_args</span><span class="p">():</span>
+    <span class="n">doc_task</span> <span class="o">=</span> <span class="s2">&quot;Task type, `finetune` or `dist`&quot;</span>
+    <span class="n">doc_inputs</span> <span class="o">=</span> <span class="s2">&quot;The input parameter and artifacts for pfd&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;task&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">variant_task</span><span class="p">()],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_task</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">input_args</span><span class="p">(),</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_inputs</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="conf_generation_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.conf_generation_args">[docs]</a>
+<span class="k">def</span> <span class="nf">conf_generation_args</span><span class="p">():</span>
+    <span class="n">doc_conf_gen</span> <span class="o">=</span> <span class="s2">&quot;The inputparameter and artifacts for confs generation&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;conf_generation&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">conf_gen_args</span><span class="p">(),</span>
+            <span class="c1"># pert_gen(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;configurations&quot;</span><span class="p">],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_conf_gen</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="training_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.training_args">[docs]</a>
+<span class="k">def</span> <span class="nf">training_args</span><span class="p">():</span>
+    <span class="n">doc_train</span> <span class="o">=</span> <span class="s2">&quot;The configuration for training&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">variant_train</span><span class="p">()],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_train</span><span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="label_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.label_args">[docs]</a>
+<span class="k">def</span> <span class="nf">label_args</span><span class="p">():</span>
+    <span class="n">doc_fp</span> <span class="o">=</span> <span class="s2">&quot;The configuration for FP&quot;</span>
+    <span class="n">doc_aimd</span> <span class="o">=</span> <span class="s2">&quot;The parameter for initial fp calculation&quot;</span>
+    <span class="n">doc_infer</span> <span class="o">=</span> <span class="s2">&quot;The parameters for inference settings&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;fp&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">variant_fp</span><span class="p">()],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_fp</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;aimd&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">aimd_args</span><span class="p">(),</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_aimd</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;inference&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">infer_args</span><span class="p">(),</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">{},</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_infer</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="explore_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.explore_args">[docs]</a>
+<span class="k">def</span> <span class="nf">explore_args</span><span class="p">():</span>
+    <span class="n">doc_test_set</span> <span class="o">=</span> <span class="s2">&quot;Set the portion of test set. Only available for `dist`&quot;</span>
+    <span class="n">doc_explore</span> <span class="o">=</span> <span class="s2">&quot;The configuration for exploration&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;exploration&quot;</span><span class="p">,</span>
+            <span class="nb">dict</span><span class="p">,</span>
+            <span class="p">[</span>
+                <span class="n">Argument</span><span class="p">(</span>
+                    <span class="s2">&quot;test_set_config&quot;</span><span class="p">,</span>
+                    <span class="nb">dict</span><span class="p">,</span>
+                    <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">default</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;test_size&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">},</span>
+                    <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;test_set&quot;</span><span class="p">],</span>
+                    <span class="n">doc</span><span class="o">=</span><span class="n">doc_test_set</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">],</span>
+            <span class="p">[</span><span class="n">variant_explore</span><span class="p">()],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_explore</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;explore&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="submit_args">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.submit_args">[docs]</a>
+<span class="k">def</span> <span class="nf">submit_args</span><span class="p">(</span><span class="n">default_step_config</span><span class="o">=</span><span class="n">normalize_step_dict</span><span class="p">({})):</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">wf_args</span><span class="p">(</span><span class="n">default_step_config</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">task_args</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">conf_generation_args</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">training_args</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">label_args</span><span class="p">()</span>
+        <span class="o">+</span> <span class="n">explore_args</span><span class="p">()</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="normalize">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.normalize">[docs]</a>
+<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">default_step_config</span> <span class="o">=</span> <span class="n">normalize_step_dict</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;default_step_config&quot;</span><span class="p">,</span> <span class="p">{}))</span>
+    <span class="n">defs</span> <span class="o">=</span> <span class="n">submit_args</span><span class="p">(</span><span class="n">default_step_config</span><span class="p">)</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">defs</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">normalize_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">trim_pattern</span><span class="o">=</span><span class="s2">&quot;_*&quot;</span><span class="p">)</span>
+    <span class="c1"># not possible to strictly check arguments, dirty hack!</span>
+    <span class="n">base</span><span class="o">.</span><span class="n">check_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="gen_doc">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.args.gen_doc">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_doc</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">make_anchor</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">make_link</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">make_link</span><span class="p">:</span>
+        <span class="n">make_anchor</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">sca</span> <span class="o">=</span> <span class="n">submit_args</span><span class="p">()</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">sca</span><span class="p">)</span>
+    <span class="n">ptr</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ptr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">gen_doc</span><span class="p">(</span><span class="n">make_anchor</span><span class="o">=</span><span class="n">make_anchor</span><span class="p">,</span> <span class="n">make_link</span><span class="o">=</span><span class="n">make_link</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+    <span class="n">key_words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;argument path&quot;</span> <span class="ow">in</span> <span class="n">ii</span><span class="p">:</span>
+            <span class="n">key_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;`&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task.lmp.lmp_input &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task.lmp.lmp_input</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.exploration.task.lmp.lmp_input</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">dpdata</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">pc</span>
+<span class="kn">from</span> <span class="nn">packaging.version</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Version</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">lmp_traj_name</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_sample_sphere</span><span class="p">():</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">vv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">()])</span>
+        <span class="n">vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vn</span> <span class="o">&lt;</span> <span class="mf">0.2</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">vv</span> <span class="o">/</span> <span class="n">vn</span>
+
+
+<div class="viewcode-block" id="make_lmp_input">
+<a class="viewcode-back" href="../../../../../development/pfd.exploration.task.lmp.html#pfd.exploration.task.lmp.lmp_input.make_lmp_input">[docs]</a>
+<span class="k">def</span> <span class="nf">make_lmp_input</span><span class="p">(</span>
+    <span class="n">conf_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ensemble</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">graphs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">nsteps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">neidelay</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">trj_freq</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">mass_map</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+    <span class="n">temp</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">tau_t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">pres</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">tau_p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">use_clusters</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">relative_f_epsilon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">relative_v_epsilon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">pka_e</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ele_temp_f</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ele_temp_a</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">nopbc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">max_seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">,</span>
+    <span class="n">deepmd_version</span><span class="o">=</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+    <span class="n">trj_seperate_files</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ele_temp_f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">ele_temp_a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">Version</span><span class="p">(</span>
+        <span class="n">deepmd_version</span>
+    <span class="p">)</span> <span class="o">&lt;</span> <span class="n">Version</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;the electron temperature is only supported by deepmd-kit &gt;= 1.0.0, please upgrade your deepmd-kit&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">ele_temp_f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ele_temp_a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;the frame style ele_temp and atom style ele_temp should not be set at the same time&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;npt&quot;</span> <span class="ow">in</span> <span class="n">ensemble</span> <span class="ow">and</span> <span class="n">pres</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;the pressre should be provided for npt ensemble&quot;</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;variable        NSTEPS          equal </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nsteps</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        THERMO_FREQ     equal </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">trj_freq</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        DUMP_FREQ       equal </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">trj_freq</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        TEMP            equal </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">temp</span>
+    <span class="k">if</span> <span class="n">ele_temp_f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        ELE_TEMP        equal </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ele_temp_f</span>
+    <span class="k">if</span> <span class="n">ele_temp_a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        ELE_TEMP        equal </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">ele_temp_a</span>
+    <span class="k">if</span> <span class="n">pres</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        PRES            equal </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pres</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        TAU_T           equal </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tau_t</span>
+    <span class="k">if</span> <span class="n">pres</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;variable        TAU_P           equal </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">tau_p</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;units           metal</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">nopbc</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;boundary        f f f</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;boundary        p p p</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;atom_style      atomic</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;neighbor        1.0 bin</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">neidelay</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;neigh_modify    delay </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">neidelay</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;box          tilt large</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="p">(</span>
+        <span class="s1">&#39;if &quot;$</span><span class="si">{restart}</span><span class="s1"> &gt; 0&quot; then &quot;read_restart dpgen.restart.*&quot; else &quot;read_data </span><span class="si">%s</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="o">%</span> <span class="n">conf_file</span>
+    <span class="p">)</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;change_box   all triclinic</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">mass_map</span><span class="p">)):</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;mass            </span><span class="si">%d</span><span class="s2"> </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">jj</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mass_map</span><span class="p">[</span><span class="n">jj</span><span class="p">])</span>
+    <span class="n">graph_list</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">:</span>
+        <span class="n">graph_list</span> <span class="o">+=</span> <span class="n">ii</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+    <span class="k">if</span> <span class="n">Version</span><span class="p">(</span><span class="n">deepmd_version</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">Version</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">):</span>
+        <span class="c1"># 0.x</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;pair_style      deepmd </span><span class="si">%s</span><span class="s2"> $</span><span class="si">{THERMO_FREQ}</span><span class="s2"> model_devi.out</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">graph_list</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># 1.x</span>
+        <span class="n">keywords</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">use_clusters</span><span class="p">:</span>
+            <span class="n">keywords</span> <span class="o">+=</span> <span class="s2">&quot;atomic &quot;</span>
+        <span class="k">if</span> <span class="n">relative_f_epsilon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keywords</span> <span class="o">+=</span> <span class="s2">&quot;relative </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">relative_f_epsilon</span>
+        <span class="k">if</span> <span class="n">relative_v_epsilon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keywords</span> <span class="o">+=</span> <span class="s2">&quot;relative_v </span><span class="si">%s</span><span class="s2"> &quot;</span> <span class="o">%</span> <span class="n">relative_v_epsilon</span>
+        <span class="k">if</span> <span class="n">ele_temp_f</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keywords</span> <span class="o">+=</span> <span class="s2">&quot;fparam $</span><span class="si">{ELE_TEMP}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">ele_temp_a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keywords</span> <span class="o">+=</span> <span class="s2">&quot;aparam $</span><span class="si">{ELE_TEMP}</span><span class="s2">&quot;</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;pair_style      deepmd </span><span class="si">%s</span><span class="s2"> out_freq $</span><span class="si">{THERMO_FREQ}</span><span class="s2"> out_file model_devi.out </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">graph_list</span><span class="p">,</span> <span class="n">keywords</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;pair_coeff      * *</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;thermo_style    custom step temp pe ke etotal press vol lx ly lz xy xz yz</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;thermo          $</span><span class="si">{THERMO_FREQ}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">trj_seperate_files</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;dump            1 all custom $</span><span class="si">{DUMP_FREQ}</span><span class="s2"> traj/*.lammpstrj id type x y z fx fy fz</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="p">(</span>
+            <span class="s2">&quot;dump            1 all custom $</span><span class="si">{DUMP_FREQ}</span><span class="s2"> </span><span class="si">%s</span><span class="s2"> id type x y z fx fy fz</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="n">lmp_traj_name</span>
+        <span class="p">)</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;restart         10000 dpgen.restart</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">pka_e</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;if &quot;$</span><span class="si">{restart}</span><span class="s1"> == 0&quot; then &quot;velocity        all create $</span><span class="si">{TEMP}</span><span class="s1"> </span><span class="si">%d</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">max_seed</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span> <span class="o">=</span> <span class="n">dpdata</span><span class="o">.</span><span class="n">System</span><span class="p">(</span><span class="n">conf_file</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;lammps/lmp&quot;</span><span class="p">)</span>
+        <span class="n">sys_data</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">data</span>
+        <span class="n">pka_mass</span> <span class="o">=</span> <span class="n">mass_map</span><span class="p">[</span><span class="n">sys_data</span><span class="p">[</span><span class="s2">&quot;atom_types&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">pka_vn</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pka_e</span>
+            <span class="o">*</span> <span class="n">pc</span><span class="o">.</span><span class="n">electron_volt</span>
+            <span class="o">/</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">pka_mass</span> <span class="o">*</span> <span class="mf">1e-3</span> <span class="o">/</span> <span class="n">pc</span><span class="o">.</span><span class="n">Avogadro</span> <span class="o">*</span> <span class="p">(</span><span class="n">pc</span><span class="o">.</span><span class="n">angstrom</span> <span class="o">/</span> <span class="n">pc</span><span class="o">.</span><span class="n">pico</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">pka_vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pka_vn</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pka_vn</span><span class="p">)</span>
+        <span class="n">pka_vec</span> <span class="o">=</span> <span class="n">_sample_sphere</span><span class="p">()</span>
+        <span class="n">pka_vec</span> <span class="o">*=</span> <span class="n">pka_vn</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;group           first id 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;if &quot;$</span><span class="si">{restart}</span><span class="s1"> == 0&quot; then &quot;velocity        first set </span><span class="si">%f</span><span class="s1"> </span><span class="si">%f</span><span class="s1"> </span><span class="si">%f</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">pka_vec</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">pka_vec</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">pka_vec</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix	       2 all momentum 1 linear 1 1 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">ensemble</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;npt&quot;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">pres</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">nopbc</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;ensemble </span><span class="si">%s</span><span class="s2"> is conflicting with nopbc&quot;</span> <span class="o">%</span> <span class="n">ensemble</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt&quot;</span> <span class="ow">or</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt-i&quot;</span> <span class="ow">or</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt-iso&quot;</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix             1 all npt temp $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TAU_T}</span><span class="s2"> iso $</span><span class="si">{PRES}</span><span class="s2"> $</span><span class="si">{PRES}</span><span class="s2"> $</span><span class="si">{TAU_P}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt-a&quot;</span> <span class="ow">or</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt-aniso&quot;</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix             1 all npt temp $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TAU_T}</span><span class="s2"> aniso $</span><span class="si">{PRES}</span><span class="s2"> $</span><span class="si">{PRES}</span><span class="s2"> $</span><span class="si">{TAU_P}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt-t&quot;</span> <span class="ow">or</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;npt-tri&quot;</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix             1 all npt temp $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TAU_T}</span><span class="s2"> tri $</span><span class="si">{PRES}</span><span class="s2"> $</span><span class="si">{PRES}</span><span class="s2"> $</span><span class="si">{TAU_P}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;nvt&quot;</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix             1 all nvt temp $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TEMP}</span><span class="s2"> $</span><span class="si">{TAU_T}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="n">ensemble</span> <span class="o">==</span> <span class="s2">&quot;nve&quot;</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix             1 all nve</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;unknown emsemble &quot;</span> <span class="o">+</span> <span class="n">ensemble</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nopbc</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;velocity        all zero linear</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;fix             fm all momentum 1 linear 1 1 1</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;timestep        </span><span class="si">%f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">dt</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;run             $</span><span class="si">{NSTEPS}</span><span class="s2"> upto</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

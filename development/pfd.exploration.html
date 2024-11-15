@@ -1,0 +1,515 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration package &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pfd.exploration.converge package" href="pfd.exploration.converge.html" />
+    <link rel="prev" title="pfd.entrypoint package" href="pfd.entrypoint.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pfd.html">pfd package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pfd.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pfd.entrypoint.html">pfd.entrypoint package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pfd.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.flow.html">pfd.flow package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.fp.html">pfd.fp package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.op.html">pfd.op package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.superop.html">pfd.superop package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.train.html">pfd.train package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.utils.html">pfd.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd.constants">pfd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pfd.html">pfd package</a></li>
+      <li class="breadcrumb-item active">pfd.exploration package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pfd.exploration.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfd-exploration-package">
+<h1>pfd.exploration package<a class="headerlink" href="#pfd-exploration-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.converge.html">pfd.exploration.converge package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#module-pfd.exploration.converge.check_conv">pfd.exploration.converge.check_conv module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv"><code class="docutils literal notranslate"><span class="pre">CheckConv</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.args"><code class="docutils literal notranslate"><span class="pre">CheckConv.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.check_conv"><code class="docutils literal notranslate"><span class="pre">CheckConv.check_conv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.doc"><code class="docutils literal notranslate"><span class="pre">CheckConv.doc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.get_checker"><code class="docutils literal notranslate"><span class="pre">CheckConv.get_checker()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.get_checkers"><code class="docutils literal notranslate"><span class="pre">CheckConv.get_checkers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.register"><code class="docutils literal notranslate"><span class="pre">CheckConv.register()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#module-pfd.exploration.converge.conf_filter_conv">pfd.exploration.converge.conf_filter_conv module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFilterConv"><code class="docutils literal notranslate"><span class="pre">ConfFilterConv</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFilterConv.check"><code class="docutils literal notranslate"><span class="pre">ConfFilterConv.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFilterConv.get_filter"><code class="docutils literal notranslate"><span class="pre">ConfFilterConv.get_filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFilterConv.get_filters"><code class="docutils literal notranslate"><span class="pre">ConfFilterConv.get_filters()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFilterConv.register"><code class="docutils literal notranslate"><span class="pre">ConfFilterConv.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFiltersConv"><code class="docutils literal notranslate"><span class="pre">ConfFiltersConv</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFiltersConv.add"><code class="docutils literal notranslate"><span class="pre">ConfFiltersConv.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.conf_filter_conv.ConfFiltersConv.check"><code class="docutils literal notranslate"><span class="pre">ConfFiltersConv.check()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#module-pfd.exploration.converge.energy_conv">pfd.exploration.converge.energy_conv module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv.EnerConvRMSE"><code class="docutils literal notranslate"><span class="pre">EnerConvRMSE</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv.EnerConvRMSE.args"><code class="docutils literal notranslate"><span class="pre">EnerConvRMSE.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv.EnerConvRMSE.check_conv"><code class="docutils literal notranslate"><span class="pre">EnerConvRMSE.check_conv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv.EnerConvRMSE.doc"><code class="docutils literal notranslate"><span class="pre">EnerConvRMSE.doc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#module-pfd.exploration.converge.energy_conv_filter">pfd.exploration.converge.energy_conv_filter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.EnerConfFilter"><code class="docutils literal notranslate"><span class="pre">EnerConfFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.EnerConfFilter.args"><code class="docutils literal notranslate"><span class="pre">EnerConfFilter.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.EnerConfFilter.check"><code class="docutils literal notranslate"><span class="pre">EnerConfFilter.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.EnerConfFilter.doc"><code class="docutils literal notranslate"><span class="pre">EnerConfFilter.doc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.ForceConfFilter"><code class="docutils literal notranslate"><span class="pre">ForceConfFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.ForceConfFilter.args"><code class="docutils literal notranslate"><span class="pre">ForceConfFilter.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.ForceConfFilter.check"><code class="docutils literal notranslate"><span class="pre">ForceConfFilter.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.ForceConfFilter.doc"><code class="docutils literal notranslate"><span class="pre">ForceConfFilter.doc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#module-pfd.exploration.converge.force_conv">pfd.exploration.converge.force_conv module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.force_conv.ForceConvRMSE"><code class="docutils literal notranslate"><span class="pre">ForceConvRMSE</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.force_conv.ForceConvRMSE.args"><code class="docutils literal notranslate"><span class="pre">ForceConvRMSE.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.force_conv.ForceConvRMSE.check_conv"><code class="docutils literal notranslate"><span class="pre">ForceConvRMSE.check_conv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.force_conv.ForceConvRMSE.doc"><code class="docutils literal notranslate"><span class="pre">ForceConvRMSE.doc()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.converge.html#module-pfd.exploration.converge">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.inference.html">pfd.exploration.inference package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.inference.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.inference.html#module-pfd.exploration.inference.eval_dp">pfd.exploration.inference.eval_dp module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest"><code class="docutils literal notranslate"><span class="pre">DPTest</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.args"><code class="docutils literal notranslate"><span class="pre">DPTest.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.doc"><code class="docutils literal notranslate"><span class="pre">DPTest.doc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.evaluate"><code class="docutils literal notranslate"><span class="pre">DPTest.evaluate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.inference"><code class="docutils literal notranslate"><span class="pre">DPTest.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.load_model"><code class="docutils literal notranslate"><span class="pre">DPTest.load_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.read_data"><code class="docutils literal notranslate"><span class="pre">DPTest.read_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_dp.DPTest.read_data_unlabeled"><code class="docutils literal notranslate"><span class="pre">DPTest.read_data_unlabeled()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.inference.html#module-pfd.exploration.inference.eval_model">pfd.exploration.inference.eval_model module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel"><code class="docutils literal notranslate"><span class="pre">EvalModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.clear_data"><code class="docutils literal notranslate"><span class="pre">EvalModel.clear_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.clear_model"><code class="docutils literal notranslate"><span class="pre">EvalModel.clear_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.data"><code class="docutils literal notranslate"><span class="pre">EvalModel.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.evaluate"><code class="docutils literal notranslate"><span class="pre">EvalModel.evaluate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.get_driver"><code class="docutils literal notranslate"><span class="pre">EvalModel.get_driver()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.get_drivers"><code class="docutils literal notranslate"><span class="pre">EvalModel.get_drivers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.inference"><code class="docutils literal notranslate"><span class="pre">EvalModel.inference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.load_model"><code class="docutils literal notranslate"><span class="pre">EvalModel.load_model()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.model"><code class="docutils literal notranslate"><span class="pre">EvalModel.model</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.read_data"><code class="docutils literal notranslate"><span class="pre">EvalModel.read_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.read_data_unlabeled"><code class="docutils literal notranslate"><span class="pre">EvalModel.read_data_unlabeled()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.EvalModel.register"><code class="docutils literal notranslate"><span class="pre">EvalModel.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport"><code class="docutils literal notranslate"><span class="pre">TestReport</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.atom_numb"><code class="docutils literal notranslate"><span class="pre">TestReport.atom_numb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.lab_e"><code class="docutils literal notranslate"><span class="pre">TestReport.lab_e</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.lab_f"><code class="docutils literal notranslate"><span class="pre">TestReport.lab_f</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.lab_v"><code class="docutils literal notranslate"><span class="pre">TestReport.lab_v</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.mae_e"><code class="docutils literal notranslate"><span class="pre">TestReport.mae_e</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.mae_e_atom"><code class="docutils literal notranslate"><span class="pre">TestReport.mae_e_atom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.mae_f"><code class="docutils literal notranslate"><span class="pre">TestReport.mae_f</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.mae_v"><code class="docutils literal notranslate"><span class="pre">TestReport.mae_v</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.name"><code class="docutils literal notranslate"><span class="pre">TestReport.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.numb_frame"><code class="docutils literal notranslate"><span class="pre">TestReport.numb_frame</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.pred_e"><code class="docutils literal notranslate"><span class="pre">TestReport.pred_e</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.pred_f"><code class="docutils literal notranslate"><span class="pre">TestReport.pred_f</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.pred_v"><code class="docutils literal notranslate"><span class="pre">TestReport.pred_v</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.report"><code class="docutils literal notranslate"><span class="pre">TestReport.report()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.rmse_e"><code class="docutils literal notranslate"><span class="pre">TestReport.rmse_e</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.rmse_e_atom"><code class="docutils literal notranslate"><span class="pre">TestReport.rmse_e_atom</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.rmse_f"><code class="docutils literal notranslate"><span class="pre">TestReport.rmse_f</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.rmse_v"><code class="docutils literal notranslate"><span class="pre">TestReport.rmse_v</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReport.system"><code class="docutils literal notranslate"><span class="pre">TestReport.system</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports"><code class="docutils literal notranslate"><span class="pre">TestReports</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.add_report"><code class="docutils literal notranslate"><span class="pre">TestReports.add_report()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.get_and_output_systems"><code class="docutils literal notranslate"><span class="pre">TestReports.get_and_output_systems()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.get_systems"><code class="docutils literal notranslate"><span class="pre">TestReports.get_systems()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.get_weighted_rmse_e_atom"><code class="docutils literal notranslate"><span class="pre">TestReports.get_weighted_rmse_e_atom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.get_weighted_rmse_f"><code class="docutils literal notranslate"><span class="pre">TestReports.get_weighted_rmse_f()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.sub_reports"><code class="docutils literal notranslate"><span class="pre">TestReports.sub_reports()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.inference.html#module-pfd.exploration.inference.util">pfd.exploration.inference.util module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.util.get_mae"><code class="docutils literal notranslate"><span class="pre">get_mae()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.inference.html#pfd.exploration.inference.util.get_rmse"><code class="docutils literal notranslate"><span class="pre">get_rmse()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.inference.html#module-pfd.exploration.inference">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.render.html">pfd.exploration.render package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.render.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.render.html#module-pfd.exploration.render.traj_render">pfd.exploration.render.traj_render module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.render.html#pfd.exploration.render.traj_render.TrajRender"><code class="docutils literal notranslate"><span class="pre">TrajRender</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.render.html#pfd.exploration.render.traj_render.TrajRender.get_confs"><code class="docutils literal notranslate"><span class="pre">TrajRender.get_confs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.render.html#module-pfd.exploration.render.traj_render_lammps">pfd.exploration.render.traj_render_lammps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.render.html#pfd.exploration.render.traj_render_lammps.TrajRenderLammps"><code class="docutils literal notranslate"><span class="pre">TrajRenderLammps</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.render.html#pfd.exploration.render.traj_render_lammps.TrajRenderLammps.get_confs"><code class="docutils literal notranslate"><span class="pre">TrajRenderLammps.get_confs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.render.html#module-pfd.exploration.render">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.scheduler.html">pfd.exploration.scheduler package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.scheduler.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.scheduler.html#module-pfd.exploration.scheduler.sheduler">pfd.exploration.scheduler.sheduler module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler"><code class="docutils literal notranslate"><span class="pre">Scheduler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.convergence"><code class="docutils literal notranslate"><span class="pre">Scheduler.convergence</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.expl_stages"><code class="docutils literal notranslate"><span class="pre">Scheduler.expl_stages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.explore_style"><code class="docutils literal notranslate"><span class="pre">Scheduler.explore_style</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.get_status"><code class="docutils literal notranslate"><span class="pre">Scheduler.get_status()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.idx_stage"><code class="docutils literal notranslate"><span class="pre">Scheduler.idx_stage</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.is_first_iteration"><code class="docutils literal notranslate"><span class="pre">Scheduler.is_first_iteration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.iter_numb"><code class="docutils literal notranslate"><span class="pre">Scheduler.iter_numb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.mass_map"><code class="docutils literal notranslate"><span class="pre">Scheduler.mass_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.max_iteration"><code class="docutils literal notranslate"><span class="pre">Scheduler.max_iteration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.model_style"><code class="docutils literal notranslate"><span class="pre">Scheduler.model_style</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.next_iter"><code class="docutils literal notranslate"><span class="pre">Scheduler.next_iter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.next_stage"><code class="docutils literal notranslate"><span class="pre">Scheduler.next_stage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.set_convergence"><code class="docutils literal notranslate"><span class="pre">Scheduler.set_convergence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.set_explore_tasks"><code class="docutils literal notranslate"><span class="pre">Scheduler.set_explore_tasks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.type_map"><code class="docutils literal notranslate"><span class="pre">Scheduler.type_map</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.scheduler.html#module-pfd.exploration.scheduler">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.selector.html">pfd.exploration.selector package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#module-pfd.exploration.selector.conf_filter">pfd.exploration.selector.conf_filter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_filter.ConfFilter"><code class="docutils literal notranslate"><span class="pre">ConfFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_filter.ConfFilter.check"><code class="docutils literal notranslate"><span class="pre">ConfFilter.check()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_filter.ConfFilters"><code class="docutils literal notranslate"><span class="pre">ConfFilters</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_filter.ConfFilters.add"><code class="docutils literal notranslate"><span class="pre">ConfFilters.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_filter.ConfFilters.check"><code class="docutils literal notranslate"><span class="pre">ConfFilters.check()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#module-pfd.exploration.selector.conf_selector">pfd.exploration.selector.conf_selector module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_selector.ConfSelector"><code class="docutils literal notranslate"><span class="pre">ConfSelector</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_selector.ConfSelector.select"><code class="docutils literal notranslate"><span class="pre">ConfSelector.select()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#module-pfd.exploration.selector.conf_selector_frame">pfd.exploration.selector.conf_selector_frame module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_selector_frame.ConfSelectorFrames"><code class="docutils literal notranslate"><span class="pre">ConfSelectorFrames</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.conf_selector_frame.ConfSelectorFrames.select"><code class="docutils literal notranslate"><span class="pre">ConfSelectorFrames.select()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#module-pfd.exploration.selector.distance_conf_filter">pfd.exploration.selector.distance_conf_filter module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxLengthFilter"><code class="docutils literal notranslate"><span class="pre">BoxLengthFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxLengthFilter.args"><code class="docutils literal notranslate"><span class="pre">BoxLengthFilter.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxLengthFilter.check"><code class="docutils literal notranslate"><span class="pre">BoxLengthFilter.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxLengthFilter.doc"><code class="docutils literal notranslate"><span class="pre">BoxLengthFilter.doc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxSkewnessConfFilter"><code class="docutils literal notranslate"><span class="pre">BoxSkewnessConfFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxSkewnessConfFilter.args"><code class="docutils literal notranslate"><span class="pre">BoxSkewnessConfFilter.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxSkewnessConfFilter.check"><code class="docutils literal notranslate"><span class="pre">BoxSkewnessConfFilter.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.BoxSkewnessConfFilter.doc"><code class="docutils literal notranslate"><span class="pre">BoxSkewnessConfFilter.doc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.DistanceConfFilter"><code class="docutils literal notranslate"><span class="pre">DistanceConfFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.DistanceConfFilter.args"><code class="docutils literal notranslate"><span class="pre">DistanceConfFilter.args()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.DistanceConfFilter.check"><code class="docutils literal notranslate"><span class="pre">DistanceConfFilter.check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.DistanceConfFilter.doc"><code class="docutils literal notranslate"><span class="pre">DistanceConfFilter.doc()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.distance_conf_filter.check_multiples"><code class="docutils literal notranslate"><span class="pre">check_multiples()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#module-pfd.exploration.selector.energy_select">pfd.exploration.selector.energy_select module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.energy_select.EnergySelect"><code class="docutils literal notranslate"><span class="pre">EnergySelect</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.selector.html#pfd.exploration.selector.energy_select.EnergySelect.select"><code class="docutils literal notranslate"><span class="pre">EnergySelect.select()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.selector.html#module-pfd.exploration.selector">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pfd.exploration.task.html">pfd.exploration.task package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.calypso.html">pfd.exploration.task.calypso package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.calypso.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.calypso.html#module-pfd.exploration.task.calypso.caly_input">pfd.exploration.task.calypso.caly_input module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.calypso.html#module-pfd.exploration.task.calypso">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.lmp.html">pfd.exploration.task.lmp package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.lmp.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.lmp.html#module-pfd.exploration.task.lmp.lmp_input">pfd.exploration.task.lmp.lmp_input module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.lmp.html#module-pfd.exploration.task.lmp">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.caly_task_group">pfd.exploration.task.caly_task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.caly_task_group.CalyTaskGroup"><code class="docutils literal notranslate"><span class="pre">CalyTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.caly_task_group.CalyTaskGroup.make_task"><code class="docutils literal notranslate"><span class="pre">CalyTaskGroup.make_task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.caly_task_group.CalyTaskGroup.set_params"><code class="docutils literal notranslate"><span class="pre">CalyTaskGroup.set_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.conf_sampling_task_group">pfd.exploration.task.conf_sampling_task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup"><code class="docutils literal notranslate"><span class="pre">ConfSamplingTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup.set_conf"><code class="docutils literal notranslate"><span class="pre">ConfSamplingTaskGroup.set_conf()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.customized_lmp_template_task_group">pfd.exploration.task.customized_lmp_template_task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup"><code class="docutils literal notranslate"><span class="pre">CustomizedLmpTemplateTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.make_task"><code class="docutils literal notranslate"><span class="pre">CustomizedLmpTemplateTaskGroup.make_task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.set_lmp"><code class="docutils literal notranslate"><span class="pre">CustomizedLmpTemplateTaskGroup.set_lmp()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.gen_task_group">pfd.exploration.task.gen_task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.gen_task_group.expl_grp_args_lmps"><code class="docutils literal notranslate"><span class="pre">expl_grp_args_lmps()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.gen_task_group.gen_expl_grp_lmps"><code class="docutils literal notranslate"><span class="pre">gen_expl_grp_lmps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.lmp_template_task_group">pfd.exploration.task.lmp_template_task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup"><code class="docutils literal notranslate"><span class="pre">LmpTemplateTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_cont"><code class="docutils literal notranslate"><span class="pre">LmpTemplateTaskGroup.make_cont()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_task"><code class="docutils literal notranslate"><span class="pre">LmpTemplateTaskGroup.make_task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.set_lmp"><code class="docutils literal notranslate"><span class="pre">LmpTemplateTaskGroup.set_lmp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.find_only_one_key"><code class="docutils literal notranslate"><span class="pre">find_only_one_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_by_keys"><code class="docutils literal notranslate"><span class="pre">revise_by_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_dump"><code class="docutils literal notranslate"><span class="pre">revise_lmp_input_dump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_model"><code class="docutils literal notranslate"><span class="pre">revise_lmp_input_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_plm"><code class="docutils literal notranslate"><span class="pre">revise_lmp_input_plm()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.make_task_group_from_config">pfd.exploration.task.make_task_group_from_config module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.caly_normalize"><code class="docutils literal notranslate"><span class="pre">caly_normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.caly_task_group_args"><code class="docutils literal notranslate"><span class="pre">caly_task_group_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.caly_task_grp_args"><code class="docutils literal notranslate"><span class="pre">caly_task_grp_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.config_strip_confidx"><code class="docutils literal notranslate"><span class="pre">config_strip_confidx()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.customized_lmp_template_task_group_args"><code class="docutils literal notranslate"><span class="pre">customized_lmp_template_task_group_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.lmp_normalize"><code class="docutils literal notranslate"><span class="pre">lmp_normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.lmp_task_group_args"><code class="docutils literal notranslate"><span class="pre">lmp_task_group_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.lmp_template_task_group_args"><code class="docutils literal notranslate"><span class="pre">lmp_template_task_group_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.make_calypso_task_group_from_config"><code class="docutils literal notranslate"><span class="pre">make_calypso_task_group_from_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.make_lmp_task_group_from_config"><code class="docutils literal notranslate"><span class="pre">make_lmp_task_group_from_config()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.npt_task_group_args"><code class="docutils literal notranslate"><span class="pre">npt_task_group_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.variant_task_group"><code class="docutils literal notranslate"><span class="pre">variant_task_group()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.npt_task_group">pfd.exploration.task.npt_task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.npt_task_group.NPTTaskGroup"><code class="docutils literal notranslate"><span class="pre">NPTTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.npt_task_group.NPTTaskGroup.make_task"><code class="docutils literal notranslate"><span class="pre">NPTTaskGroup.make_task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.npt_task_group.NPTTaskGroup.set_md"><code class="docutils literal notranslate"><span class="pre">NPTTaskGroup.set_md()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.stage">pfd.exploration.task.stage module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.stage.ExplorationStage"><code class="docutils literal notranslate"><span class="pre">ExplorationStage</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.stage.ExplorationStage.add_task_group"><code class="docutils literal notranslate"><span class="pre">ExplorationStage.add_task_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.stage.ExplorationStage.clear"><code class="docutils literal notranslate"><span class="pre">ExplorationStage.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.stage.ExplorationStage.make_task"><code class="docutils literal notranslate"><span class="pre">ExplorationStage.make_task()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.task">pfd.exploration.task.task module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task.ExplorationTask"><code class="docutils literal notranslate"><span class="pre">ExplorationTask</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task.ExplorationTask.add_file"><code class="docutils literal notranslate"><span class="pre">ExplorationTask.add_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task.ExplorationTask.files"><code class="docutils literal notranslate"><span class="pre">ExplorationTask.files()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task.task_group">pfd.exploration.task.task_group module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.BaseExplorationTaskGroup"><code class="docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_group"><code class="docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup.add_group()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_task"><code class="docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup.add_task()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.BaseExplorationTaskGroup.clear"><code class="docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup.clear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.BaseExplorationTaskGroup.task_list"><code class="docutils literal notranslate"><span class="pre">BaseExplorationTaskGroup.task_list</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.ExplorationTaskGroup"><code class="docutils literal notranslate"><span class="pre">ExplorationTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.ExplorationTaskGroup.make_task"><code class="docutils literal notranslate"><span class="pre">ExplorationTaskGroup.make_task()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.FooTask"><code class="docutils literal notranslate"><span class="pre">FooTask</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.FooTaskGroup"><code class="docutils literal notranslate"><span class="pre">FooTaskGroup</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.task.html#pfd.exploration.task.task_group.FooTaskGroup.task_list"><code class="docutils literal notranslate"><span class="pre">FooTaskGroup.task_list</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfd.exploration.task.html#module-pfd.exploration.task">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-pfd.exploration">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pfd.exploration" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfd.entrypoint.html" class="btn btn-neutral float-left" title="pfd.entrypoint package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pfd.exploration.converge.html" class="btn btn-neutral float-right" title="pfd.exploration.converge package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

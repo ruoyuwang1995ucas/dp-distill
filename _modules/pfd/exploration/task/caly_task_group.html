@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task.caly_task_group &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task.caly_task_group</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.exploration.task.caly_task_group</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calypso_check_opt_file</span><span class="p">,</span>
+    <span class="n">calypso_input_file</span><span class="p">,</span>
+    <span class="n">calypso_run_opt_file</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.calypso</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_calypso_input</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.task</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExplorationTask</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExplorationTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">atomic_symbols</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;X&#39;</span><span class="p">,</span>  <span class="c1"># placeholder</span>
+    <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;He&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Li&#39;</span><span class="p">,</span> <span class="s1">&#39;Be&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span>  <span class="s1">&#39;C&#39;</span><span class="p">,</span>  <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;O&#39;</span><span class="p">,</span>  <span class="s1">&#39;F&#39;</span><span class="p">,</span>  <span class="s1">&#39;Ne&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Na&#39;</span><span class="p">,</span> <span class="s1">&#39;Mg&#39;</span><span class="p">,</span> <span class="s1">&#39;Al&#39;</span><span class="p">,</span> <span class="s1">&#39;Si&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span>  <span class="s1">&#39;Cl&#39;</span><span class="p">,</span> <span class="s1">&#39;Ar&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;K&#39;</span><span class="p">,</span>  <span class="s1">&#39;Ca&#39;</span><span class="p">,</span> <span class="s1">&#39;Sc&#39;</span><span class="p">,</span> <span class="s1">&#39;Ti&#39;</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;Cr&#39;</span><span class="p">,</span> <span class="s1">&#39;Mn&#39;</span><span class="p">,</span> <span class="s1">&#39;Fe&#39;</span><span class="p">,</span> <span class="s1">&#39;Co&#39;</span><span class="p">,</span> <span class="s1">&#39;Ni&#39;</span><span class="p">,</span> <span class="s1">&#39;Cu&#39;</span><span class="p">,</span> <span class="s1">&#39;Zn&#39;</span><span class="p">,</span> <span class="s1">&#39;Ga&#39;</span><span class="p">,</span> <span class="s1">&#39;Ge&#39;</span><span class="p">,</span> <span class="s1">&#39;As&#39;</span><span class="p">,</span> <span class="s1">&#39;Se&#39;</span><span class="p">,</span> <span class="s1">&#39;Br&#39;</span><span class="p">,</span> <span class="s1">&#39;Kr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Rb&#39;</span><span class="p">,</span> <span class="s1">&#39;Sr&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">,</span> <span class="s1">&#39;Zr&#39;</span><span class="p">,</span> <span class="s1">&#39;Nb&#39;</span><span class="p">,</span> <span class="s1">&#39;Mo&#39;</span><span class="p">,</span> <span class="s1">&#39;Tc&#39;</span><span class="p">,</span> <span class="s1">&#39;Ru&#39;</span><span class="p">,</span> <span class="s1">&#39;Rh&#39;</span><span class="p">,</span> <span class="s1">&#39;Pd&#39;</span><span class="p">,</span> <span class="s1">&#39;Ag&#39;</span><span class="p">,</span> <span class="s1">&#39;Cd&#39;</span><span class="p">,</span> <span class="s1">&#39;In&#39;</span><span class="p">,</span> <span class="s1">&#39;Sn&#39;</span><span class="p">,</span> <span class="s1">&#39;Sb&#39;</span><span class="p">,</span> <span class="s1">&#39;Te&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span>  <span class="s1">&#39;Xe&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Cs&#39;</span><span class="p">,</span> <span class="s1">&#39;Ba&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;La&#39;</span><span class="p">,</span> <span class="s1">&#39;Ce&#39;</span><span class="p">,</span> <span class="s1">&#39;Pr&#39;</span><span class="p">,</span> <span class="s1">&#39;Nd&#39;</span><span class="p">,</span> <span class="s1">&#39;Pm&#39;</span><span class="p">,</span> <span class="s1">&#39;Sm&#39;</span><span class="p">,</span> <span class="s1">&#39;Eu&#39;</span><span class="p">,</span> <span class="s1">&#39;Gd&#39;</span><span class="p">,</span> <span class="s1">&#39;Tb&#39;</span><span class="p">,</span> <span class="s1">&#39;Dy&#39;</span><span class="p">,</span> <span class="s1">&#39;Ho&#39;</span><span class="p">,</span> <span class="s1">&#39;Er&#39;</span><span class="p">,</span> <span class="s1">&#39;Tm&#39;</span><span class="p">,</span> <span class="s1">&#39;Yb&#39;</span><span class="p">,</span> <span class="s1">&#39;Lu&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Hf&#39;</span><span class="p">,</span> <span class="s1">&#39;Ta&#39;</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span>  <span class="s1">&#39;Re&#39;</span><span class="p">,</span> <span class="s1">&#39;Os&#39;</span><span class="p">,</span> <span class="s1">&#39;Ir&#39;</span><span class="p">,</span> <span class="s1">&#39;Pt&#39;</span><span class="p">,</span> <span class="s1">&#39;Au&#39;</span><span class="p">,</span> <span class="s1">&#39;Hg&#39;</span><span class="p">,</span> <span class="s1">&#39;Tl&#39;</span><span class="p">,</span> <span class="s1">&#39;Pb&#39;</span><span class="p">,</span> <span class="s1">&#39;Bi&#39;</span><span class="p">,</span> <span class="s1">&#39;Po&#39;</span><span class="p">,</span> <span class="s1">&#39;At&#39;</span><span class="p">,</span> <span class="s1">&#39;Rn&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Fr&#39;</span><span class="p">,</span> <span class="s1">&#39;Ra&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Ac&#39;</span><span class="p">,</span><span class="s1">&#39;Th&#39;</span><span class="p">,</span> <span class="s1">&#39;Pa&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;Np&#39;</span><span class="p">,</span> <span class="s1">&#39;Pu&#39;</span><span class="p">,</span> <span class="s1">&#39;Am&#39;</span><span class="p">,</span> <span class="s1">&#39;Cm&#39;</span><span class="p">,</span> <span class="s1">&#39;Bk&#39;</span><span class="p">,</span> <span class="s1">&#39;Cf&#39;</span><span class="p">,</span> <span class="s1">&#39;Es&#39;</span><span class="p">,</span> <span class="s1">&#39;Fm&#39;</span><span class="p">,</span> <span class="s1">&#39;Md&#39;</span><span class="p">,</span> <span class="s1">&#39;No&#39;</span><span class="p">,</span> <span class="s1">&#39;Lr&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Rf&#39;</span><span class="p">,</span> <span class="s1">&#39;Db&#39;</span><span class="p">,</span> <span class="s1">&#39;Sg&#39;</span><span class="p">,</span> <span class="s1">&#39;Bh&#39;</span><span class="p">,</span> <span class="s1">&#39;Hs&#39;</span><span class="p">,</span> <span class="s1">&#39;Mt&#39;</span><span class="p">,</span> <span class="s1">&#39;Ds&#39;</span><span class="p">,</span> <span class="s1">&#39;Rg&#39;</span><span class="p">,</span> <span class="s1">&#39;Cn&#39;</span><span class="p">,</span> <span class="s1">&#39;Nh&#39;</span><span class="p">,</span> <span class="s1">&#39;Fl&#39;</span><span class="p">,</span> <span class="s1">&#39;Mc&#39;</span><span class="p">,</span> <span class="s1">&#39;Lv&#39;</span><span class="p">,</span> <span class="s1">&#39;Ts&#39;</span><span class="p">,</span> <span class="s1">&#39;Og&#39;</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># fmt: skip</span>
+<span class="n">atomic_number_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atomic_symbols</span><span class="p">)}</span>
+<span class="c1"># Covalent radii from:</span>
+<span class="c1">#</span>
+<span class="c1">#  Covalent radii revisited,</span>
+<span class="c1">#  Beatriz Cordero, Verónica Gómez, Ana E. Platero-Prats, Marc Revés,</span>
+<span class="c1">#  Jorge Echeverría, Eduard Cremades, Flavia Barragán and Santiago Alvarez,</span>
+<span class="c1">#  Dalton Trans., 2008, 2832-2838 DOI:10.1039/B801115J</span>
+<span class="n">UNKN</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">covalent_radii</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># X, placeholder</span>
+    <span class="n">UNKN</span><span class="p">,</span>
+    <span class="c1"># H    He</span>
+    <span class="mf">0.31</span><span class="p">,</span> <span class="mf">0.28</span><span class="p">,</span>
+    <span class="c1"># Li    Be     B     C     N     O     F    Ne</span>
+    <span class="mf">1.28</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">,</span> <span class="mf">0.84</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">,</span> <span class="mf">0.66</span><span class="p">,</span> <span class="mf">0.57</span><span class="p">,</span> <span class="mf">0.58</span><span class="p">,</span>
+    <span class="c1"># Na    Mg    Al    Si     P     S    Cl    Ar</span>
+    <span class="mf">1.66</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mf">1.21</span><span class="p">,</span> <span class="mf">1.11</span><span class="p">,</span> <span class="mf">1.07</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="mf">1.06</span><span class="p">,</span>
+    <span class="c1">#  K    Ca    Sc    Ti     V    Cr    Mn    Fe    Co    Ni    Cu    Zn    Ga    Ge    As    Se    Br    Kr</span>
+    <span class="mf">2.03</span><span class="p">,</span> <span class="mf">1.76</span><span class="p">,</span> <span class="mf">1.70</span><span class="p">,</span> <span class="mf">1.60</span><span class="p">,</span> <span class="mf">1.53</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.32</span><span class="p">,</span> <span class="mf">1.26</span><span class="p">,</span> <span class="mf">1.24</span><span class="p">,</span> <span class="mf">1.32</span><span class="p">,</span> <span class="mf">1.22</span><span class="p">,</span> <span class="mf">1.22</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.19</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.20</span><span class="p">,</span> <span class="mf">1.16</span><span class="p">,</span>
+    <span class="c1"># Rb    Sr     Y    Zr    Nb    Mo    Tc    Ru    Rh    Pd    Au    Cd    In    Sn    Sb    Te     I    Xe</span>
+    <span class="mf">2.20</span><span class="p">,</span> <span class="mf">1.95</span><span class="p">,</span> <span class="mf">1.90</span><span class="p">,</span> <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.64</span><span class="p">,</span> <span class="mf">1.54</span><span class="p">,</span> <span class="mf">1.47</span><span class="p">,</span> <span class="mf">1.46</span><span class="p">,</span> <span class="mf">1.42</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.44</span><span class="p">,</span> <span class="mf">1.42</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.38</span><span class="p">,</span> <span class="mf">1.39</span><span class="p">,</span> <span class="mf">1.40</span><span class="p">,</span>
+    <span class="c1"># Cs    Ba</span>
+    <span class="mf">2.44</span><span class="p">,</span> <span class="mf">2.15</span><span class="p">,</span>
+    <span class="c1"># La    Ce    Pr    Nd    Pm    Sm    Eu    Gd    Tb    Dy    Ho    Er    Tm    Yb    Lu</span>
+    <span class="mf">2.07</span><span class="p">,</span> <span class="mf">2.04</span><span class="p">,</span> <span class="mf">2.03</span><span class="p">,</span> <span class="mf">2.01</span><span class="p">,</span> <span class="mf">1.99</span><span class="p">,</span> <span class="mf">1.98</span><span class="p">,</span> <span class="mf">1.98</span><span class="p">,</span> <span class="mf">1.96</span><span class="p">,</span> <span class="mf">1.94</span><span class="p">,</span> <span class="mf">1.92</span><span class="p">,</span> <span class="mf">1.92</span><span class="p">,</span> <span class="mf">1.89</span><span class="p">,</span> <span class="mf">1.90</span><span class="p">,</span> <span class="mf">1.87</span><span class="p">,</span> <span class="mf">1.87</span><span class="p">,</span>
+    <span class="c1"># Hf    Ta     W    Re    Os    Ir    Pt    Au    Hg    Tl    Pb    Bi    Po    At    Rn</span>
+    <span class="mf">1.75</span><span class="p">,</span> <span class="mf">1.70</span><span class="p">,</span> <span class="mf">1.62</span><span class="p">,</span> <span class="mf">1.51</span><span class="p">,</span> <span class="mf">1.44</span><span class="p">,</span> <span class="mf">1.41</span><span class="p">,</span> <span class="mf">1.36</span><span class="p">,</span> <span class="mf">1.36</span><span class="p">,</span> <span class="mf">1.32</span><span class="p">,</span> <span class="mf">1.45</span><span class="p">,</span> <span class="mf">1.46</span><span class="p">,</span> <span class="mf">1.48</span><span class="p">,</span> <span class="mf">1.40</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">,</span> <span class="mf">1.50</span><span class="p">,</span>
+    <span class="c1"># Fr    Ra</span>
+    <span class="mf">2.60</span><span class="p">,</span> <span class="mf">2.21</span><span class="p">,</span>
+    <span class="c1"># Ac    Th    Pa     U    Np    Pu    Am    Cm    Bk    Cf    Es    Fm    Md    No    Lr</span>
+    <span class="mf">2.15</span><span class="p">,</span> <span class="mf">2.06</span><span class="p">,</span> <span class="mf">2.00</span><span class="p">,</span> <span class="mf">1.96</span><span class="p">,</span> <span class="mf">1.90</span><span class="p">,</span> <span class="mf">1.87</span><span class="p">,</span> <span class="mf">1.80</span><span class="p">,</span> <span class="mf">1.69</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span>
+    <span class="c1"># Rf    Db    Sg    Bh    Hs    Mt    Ds    Rg    Cn    Nh    Fl    Mc    Lv    Ts    Og</span>
+    <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span> <span class="n">UNKN</span><span class="p">,</span>
+<span class="p">]</span>  <span class="c1"># fmt: skip</span>
+
+
+<div class="viewcode-block" id="CalyTaskGroup">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.caly_task_group.CalyTaskGroup">[docs]</a>
+<span class="k">class</span> <span class="nc">CalyTaskGroup</span><span class="p">(</span><span class="n">ExplorationTaskGroup</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="CalyTaskGroup.set_params">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.caly_task_group.CalyTaskGroup.set_params">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">numb_of_species</span><span class="p">,</span>
+        <span class="n">name_of_atoms</span><span class="p">,</span>
+        <span class="n">numb_of_atoms</span><span class="p">,</span>
+        <span class="n">distance_of_ions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">atomic_number</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="n">max_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">system_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CALYPSO&quot;</span><span class="p">,</span>
+        <span class="n">numb_of_formula</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>
+        <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">volume</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">ialgo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">pso_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">icode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="n">numb_of_lbest</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">numb_of_local_optim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sh submit.sh&quot;</span><span class="p">,</span>
+        <span class="n">max_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9000</span><span class="p">,</span>
+        <span class="n">gen_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">pick_up</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">pick_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">split</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">spec_space_group</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+        <span class="n">vsc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">ctrl_range</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span>
+        <span class="n">max_numb_atoms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="n">opt_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set calypso parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_species</span> <span class="o">=</span> <span class="n">numb_of_species</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_atoms</span> <span class="o">=</span> <span class="n">numb_of_atoms</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name_of_atoms</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="p">[</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">name_of_atoms</span><span class="p">]</span>
+        <span class="p">):</span>
+            <span class="n">overlap</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">name_of_atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">name_of_atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">overlap</span> <span class="o">=</span> <span class="n">overlap</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="n">overlap</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">name_of_atoms</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Any sub-list should not equal with intersection, e.g. [[A,B,C], [B,C], [C]] is not allowed.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">choice</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">_atoms</span> <span class="ow">in</span> <span class="n">name_of_atoms</span><span class="p">:</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">_atoms</span><span class="p">)</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;randomly choose </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2"> from </span><span class="si">{</span><span class="n">_atoms</span><span class="si">}</span><span class="s2">, already choose: </span><span class="si">{</span><span class="n">choice</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">choice</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">choice</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span> <span class="o">=</span> <span class="n">choice</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The final choice is </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atomic_number</span> <span class="o">=</span> <span class="p">[</span><span class="n">atomic_symbols</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span> <span class="o">=</span> <span class="n">name_of_atoms</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atomic_number</span> <span class="o">=</span> <span class="n">atomic_number</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distance_of_ions</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">updated_table</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">covalent_radii</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">distance_of_ions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">updated_table</span><span class="p">[</span><span class="n">atomic_number_map</span><span class="p">[</span><span class="n">key</span><span class="p">]]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="n">temp_distance_mtx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">numb_of_species</span><span class="p">,</span> <span class="n">numb_of_species</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numb_of_species</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numb_of_species</span><span class="p">):</span>
+                    <span class="n">temp_distance_mtx</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                        <span class="n">updated_table</span><span class="p">[</span><span class="n">atomic_number_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span><span class="p">[</span><span class="n">i</span><span class="p">]]]</span> <span class="o">*</span> <span class="mf">0.7</span>
+                        <span class="o">+</span> <span class="n">updated_table</span><span class="p">[</span><span class="n">atomic_number_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span><span class="p">[</span><span class="n">j</span><span class="p">]]]</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">,</span>
+                        <span class="mi">2</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distance_of_ions</span> <span class="o">=</span> <span class="n">temp_distance_mtx</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distance_of_ions</span> <span class="o">=</span> <span class="n">distance_of_ions</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pop_size</span> <span class="o">=</span> <span class="n">pop_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_step</span> <span class="o">=</span> <span class="n">max_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">system_name</span> <span class="o">=</span> <span class="n">system_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_formula</span> <span class="o">=</span> <span class="n">numb_of_formula</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fmax</span> <span class="o">=</span> <span class="n">fmax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">volume</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ialgo</span> <span class="o">=</span> <span class="n">ialgo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pso_ratio</span> <span class="o">=</span> <span class="n">pso_ratio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">icode</span> <span class="o">=</span> <span class="n">icode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_lbest</span> <span class="o">=</span> <span class="n">numb_of_lbest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_local_optim</span> <span class="o">=</span> <span class="n">numb_of_local_optim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span> <span class="o">=</span> <span class="n">max_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gen_type</span> <span class="o">=</span> <span class="n">gen_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pick_up</span> <span class="o">=</span> <span class="n">pick_up</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pick_step</span> <span class="o">=</span> <span class="n">pick_step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parallel</span> <span class="o">=</span> <span class="n">parallel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split</span> <span class="o">=</span> <span class="n">split</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spec_space_group</span> <span class="o">=</span> <span class="n">spec_space_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vsc</span> <span class="o">=</span> <span class="n">vsc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctrl_range</span> <span class="o">=</span> <span class="n">ctrl_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_numb_atoms</span> <span class="o">=</span> <span class="n">max_numb_atoms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opt_step</span> <span class="o">=</span> <span class="n">opt_step</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">caly_set</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="CalyTaskGroup.make_task">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.caly_task_group.CalyTaskGroup.make_task">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExplorationTaskGroup</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make the CALYPSO task group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        task_grp: ExplorationTaskGroup</span>
+<span class="sd">            Return one calypso task group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">caly_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;calypso settings are not set&quot;</span><span class="p">)</span>
+        <span class="c1"># clear all existing tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_caly_task</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_make_caly_task</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExplorationTask</span><span class="p">:</span>
+        <span class="n">input_file_str</span><span class="p">,</span> <span class="n">run_opt_str</span><span class="p">,</span> <span class="n">check_opt_str</span> <span class="o">=</span> <span class="n">make_calypso_input</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_species</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name_of_atoms</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">atomic_number</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_atoms</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">distance_of_ions</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pop_size</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_step</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">system_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_formula</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pressure</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fmax</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">volume</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ialgo</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pso_ratio</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">icode</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_lbest</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numb_of_local_optim</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_time</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gen_type</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pick_up</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pick_step</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parallel</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">split</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spec_space_group</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vsc</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctrl_range</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_numb_atoms</span><span class="p">,</span>
+            <span class="n">opt_step</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">opt_step</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">ExplorationTask</span><span class="p">()</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">calypso_input_file</span><span class="p">,</span> <span class="n">input_file_str</span><span class="p">)</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">calypso_run_opt_file</span><span class="p">,</span> <span class="n">run_opt_str</span><span class="p">)</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">calypso_check_opt_file</span><span class="p">,</span> <span class="n">check_opt_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">task</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.flow.fine_tune &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.flow.fine_tune</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.flow.fine_tune</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">deepcopy</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Set</span><span class="p">,</span>
+    <span class="n">Type</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dflow</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">InputArtifact</span><span class="p">,</span>
+    <span class="n">InputParameter</span><span class="p">,</span>
+    <span class="n">Inputs</span><span class="p">,</span>
+    <span class="n">Outputs</span><span class="p">,</span>
+    <span class="n">OPTemplate</span><span class="p">,</span>
+    <span class="n">OutputArtifact</span><span class="p">,</span>
+    <span class="n">Outputs</span><span class="p">,</span>
+    <span class="n">Step</span><span class="p">,</span>
+    <span class="n">Steps</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dflow.python</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">OP</span><span class="p">,</span>
+    <span class="n">PythonOPTemplate</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="kn">from</span> <span class="nn">dpgen2.utils.step_config</span> <span class="kn">import</span> <span class="n">init_executor</span>
+
+
+<div class="viewcode-block" id="FineTune">
+<a class="viewcode-back" href="../../../development/pfd.flow.html#pfd.flow.fine_tune.FineTune">[docs]</a>
+<span class="k">class</span> <span class="nc">FineTune</span><span class="p">(</span><span class="n">Steps</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">pert_gen_op</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">OP</span><span class="p">],</span>
+        <span class="n">prep_run_fp_op</span><span class="p">:</span> <span class="n">OPTemplate</span><span class="p">,</span>
+        <span class="n">collect_data_op</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">OP</span><span class="p">],</span>
+        <span class="n">prep_run_dp_train_op</span><span class="p">:</span> <span class="n">OPTemplate</span><span class="p">,</span>
+        <span class="n">expl_finetune_loop_op</span><span class="p">:</span> <span class="n">OPTemplate</span><span class="p">,</span>
+        <span class="n">pert_gen_step_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">collect_data_step_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">init_training</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">skip_aimd</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_parameters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;mass_map&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;pert_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>  <span class="c1"># Total input parameter file: to be changed in the future</span>
+            <span class="c1"># md exploration</span>
+            <span class="s2">&quot;numb_models&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>
+            <span class="s2">&quot;explore_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;conf_selector&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="c1"># training</span>
+            <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="c1"># test</span>
+            <span class="s2">&quot;inference_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="c1"># fp calculation for labeling</span>
+            <span class="s2">&quot;fp_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="c1"># fp exploration</span>
+            <span class="s2">&quot;aimd_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;aimd_sample_conf&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">value</span><span class="o">=</span><span class="p">{}),</span>
+            <span class="s2">&quot;collect_data_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;converge_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_input_artifacts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;init_confs&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(),</span>
+            <span class="s2">&quot;expl_models&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;init_models&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(),</span>
+            <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+            <span class="s2">&quot;validation_data&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_artifacts</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;fine_tuned_model&quot;</span><span class="p">:</span> <span class="n">OutputArtifact</span><span class="p">(),</span>
+            <span class="s2">&quot;fine_tune_report&quot;</span><span class="p">:</span> <span class="n">OutputArtifact</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="n">Inputs</span><span class="p">(</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_parameters</span><span class="p">,</span> <span class="n">artifacts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_artifacts</span>
+            <span class="p">),</span>
+            <span class="n">outputs</span><span class="o">=</span><span class="n">Outputs</span><span class="p">(</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span><span class="p">,</span>
+                <span class="n">artifacts</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_output_artifacts</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;collect-data&quot;</span><span class="p">:</span> <span class="s2">&quot;collect&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">_fine_tune_cl</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">pert_gen_op</span><span class="o">=</span><span class="n">pert_gen_op</span><span class="p">,</span>
+            <span class="n">prep_run_fp_op</span><span class="o">=</span><span class="n">prep_run_fp_op</span><span class="p">,</span>
+            <span class="n">prep_run_dp_train_op</span><span class="o">=</span><span class="n">prep_run_dp_train_op</span><span class="p">,</span>
+            <span class="n">collect_data_op</span><span class="o">=</span><span class="n">collect_data_op</span><span class="p">,</span>
+            <span class="n">expl_finetune_loop_op</span><span class="o">=</span><span class="n">expl_finetune_loop_op</span><span class="p">,</span>
+            <span class="n">pert_gen_step_config</span><span class="o">=</span><span class="n">pert_gen_step_config</span><span class="p">,</span>
+            <span class="n">collect_data_config</span><span class="o">=</span><span class="n">collect_data_step_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+            <span class="n">init_training</span><span class="o">=</span><span class="n">init_training</span><span class="p">,</span>
+            <span class="n">skip_aimd</span><span class="o">=</span><span class="n">skip_aimd</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_parameters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">input_artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_input_artifacts</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">output_artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_output_artifacts</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_fine_tune_cl</span><span class="p">(</span>
+    <span class="n">ft_steps</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">pert_gen_op</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">OP</span><span class="p">],</span>
+    <span class="n">prep_run_fp_op</span><span class="p">:</span> <span class="n">OPTemplate</span><span class="p">,</span>
+    <span class="n">prep_run_dp_train_op</span><span class="p">:</span> <span class="n">OPTemplate</span><span class="p">,</span>
+    <span class="n">expl_finetune_loop_op</span><span class="p">:</span> <span class="n">OPTemplate</span><span class="p">,</span>
+    <span class="n">collect_data_op</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">OP</span><span class="p">],</span>
+    <span class="n">pert_gen_step_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">collect_data_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">upload_python_packages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">init_training</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip_aimd</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">pert_gen_step_config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">pert_gen_step_config</span><span class="p">)</span>
+    <span class="n">pert_gen_template_config</span> <span class="o">=</span> <span class="n">pert_gen_step_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;template_config&quot;</span><span class="p">)</span>
+    <span class="n">pert_gen_executor</span> <span class="o">=</span> <span class="n">init_executor</span><span class="p">(</span><span class="n">pert_gen_step_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;executor&quot;</span><span class="p">))</span>
+
+    <span class="n">collect_data_step_config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">collect_data_config</span><span class="p">)</span>
+    <span class="n">collect_data_template_config</span> <span class="o">=</span> <span class="n">collect_data_step_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;template_config&quot;</span><span class="p">)</span>
+    <span class="n">collect_data_executor</span> <span class="o">=</span> <span class="n">init_executor</span><span class="p">(</span><span class="n">collect_data_step_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;executor&quot;</span><span class="p">))</span>
+
+    <span class="n">pert_gen</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-pert-gen&quot;</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
+            <span class="n">pert_gen_op</span><span class="p">,</span>
+            <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">pert_gen_template_config</span>
+        <span class="p">),</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;pert_config&quot;</span><span class="p">]},</span>
+        <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;init_confs&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_confs&quot;</span><span class="p">]},</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;pert-gen&quot;</span><span class="p">]),</span>
+        <span class="n">executor</span><span class="o">=</span><span class="n">pert_gen_executor</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">pert_gen_step_config</span>
+    <span class="p">)</span>
+    <span class="n">ft_steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pert_gen</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">init_training</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># if skip AIMD exploration</span>
+        <span class="k">if</span> <span class="n">skip_aimd</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">loop_iter_data</span> <span class="o">=</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;iter_data&quot;</span><span class="p">)</span>
+        <span class="c1"># if execute AIMD exploration</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sample_conf_aimd</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-sample-aimd&quot;</span><span class="p">,</span>
+                <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
+                    <span class="n">collect_data_op</span><span class="p">,</span>
+                    <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">collect_data_template_config</span>
+                <span class="p">),</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;optional_parameters&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span>
+                        <span class="s2">&quot;aimd_sample_conf&quot;</span>
+                    <span class="p">],</span>
+                    <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;type_map&quot;</span><span class="p">],</span>
+                <span class="p">},</span>
+                <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">pert_gen</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;pert_sys&quot;</span><span class="p">]},</span>
+                <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;sample-aimd&quot;</span><span class="p">]),</span>
+                <span class="n">executor</span><span class="o">=</span><span class="n">collect_data_executor</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">collect_data_step_config</span>
+            <span class="p">)</span>
+            <span class="n">ft_steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sample_conf_aimd</span><span class="p">)</span>
+
+            <span class="n">prep_run_fp</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-prep-run-fp&quot;</span><span class="p">,</span>
+                <span class="n">template</span><span class="o">=</span><span class="n">prep_run_fp_op</span><span class="p">,</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;fp_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;aimd_config&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;type_map&quot;</span><span class="p">],</span>
+                <span class="p">},</span>
+                <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;confs&quot;</span><span class="p">:</span> <span class="n">sample_conf_aimd</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;multi_systems&quot;</span><span class="p">]</span>
+                <span class="p">},</span>
+                <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">]),</span>
+            <span class="p">)</span>
+            <span class="n">ft_steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prep_run_fp</span><span class="p">)</span>
+            <span class="n">collect_data</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-collect-aimd&quot;</span><span class="p">,</span>
+                <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
+                    <span class="n">collect_data_op</span><span class="p">,</span>
+                    <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">collect_data_template_config</span>
+                <span class="p">),</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;optional_parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;labeled_data&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="s2">&quot;multi_sys_name&quot;</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;type_map&quot;</span><span class="p">],</span>
+                <span class="p">},</span>
+                <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">prep_run_fp</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;labeled_data&quot;</span><span class="p">]},</span>
+                <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;collect-data&quot;</span><span class="p">]),</span>
+                <span class="n">executor</span><span class="o">=</span><span class="n">collect_data_executor</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">collect_data_step_config</span>
+            <span class="p">)</span>
+            <span class="n">ft_steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">collect_data</span><span class="p">)</span>
+            <span class="n">loop_iter_data</span> <span class="o">=</span> <span class="n">collect_data</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;multi_systems&quot;</span><span class="p">]</span>
+
+        <span class="c1"># init model training</span>
+        <span class="n">prep_run_ft</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+            <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-prep-run-dp-train&quot;</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">prep_run_dp_train_op</span><span class="p">,</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;numb_models&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;numb_models&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;run_optional_parameter&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;mixed_type&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+            <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;init_models&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_models&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_data&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">loop_iter_data</span><span class="p">,</span>  <span class="c1"># collect_data.outputs.artifacts[&quot;multi_systems&quot;]#steps.inputs.artifacts[&quot;iter_data&quot;],</span>
+            <span class="p">},</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;init&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-train&quot;</span><span class="p">]),</span>
+        <span class="p">)</span>
+        <span class="n">ft_steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prep_run_ft</span><span class="p">)</span>
+        <span class="n">expl_models</span> <span class="o">=</span> <span class="n">prep_run_ft</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;models&quot;</span><span class="p">)</span>
+    <span class="c1"># if skip initial model training</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">loop_iter_data</span> <span class="o">=</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;iter_data&quot;</span><span class="p">)</span>
+        <span class="n">expl_models</span> <span class="o">=</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;expl_models&quot;</span><span class="p">)</span>
+
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;ft-loop&quot;</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="n">expl_finetune_loop_op</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;fp_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;fp_config&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;type_map&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;mass_map&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;mass_map&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;conf_selector&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;conf_selector&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;numb_models&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;numb_models&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;inference_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;inference_config&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;explore_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;explore_config&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;dp_test_validation_config&quot;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s2">&quot;converge_config&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converge_config&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
+        <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">pert_gen</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
+                <span class="s2">&quot;pert_sys&quot;</span>
+            <span class="p">],</span>  <span class="c1"># starting systems for model deviation</span>
+            <span class="s2">&quot;current_model&quot;</span><span class="p">:</span> <span class="n">expl_models</span><span class="p">,</span>  <span class="c1"># ft_steps.inputs.artifacts[&quot;expl_models&quot;],</span>
+            <span class="s2">&quot;init_model&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
+                <span class="s2">&quot;init_models&quot;</span>
+            <span class="p">],</span>  <span class="c1"># starting point for finetune</span>
+            <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">ft_steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
+                <span class="s2">&quot;init_data&quot;</span>
+            <span class="p">],</span>  <span class="c1"># initial data for model finetune</span>
+            <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">loop_iter_data</span><span class="p">,</span>  <span class="c1"># ft_steps.inputs.artifacts[&quot;iter_data&quot;],</span>
+        <span class="p">},</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;-fp&quot;</span><span class="p">]),</span>
+    <span class="p">)</span>
+    <span class="n">ft_steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="n">ft_steps</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;fine_tuned_model&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_from</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
+        <span class="s2">&quot;ft_model&quot;</span>
+    <span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ft_steps</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;fine_tune_report&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_from</span> <span class="o">=</span> <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
+        <span class="s2">&quot;iter_data&quot;</span>
+    <span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

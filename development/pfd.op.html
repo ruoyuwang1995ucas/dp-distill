@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.op package &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pfd.superop package" href="pfd.superop.html" />
+    <link rel="prev" title="pfd.fp package" href="pfd.fp.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pfd.html">pfd package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pfd.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pfd.entrypoint.html">pfd.entrypoint package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.html">pfd.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.flow.html">pfd.flow package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.fp.html">pfd.fp package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pfd.op package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.superop.html">pfd.superop package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.train.html">pfd.train package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.utils.html">pfd.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd.constants">pfd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pfd.html">pfd package</a></li>
+      <li class="breadcrumb-item active">pfd.op package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pfd.op.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfd-op-package">
+<h1>pfd.op package<a class="headerlink" href="#pfd-op-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pfd.op.collect">
+<span id="pfd-op-collect-module"></span><h2>pfd.op.collect module<a class="headerlink" href="#module-pfd.op.collect" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.collect.CollectData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.collect.</span></span><span class="sig-name descname"><span class="pre">CollectData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/collect.html#CollectData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.collect.CollectData" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<p>Collect data for further operations, return dpdata.Multisystems</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>OP</strong> (<em>_type_</em>) – _description_</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>NotImplementedError</strong> – _description_</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>_type_</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.collect.CollectData.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/collect.html#CollectData.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.collect.CollectData.execute" title="Link to this definition"></a></dt>
+<dd><p>Execute the OP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>dict</em>) – Input dict with components:
+- <cite>lmp_task_grp</cite> : (<cite>BigParameter(Path)</cite>) Can be pickle loaded as a ExplorationTaskGroup. Definitions for LAMMPS tasks</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>op</strong> – Output dict with components:
+- <cite>task_names</cite>: (<cite>List[str]</cite>) The name of tasks. Will be used as the identities of the tasks. The names of different tasks are different.
+- <cite>task_paths</cite>: (<cite>Artifact(List[Path])</cite>) The parepared working paths of the tasks. Contains all input files needed to start the LAMMPS simulation. The order fo the Paths should be consistent with <cite>op[“task_names”]</cite></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.collect.CollectData.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/collect.html#CollectData.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.collect.CollectData.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.collect.CollectData.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/collect.html#CollectData.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.collect.CollectData.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.op.collect.get_sys_fmt">
+<span class="sig-prename descclassname"><span class="pre">pfd.op.collect.</span></span><span class="sig-name descname"><span class="pre">get_sys_fmt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/collect.html#get_sys_fmt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.collect.get_sys_fmt" title="Link to this definition"></a></dt>
+<dd><p>return dpdata format</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.op.collect.sample_sys">
+<span class="sig-prename descclassname"><span class="pre">pfd.op.collect.</span></span><span class="sig-name descname"><span class="pre">sample_sys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">System</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/collect.html#sample_sys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.collect.sample_sys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.op.converge">
+<span id="pfd-op-converge-module"></span><h2>pfd.op.converge module<a class="headerlink" href="#module-pfd.op.converge" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.converge.EvalConv">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.converge.</span></span><span class="sig-name descname"><span class="pre">EvalConv</span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#EvalConv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.EvalConv" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>converged</strong> – boolean, whether the workflow has already converged.</p></li>
+<li><p><strong>systems</strong> – dpdata system, a list of systems</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.EvalConv.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#EvalConv.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.EvalConv.execute" title="Link to this definition"></a></dt>
+<dd><p>Run the OP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.EvalConv.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#EvalConv.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.EvalConv.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.EvalConv.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#EvalConv.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.EvalConv.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.converge.IterCounter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.converge.</span></span><span class="sig-name descname"><span class="pre">IterCounter</span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#IterCounter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.IterCounter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.IterCounter.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#IterCounter.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.IterCounter.execute" title="Link to this definition"></a></dt>
+<dd><p>Run the OP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.IterCounter.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#IterCounter.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.IterCounter.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.IterCounter.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#IterCounter.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.IterCounter.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoop">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.converge.</span></span><span class="sig-name descname"><span class="pre">NextLoop</span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoop" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoop.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoop.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoop.execute" title="Link to this definition"></a></dt>
+<dd><p>Run the OP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoop.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoop.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoop.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoop.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoop.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoop.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoopOld">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.converge.</span></span><span class="sig-name descname"><span class="pre">NextLoopOld</span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoopOld"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoopOld" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoopOld.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoopOld.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoopOld.execute" title="Link to this definition"></a></dt>
+<dd><p>Run the OP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoopOld.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoopOld.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoopOld.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.converge.NextLoopOld.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/converge.html#NextLoopOld.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.converge.NextLoopOld.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.op.inference">
+<span id="pfd-op-inference-module"></span><h2>pfd.op.inference module<a class="headerlink" href="#module-pfd.op.inference" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.inference.InferenceOP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.inference.</span></span><span class="sig-name descname"><span class="pre">InferenceOP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/inference.html#InferenceOP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.inference.InferenceOP" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.inference.InferenceOP.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/inference.html#InferenceOP.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.inference.InferenceOP.execute" title="Link to this definition"></a></dt>
+<dd><p>Run the OP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.inference.InferenceOP.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/inference.html#InferenceOP.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.inference.InferenceOP.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.inference.InferenceOP.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/inference.html#InferenceOP.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.inference.InferenceOP.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.op.model_test">
+<span id="pfd-op-model-test-module"></span><h2>pfd.op.model_test module<a class="headerlink" href="#module-pfd.op.model_test" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.model_test.ModelTestOP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.model_test.</span></span><span class="sig-name descname"><span class="pre">ModelTestOP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/model_test.html#ModelTestOP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.model_test.ModelTestOP" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.model_test.ModelTestOP.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/model_test.html#ModelTestOP.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.model_test.ModelTestOP.execute" title="Link to this definition"></a></dt>
+<dd><p>Run the OP</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.model_test.ModelTestOP.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/model_test.html#ModelTestOP.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.model_test.ModelTestOP.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.model_test.ModelTestOP.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/model_test.html#ModelTestOP.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.model_test.ModelTestOP.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.op.pert_gen">
+<span id="pfd-op-pert-gen-module"></span><h2>pfd.op.pert_gen module<a class="headerlink" href="#module-pfd.op.pert_gen" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.pert_gen.PertGen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.pert_gen.</span></span><span class="sig-name descname"><span class="pre">PertGen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/pert_gen.html#PertGen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.pert_gen.PertGen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<p>Perturb the input configurations</p>
+<p>A list of working directories (defined by <cite>ip[“task”]</cite>)
+containing all files needed to start LAMMPS tasks will be
+created. The paths of the directories will be returned as
+<cite>op[“task_paths”]</cite>. The identities of the tasks are returned as
+<cite>op[“task_names”]</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.pert_gen.PertGen.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/pert_gen.html#PertGen.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.pert_gen.PertGen.execute" title="Link to this definition"></a></dt>
+<dd><p>Execute the OP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>dict</em>) – Input dict with components:
+- <cite>init_confs</cite> : (<cite>Artifact(List[Path])</cite>) The paths to the input files of initial structure configurations.
+- <cite>config</cite> : (<cite>BigParameter(dict)</cite>) The input parameters for generating perturbed configurations.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>op</strong> – Output dict with components:
+- <cite>pert_sys</cite>: (<cite>Artifact(List[Path])</cite>) The paths of perturbed systems. A list of <cite>dpdata.System</cite>.
+- <cite>confs</cite>: (<cite>Artifact(List[Path])</cite>) The prepared paths of perturbed systems. A list of <cite>dpdata.MultiSystems</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.pert_gen.PertGen.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/pert_gen.html#PertGen.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.pert_gen.PertGen.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.pert_gen.PertGen.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/pert_gen.html#PertGen.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.pert_gen.PertGen.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.op.select_confs">
+<span id="pfd-op-select-confs-module"></span><h2>pfd.op.select_confs module<a class="headerlink" href="#module-pfd.op.select_confs" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.select_confs.SelectConfs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.select_confs.</span></span><span class="sig-name descname"><span class="pre">SelectConfs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/select_confs.html#SelectConfs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.select_confs.SelectConfs" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<p>Select configurations from exploration trajectories for labeling.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.select_confs.SelectConfs.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/select_confs.html#SelectConfs.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.select_confs.SelectConfs.execute" title="Link to this definition"></a></dt>
+<dd><p>Execute the OP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>dict</em>) – <p>Input dict with components:</p>
+<ul class="simple">
+<li><p><cite>conf_selector</cite>: (<cite>ConfSelector</cite>) Configuration selector.</p></li>
+<li><p><cite>type_map</cite>: (<cite>List[str]</cite>) The type map.</p></li>
+<li><p><cite>trajs</cite>: (<cite>Artifact(List[Path])</cite>) The trajectories generated in the exploration.</p></li>
+<li><p><cite>model_devis</cite>: (<cite>Artifact(List[Path])</cite>) The file storing the model deviation of the trajectory. The order of model deviation storage is consistent with that of the trajectories. The order of frames of one model deviation storage is also consistent with tat of the corresponding trajectory.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Output dict with components:
+- <cite>report</cite>: (<cite>ExplorationReport</cite>) The report on the exploration.
+- <cite>conf</cite>: (<cite>Artifact(List[Path])</cite>) The selected configurations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Any</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.select_confs.SelectConfs.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/select_confs.html#SelectConfs.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.select_confs.SelectConfs.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.select_confs.SelectConfs.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/select_confs.html#SelectConfs.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.select_confs.SelectConfs.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.select_confs.SelectConfs.validate_trajs">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_trajs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_devis</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/select_confs.html#SelectConfs.validate_trajs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.select_confs.SelectConfs.validate_trajs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.op.stage">
+<span id="pfd-op-stage-module"></span><h2>pfd.op.stage module<a class="headerlink" href="#module-pfd.op.stage" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.stage.StageScheduler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.stage.</span></span><span class="sig-name descname"><span class="pre">StageScheduler</span></span><a class="reference internal" href="../_modules/pfd/op/stage.html#StageScheduler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.stage.StageScheduler" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.stage.StageScheduler.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/stage.html#StageScheduler.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.stage.StageScheduler.execute" title="Link to this definition"></a></dt>
+<dd><p>Generate exploration tasks based on model and exploration styles</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.stage.StageScheduler.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/stage.html#StageScheduler.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.stage.StageScheduler.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.stage.StageScheduler.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/stage.html#StageScheduler.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.stage.StageScheduler.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pfd.op.task_gen">
+<span id="pfd-op-task-gen-module"></span><h2>pfd.op.task_gen module<a class="headerlink" href="#module-pfd.op.task_gen" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.op.task_gen.TaskGen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.op.task_gen.</span></span><span class="sig-name descname"><span class="pre">TaskGen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/task_gen.html#TaskGen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.task_gen.TaskGen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OP</span></code></p>
+<p>Generate tasks for exploration</p>
+<p>A list of working directories (defined by <cite>ip[“task”]</cite>)
+containing all files needed to start LAMMPS tasks will be
+created. The paths of the directories will be returned as
+<cite>op[“task_paths”]</cite>. The identities of the tasks are returned as
+<cite>op[“task_names”]</cite>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.task_gen.TaskGen.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">OPIO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">OPIO</span></span></span><a class="reference internal" href="../_modules/pfd/op/task_gen.html#TaskGen.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.task_gen.TaskGen.execute" title="Link to this definition"></a></dt>
+<dd><p>Execute the OP.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ip</strong> (<em>dict</em>) – Input dict with components:
+- <cite>lmp_task_grp</cite> : (<cite>BigParameter(Path)</cite>) Can be pickle loaded as a ExplorationTaskGroup. Definitions for LAMMPS tasks</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>op</strong> – Output dict with components:</p>
+<ul class="simple">
+<li><p><cite>task_names</cite>: (<cite>List[str]</cite>) The name of tasks. Will be used as the identities of the tasks. The names of different tasks are different.</p></li>
+<li><p><cite>task_paths</cite>: (<cite>Artifact(List[Path])</cite>) The parepared working paths of the tasks. Contains all input files needed to start the LAMMPS simulation. The order fo the Paths should be consistent with <cite>op[“task_names”]</cite></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.task_gen.TaskGen.get_input_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_input_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/task_gen.html#TaskGen.get_input_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.task_gen.TaskGen.get_input_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the inputs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.op.task_gen.TaskGen.get_output_sign">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_output_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/task_gen.html#TaskGen.get_output_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.task_gen.TaskGen.get_output_sign" title="Link to this definition"></a></dt>
+<dd><p>Get the signature of the outputs</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.op.task_gen.gen_expl_grp">
+<span class="sig-prename descclassname"><span class="pre">pfd.op.task_gen.</span></span><span class="sig-name descname"><span class="pre">gen_expl_grp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">systems</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">task</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/op/task_gen.html#gen_expl_grp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.op.task_gen.gen_expl_grp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.op">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pfd.op" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfd.fp.html" class="btn btn-neutral float-left" title="pfd.fp package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pfd.superop.html" class="btn btn-neutral float-right" title="pfd.superop package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

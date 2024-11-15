@@ -1,0 +1,1176 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.entrypoint.submit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.entrypoint.submit</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">dpdata</span>
+<span class="kn">import</span> <span class="nn">dflow</span>
+<span class="kn">import</span> <span class="nn">dpgen2</span>
+<span class="kn">import</span> <span class="nn">pfd</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">fpop</span>
+<span class="kn">import</span> <span class="nn">ase</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">dflow</span> <span class="kn">import</span> <span class="n">ArgoStep</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">Steps</span><span class="p">,</span> <span class="n">Workflow</span><span class="p">,</span> <span class="n">upload_artifact</span><span class="p">,</span> <span class="n">download_artifact</span>
+
+
+<span class="kn">from</span> <span class="nn">pfd.entrypoint.args</span> <span class="kn">import</span> <span class="n">normalize_infer_args</span><span class="p">,</span> <span class="n">normalize</span> <span class="k">as</span> <span class="n">normalize_args</span>
+<span class="kn">from</span> <span class="nn">pfd.entrypoint.common</span> <span class="kn">import</span> <span class="n">global_config_workflow</span><span class="p">,</span> <span class="n">expand_idx</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.fp</span> <span class="kn">import</span> <span class="n">fp_styles</span>
+<span class="kn">from</span> <span class="nn">pfd.train</span> <span class="kn">import</span> <span class="n">train_styles</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration</span> <span class="kn">import</span> <span class="n">explore_styles</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.superop</span> <span class="kn">import</span> <span class="n">PrepRunDPTrain</span><span class="p">,</span> <span class="n">PrepRunFp</span>
+
+<span class="kn">from</span> <span class="nn">pfd.op</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">PertGen</span><span class="p">,</span>
+    <span class="n">CollectData</span><span class="p">,</span>
+    <span class="n">InferenceOP</span><span class="p">,</span>
+    <span class="n">SelectConfs</span><span class="p">,</span>
+    <span class="n">ModelTestOP</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pfd.superop</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExplFinetuneLoop</span><span class="p">,</span>
+    <span class="n">ExplFinetuneBlock</span><span class="p">,</span>
+    <span class="n">ExplDistBlock</span><span class="p">,</span>
+    <span class="n">ExplDistLoop</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.selector</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConfFilters</span><span class="p">,</span>
+    <span class="n">ConfSelectorFrames</span><span class="p">,</span>
+    <span class="n">conf_filter_styles</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.converge</span> <span class="kn">import</span> <span class="n">ConfFiltersConv</span><span class="p">,</span> <span class="n">ConfFilterConv</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.render</span> <span class="kn">import</span> <span class="n">TrajRenderLammps</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.scheduler</span> <span class="kn">import</span> <span class="n">Scheduler</span>
+<span class="kn">from</span> <span class="nn">pfd.flow</span> <span class="kn">import</span> <span class="n">Distillation</span><span class="p">,</span> <span class="n">FineTune</span><span class="p">,</span> <span class="n">DataGen</span>
+<span class="kn">from</span> <span class="nn">pfd.constants</span> <span class="kn">import</span> <span class="n">default_image</span>
+<span class="kn">from</span> <span class="nn">pfd.utils.step_config</span> <span class="kn">import</span> <span class="n">normalize</span> <span class="k">as</span> <span class="n">normalize_step_dict</span>
+<span class="kn">from</span> <span class="nn">pfd.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">upload_artifact_and_print_uri</span><span class="p">,</span>
+    <span class="n">get_artifact_from_uri</span><span class="p">,</span>
+    <span class="n">matched_step_key</span><span class="p">,</span>
+    <span class="n">sort_slice_ops</span><span class="p">,</span>
+    <span class="n">print_keys_in_nice_format</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">periodictable</span> <span class="kn">import</span> <span class="n">elements</span>
+
+<span class="n">default_config</span> <span class="o">=</span> <span class="n">normalize_step_dict</span><span class="p">({</span><span class="s2">&quot;template_config&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;image&quot;</span><span class="p">:</span> <span class="n">default_image</span><span class="p">}})</span>
+
+
+<div class="viewcode-block" id="get_conf_filters">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.get_conf_filters">[docs]</a>
+<span class="k">def</span> <span class="nf">get_conf_filters</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">conf_filters</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">conf_filters</span> <span class="o">=</span> <span class="n">ConfFilters</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">conf_filter</span> <span class="o">=</span> <span class="n">conf_filter_styles</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)](</span><span class="o">**</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">conf_filters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">conf_filter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conf_filters</span></div>
+
+
+
+<div class="viewcode-block" id="get_conf_filters_conv">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.get_conf_filters_conv">[docs]</a>
+<span class="k">def</span> <span class="nf">get_conf_filters_conv</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">conf_filters_conv</span> <span class="o">=</span> <span class="n">ConfFiltersConv</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">conf_filter_conv</span> <span class="o">=</span> <span class="n">ConfFilterConv</span><span class="o">.</span><span class="n">get_filter</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">))(</span><span class="o">**</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">conf_filters_conv</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">conf_filter_conv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">conf_filters_conv</span></div>
+
+
+
+<div class="viewcode-block" id="make_dist_op">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.make_dist_op">[docs]</a>
+<span class="k">def</span> <span class="nf">make_dist_op</span><span class="p">(</span>
+    <span class="n">teacher_model_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+    <span class="n">model_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+    <span class="n">explore_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lmp&quot;</span><span class="p">,</span>
+    <span class="n">prep_lmp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">run_lmp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">prep_train_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">run_train_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">scheduler_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">collect_data_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">pert_gen_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">inference_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">model_test_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">upload_python_packages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make a super OP template for distillation process</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># build lmp op</span>
+    <span class="k">if</span> <span class="n">teacher_model_style</span> <span class="ow">in</span> <span class="n">explore_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">explore_style</span> <span class="ow">in</span> <span class="n">explore_styles</span><span class="p">[</span><span class="n">teacher_model_style</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">prep_run_lmp_op</span> <span class="o">=</span> <span class="n">explore_styles</span><span class="p">[</span><span class="n">teacher_model_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span>
+                <span class="s2">&quot;preprun&quot;</span>
+            <span class="p">](</span>
+                <span class="s2">&quot;prep-run-explore-step&quot;</span><span class="p">,</span>
+                <span class="n">explore_styles</span><span class="p">[</span><span class="n">teacher_model_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;prep&quot;</span><span class="p">],</span>
+                <span class="n">explore_styles</span><span class="p">[</span><span class="n">teacher_model_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">],</span>
+                <span class="n">prep_config</span><span class="o">=</span><span class="n">prep_lmp_config</span><span class="p">,</span>
+                <span class="n">run_config</span><span class="o">=</span><span class="n">run_lmp_config</span><span class="p">,</span>
+                <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Explore style </span><span class="si">{</span><span class="n">explore_style</span><span class="si">}</span><span class="s2"> has not been implemented!&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Model style </span><span class="si">{</span><span class="n">teacher_model_style</span><span class="si">}</span><span class="s2"> has not been implemented!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1">## initiate DP train op</span>
+    <span class="k">if</span> <span class="n">model_style</span> <span class="ow">in</span> <span class="n">train_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">prep_run_train_op</span> <span class="o">=</span> <span class="n">PrepRunDPTrain</span><span class="p">(</span>
+            <span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+            <span class="n">train_styles</span><span class="p">[</span><span class="n">model_style</span><span class="p">][</span><span class="s2">&quot;prep&quot;</span><span class="p">],</span>
+            <span class="n">train_styles</span><span class="p">[</span><span class="n">model_style</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">],</span>
+            <span class="n">prep_config</span><span class="o">=</span><span class="n">prep_train_config</span><span class="p">,</span>
+            <span class="n">run_config</span><span class="o">=</span><span class="n">run_train_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Training style </span><span class="si">{</span><span class="n">model_style</span><span class="si">}</span><span class="s2"> has not been implemented!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">expl_dist_blk_op</span> <span class="o">=</span> <span class="n">ExplDistBlock</span><span class="p">(</span>
+        <span class="s2">&quot;expl-dist&quot;</span><span class="p">,</span>
+        <span class="n">prep_run_explore_op</span><span class="o">=</span><span class="n">prep_run_lmp_op</span><span class="p">,</span>
+        <span class="n">prep_run_train_op</span><span class="o">=</span><span class="n">prep_run_train_op</span><span class="p">,</span>
+        <span class="n">collect_data_op</span><span class="o">=</span><span class="n">CollectData</span><span class="p">,</span>
+        <span class="n">inference_op</span><span class="o">=</span><span class="n">InferenceOP</span><span class="p">,</span>
+        <span class="n">inference_config</span><span class="o">=</span><span class="n">inference_config</span><span class="p">,</span>
+        <span class="n">model_test_config</span><span class="o">=</span><span class="n">model_test_config</span><span class="p">,</span>
+        <span class="n">collect_data_config</span><span class="o">=</span><span class="n">collect_data_config</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">expl_dist_loop_op</span> <span class="o">=</span> <span class="n">ExplDistLoop</span><span class="p">(</span>
+        <span class="s2">&quot;expl-dist-loop&quot;</span><span class="p">,</span> <span class="n">expl_dist_blk_op</span><span class="p">,</span> <span class="n">scheduler_config</span><span class="p">,</span> <span class="n">upload_python_packages</span>
+    <span class="p">)</span>
+    <span class="n">dist_op</span> <span class="o">=</span> <span class="n">Distillation</span><span class="p">(</span>
+        <span class="s2">&quot;distillation&quot;</span><span class="p">,</span>
+        <span class="n">PertGen</span><span class="p">,</span>
+        <span class="n">expl_dist_loop_op</span><span class="p">,</span>
+        <span class="n">pert_gen_config</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">dist_op</span></div>
+
+
+
+<div class="viewcode-block" id="make_data_gen_op">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.make_data_gen_op">[docs]</a>
+<span class="k">def</span> <span class="nf">make_data_gen_op</span><span class="p">(</span>
+    <span class="n">fp_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;vasp&quot;</span><span class="p">,</span>
+    <span class="n">prep_fp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">run_fp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">pert_gen_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">collect_data_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">upload_python_packages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a DataGen operation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        fp_style (str): The style of the force field calculation (default is &quot;vasp&quot;).</span>
+<span class="sd">        prep_fp_config (dict): Configuration for preparing the force field calculation.</span>
+<span class="sd">        run_fp_config (dict): Configuration for running the force field calculation.</span>
+<span class="sd">        pert_gen_config (dict): Configuration for perturbation generation.</span>
+<span class="sd">        collect_data_config (dict): Configuration for data collection.</span>
+<span class="sd">        upload_python_packages (Optional[List[os.PathLike]]): List of Python packages to upload.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataGen: An instance of the DataGen class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">## initiate fp op</span>
+    <span class="k">if</span> <span class="n">fp_style</span> <span class="ow">in</span> <span class="n">fp_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">prep_run_fp_op</span> <span class="o">=</span> <span class="n">PrepRunFp</span><span class="p">(</span>
+            <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">,</span>
+            <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_style</span><span class="p">][</span><span class="s2">&quot;prep&quot;</span><span class="p">],</span>
+            <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_style</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">],</span>
+            <span class="n">prep_config</span><span class="o">=</span><span class="n">prep_fp_config</span><span class="p">,</span>
+            <span class="n">run_config</span><span class="o">=</span><span class="n">run_fp_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown fp_style </span><span class="si">{</span><span class="n">fp_style</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">DataGen</span><span class="p">(</span>
+        <span class="s2">&quot;data-gen&quot;</span><span class="p">,</span>
+        <span class="n">PertGen</span><span class="p">,</span>
+        <span class="n">prep_run_fp_op</span><span class="p">,</span>
+        <span class="n">CollectData</span><span class="p">,</span>
+        <span class="n">pert_gen_config</span><span class="p">,</span>
+        <span class="n">collect_data_config</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_ft_op">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.make_ft_op">[docs]</a>
+<span class="k">def</span> <span class="nf">make_ft_op</span><span class="p">(</span>
+    <span class="n">fp_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;vasp&quot;</span><span class="p">,</span>
+    <span class="n">train_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+    <span class="n">explore_style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;lmp&quot;</span><span class="p">,</span>
+    <span class="n">pert_gen_step_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">prep_fp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">run_fp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">prep_train_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">run_train_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">prep_lmp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">run_lmp_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">scheduler_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">collect_data_step_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">select_confs_step_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">inference_step_config</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">default_config</span><span class="p">,</span>
+    <span class="n">upload_python_packages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">init_training</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip_aimd</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="c1">## initiate fp op</span>
+    <span class="k">if</span> <span class="n">fp_style</span> <span class="ow">in</span> <span class="n">fp_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">prep_run_fp_op</span> <span class="o">=</span> <span class="n">PrepRunFp</span><span class="p">(</span>
+            <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">,</span>
+            <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_style</span><span class="p">][</span><span class="s2">&quot;prep&quot;</span><span class="p">],</span>
+            <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_style</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">],</span>
+            <span class="n">prep_config</span><span class="o">=</span><span class="n">prep_fp_config</span><span class="p">,</span>
+            <span class="n">run_config</span><span class="o">=</span><span class="n">run_fp_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown fp_style </span><span class="si">{</span><span class="n">fp_style</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1">## initiate DP train op</span>
+    <span class="k">if</span> <span class="n">train_style</span> <span class="ow">in</span> <span class="n">train_styles</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">prep_run_train_op</span> <span class="o">=</span> <span class="n">PrepRunDPTrain</span><span class="p">(</span>
+            <span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+            <span class="n">train_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">][</span><span class="s2">&quot;prep&quot;</span><span class="p">],</span>
+            <span class="n">train_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">],</span>
+            <span class="n">prep_config</span><span class="o">=</span><span class="n">prep_train_config</span><span class="p">,</span>
+            <span class="n">run_config</span><span class="o">=</span><span class="n">run_train_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+            <span class="n">valid_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Training style </span><span class="si">{</span><span class="n">train_style</span><span class="si">}</span><span class="s2"> has not been implemented!&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">explore_style</span> <span class="ow">in</span> <span class="n">explore_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">prep_run_lmp_op</span> <span class="o">=</span> <span class="n">explore_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;preprun&quot;</span><span class="p">](</span>
+            <span class="s2">&quot;prep-run-explore-step&quot;</span><span class="p">,</span>
+            <span class="n">explore_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;prep&quot;</span><span class="p">],</span>
+            <span class="n">explore_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;run&quot;</span><span class="p">],</span>
+            <span class="n">prep_config</span><span class="o">=</span><span class="n">prep_lmp_config</span><span class="p">,</span>
+            <span class="n">run_config</span><span class="o">=</span><span class="n">run_lmp_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Explore style </span><span class="si">{</span><span class="n">explore_style</span><span class="si">}</span><span class="s2"> has not been implemented!&quot;</span><span class="p">)</span>
+
+    <span class="n">expl_ft_blk_op</span> <span class="o">=</span> <span class="n">ExplFinetuneBlock</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expl-ft-blk&quot;</span><span class="p">,</span>
+        <span class="n">prep_run_explore_op</span><span class="o">=</span><span class="n">prep_run_lmp_op</span><span class="p">,</span>
+        <span class="n">prep_run_fp_op</span><span class="o">=</span><span class="n">prep_run_fp_op</span><span class="p">,</span>
+        <span class="n">collect_data_op</span><span class="o">=</span><span class="n">CollectData</span><span class="p">,</span>
+        <span class="n">select_confs_op</span><span class="o">=</span><span class="n">SelectConfs</span><span class="p">,</span>
+        <span class="n">prep_run_train_op</span><span class="o">=</span><span class="n">prep_run_train_op</span><span class="p">,</span>
+        <span class="n">inference_op</span><span class="o">=</span><span class="n">ModelTestOP</span><span class="p">,</span>
+        <span class="n">collect_data_step_config</span><span class="o">=</span><span class="n">collect_data_step_config</span><span class="p">,</span>
+        <span class="n">inference_step_config</span><span class="o">=</span><span class="n">inference_step_config</span><span class="p">,</span>
+        <span class="n">select_confs_step_config</span><span class="o">=</span><span class="n">select_confs_step_config</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">expl_finetune_loop_op</span> <span class="o">=</span> <span class="n">ExplFinetuneLoop</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expl-ft-loop&quot;</span><span class="p">,</span>
+        <span class="n">expl_ft_blk_op</span><span class="o">=</span><span class="n">expl_ft_blk_op</span><span class="p">,</span>
+        <span class="n">scheduler_config</span><span class="o">=</span><span class="n">scheduler_config</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">ft_op</span> <span class="o">=</span> <span class="n">FineTune</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;fine-tune&quot;</span><span class="p">,</span>
+        <span class="n">pert_gen_op</span><span class="o">=</span><span class="n">PertGen</span><span class="p">,</span>
+        <span class="n">prep_run_fp_op</span><span class="o">=</span><span class="n">prep_run_fp_op</span><span class="p">,</span>
+        <span class="n">collect_data_op</span><span class="o">=</span><span class="n">CollectData</span><span class="p">,</span>
+        <span class="n">prep_run_dp_train_op</span><span class="o">=</span><span class="n">prep_run_train_op</span><span class="p">,</span>
+        <span class="n">expl_finetune_loop_op</span><span class="o">=</span><span class="n">expl_finetune_loop_op</span><span class="p">,</span>
+        <span class="n">pert_gen_step_config</span><span class="o">=</span><span class="n">pert_gen_step_config</span><span class="p">,</span>
+        <span class="n">collect_data_step_config</span><span class="o">=</span><span class="n">collect_data_step_config</span><span class="p">,</span>
+        <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+        <span class="n">init_training</span><span class="o">=</span><span class="n">init_training</span><span class="p">,</span>
+        <span class="n">skip_aimd</span><span class="o">=</span><span class="n">skip_aimd</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ft_op</span></div>
+
+
+
+<div class="viewcode-block" id="get_systems_from_data">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.get_systems_from_data">[docs]</a>
+<span class="k">def</span> <span class="nf">get_systems_from_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">data</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">data_prefix</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_prefix</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="FlowGen">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.FlowGen">[docs]</a>
+<span class="k">class</span> <span class="nc">FlowGen</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+        <span class="n">debug</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">download_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="p">),</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_download_path</span> <span class="o">=</span> <span class="n">download_path</span>
+        <span class="k">if</span> <span class="n">debug</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DFLOW_DEBUG&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DFLOW_DEBUG&quot;</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DFLOW_DEBUG&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_config</span> <span class="o">=</span> <span class="n">normalize_args</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="n">global_config_workflow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;dflow mode: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">dflow</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wf_type</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wf_type</span> <span class="o">==</span> <span class="s2">&quot;dist&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_dist_wf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">wf_type</span> <span class="o">==</span> <span class="s2">&quot;finetune&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_ft_wf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">wf_type</span> <span class="o">==</span> <span class="s2">&quot;data_gen&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_data_gen_wf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wf_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wf_type</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">download_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_download_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_download_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_download_path</span>
+
+    <span class="k">def</span> <span class="nf">_set_data_gen_wf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="n">default_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;default_step_config&quot;</span><span class="p">]</span>
+        <span class="n">prep_fp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;perp_fp_config&quot;</span><span class="p">,</span> <span class="n">default_config</span><span class="p">)</span>
+        <span class="n">run_fp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;run_fp_config&quot;</span><span class="p">,</span> <span class="n">default_config</span><span class="p">)</span>
+        <span class="n">run_collect_data_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;collect_data_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+
+        <span class="n">upload_python_packages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">custom_packages</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_python_packages&quot;</span><span class="p">):</span>
+            <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_packages</span><span class="p">)</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dpdata</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dflow</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pfd</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dpgen2</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">fpop</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+
+        <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_confs_prefix</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">]</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_systems_from_data</span><span class="p">(</span><span class="n">init_confs</span><span class="p">,</span> <span class="n">init_confs_prefix</span><span class="p">)</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span><span class="n">init_confs</span><span class="p">,</span> <span class="s2">&quot;init_confs&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;init_confs must be provided&quot;</span><span class="p">)</span>
+
+        <span class="n">fp_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">fp_inputs_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;inputs_config&quot;</span><span class="p">]</span>
+        <span class="n">fp_type</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">fp_inputs</span> <span class="o">=</span> <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_type</span><span class="p">][</span><span class="s2">&quot;inputs&quot;</span><span class="p">](</span><span class="o">**</span><span class="n">fp_inputs_config</span><span class="p">)</span>
+        <span class="n">fp_config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp_inputs</span>
+        <span class="n">fp_config</span><span class="p">[</span><span class="s2">&quot;run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;run_config&quot;</span><span class="p">]</span>
+        <span class="n">fp_config</span><span class="p">[</span><span class="s2">&quot;extra_output_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extra_output_files&quot;</span><span class="p">)</span>
+
+        <span class="n">data_gen_op</span> <span class="o">=</span> <span class="n">make_data_gen_op</span><span class="p">(</span>
+            <span class="n">fp_style</span><span class="o">=</span><span class="n">fp_type</span><span class="p">,</span>
+            <span class="n">prep_fp_config</span><span class="o">=</span><span class="n">prep_fp_config</span><span class="p">,</span>
+            <span class="n">run_fp_config</span><span class="o">=</span><span class="n">run_fp_config</span><span class="p">,</span>
+            <span class="n">collect_data_config</span><span class="o">=</span><span class="n">run_collect_data_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># type_map = config[&quot;inputs&quot;][&quot;type_map&quot;]</span>
+        <span class="n">data_gen_step</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+            <span class="s2">&quot;data-gen&quot;</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">data_gen_op</span><span class="p">,</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;pert_config&quot;</span><span class="p">:</span> <span class="n">pert_config</span><span class="p">,</span> <span class="s2">&quot;fp_config&quot;</span><span class="p">:</span> <span class="n">fp_config</span><span class="p">},</span>
+            <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;init_confs&quot;</span><span class="p">:</span> <span class="n">init_confs</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">data_gen_step</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_dist_wf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a workflow from the OP templates of distillation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">## get input config</span>
+        <span class="n">default_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;default_step_config&quot;</span><span class="p">]</span>
+        <span class="n">prep_train_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;prep_train_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
+        <span class="p">)</span>
+        <span class="n">run_train_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;run_train_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
+        <span class="p">)</span>
+        <span class="n">prep_lmp_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;prep_explore_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
+        <span class="p">)</span>
+        <span class="n">run_lmp_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;run_explore_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
+        <span class="p">)</span>
+        <span class="n">collect_data_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;collect_data_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
+        <span class="p">)</span>
+        <span class="n">pert_gen_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;pert_gen_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
+        <span class="p">)</span>
+        <span class="n">inference_step_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">run_lmp_step_config</span><span class="p">)</span>
+        <span class="n">model_test_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">run_train_step_config</span><span class="p">)</span>
+        <span class="c1"># uploaded python packages</span>
+        <span class="n">upload_python_packages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">custom_packages</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_python_packages&quot;</span><span class="p">):</span>
+            <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_packages</span><span class="p">)</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dpdata</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dflow</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pfd</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dpgen2</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="c1">## task configs</span>
+        <span class="n">type_map</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;type_map&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mass_map&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mass_map</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;mass_map&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mass_map</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">mass</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">type_map</span><span class="p">]</span>
+        <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
+        <span class="c1"># exploration</span>
+        <span class="n">explore_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">explore_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="n">expl_stages</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;stages&quot;</span><span class="p">]</span>
+        <span class="n">converge_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;convergence&quot;</span><span class="p">]</span>
+        <span class="n">max_iter</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;max_numb_iter&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">max_iter</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;The max number of iteration must be equal to or larger than 1!&quot;</span>
+            <span class="p">)</span>
+        <span class="n">conf_filters_conv</span> <span class="o">=</span> <span class="n">get_conf_filters_conv</span><span class="p">(</span><span class="n">converge_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;conf_filter&quot;</span><span class="p">))</span>
+
+        <span class="c1"># train (student model) style</span>
+        <span class="n">train_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">train_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="c1"># others</span>
+        <span class="n">collect_data_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_set_config&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;labeled_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collect_data_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;labeled_data&quot;</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;test_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collect_data_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_size&quot;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="c1">## prepare artifacts</span>
+        <span class="c1"># read training template</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+                <span class="n">template_script</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">template_script</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;template_script&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">template_script</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># init_confs</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_confs_prefix</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">]</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_systems_from_data</span><span class="p">(</span><span class="n">init_confs</span><span class="p">,</span> <span class="n">init_confs_prefix</span><span class="p">)</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span><span class="n">init_confs</span><span class="p">,</span> <span class="s2">&quot;init_confs&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;init_confs must be provided&quot;</span><span class="p">)</span>
+
+        <span class="c1"># teacher models</span>
+        <span class="n">teacher_model_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_style&quot;</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;teacher model style: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">teacher_model_style</span><span class="p">)</span>
+        <span class="n">teacher_models_paths</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_path&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using uploaded model at: &quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_uri&quot;</span><span class="p">])</span>
+            <span class="n">teacher_models</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_uri&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">teacher_models_paths</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">teacher_models</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span>
+                <span class="n">teacher_models_paths</span><span class="p">,</span> <span class="s2">&quot;teacher_models&quot;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Teacher model must exist!&quot;</span><span class="p">)</span>
+
+        <span class="n">inference_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inference&quot;</span><span class="p">]</span>
+        <span class="n">inference_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">teacher_model_style</span><span class="p">})</span>
+        <span class="n">inference_config</span> <span class="o">=</span> <span class="n">normalize_infer_args</span><span class="p">(</span><span class="n">inference_config</span><span class="p">)</span>
+
+        <span class="n">expl_args</span> <span class="o">=</span> <span class="n">explore_styles</span><span class="p">[</span><span class="n">teacher_model_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;task_args&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">stg</span> <span class="ow">in</span> <span class="n">expl_stages</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">task_grp</span> <span class="ow">in</span> <span class="n">stg</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="n">expl_args</span><span class="p">(</span><span class="n">task_grp</span><span class="p">)</span>
+                <span class="n">task_grp</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="n">task_grp</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">scheduler</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span>
+            <span class="n">model_style</span><span class="o">=</span><span class="n">teacher_model_style</span><span class="p">,</span>
+            <span class="n">explore_style</span><span class="o">=</span><span class="n">explore_style</span><span class="p">,</span>
+            <span class="n">explore_stages</span><span class="o">=</span><span class="n">expl_stages</span><span class="p">,</span>
+            <span class="n">mass_map</span><span class="o">=</span><span class="n">mass_map</span><span class="p">,</span>
+            <span class="n">type_map</span><span class="o">=</span><span class="n">type_map</span><span class="p">,</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># init_data</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_uri&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_sys&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_data_prefix</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_prefix&quot;</span><span class="p">]</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_sys&quot;</span><span class="p">]</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">get_systems_from_data</span><span class="p">(</span><span class="n">init_data</span><span class="p">,</span> <span class="n">init_data_prefix</span><span class="p">)</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span><span class="n">init_data</span><span class="p">,</span> <span class="s2">&quot;init_data&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">upload_artifact</span><span class="p">([])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;student model style: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">train_style</span><span class="p">)</span>
+        <span class="c1"># make distillation op</span>
+        <span class="n">dist_op</span> <span class="o">=</span> <span class="n">make_dist_op</span><span class="p">(</span>
+            <span class="n">teacher_model_style</span><span class="o">=</span><span class="n">teacher_model_style</span><span class="p">,</span>
+            <span class="n">model_style</span><span class="o">=</span><span class="n">train_style</span><span class="p">,</span>
+            <span class="n">explore_style</span><span class="o">=</span><span class="n">explore_style</span><span class="p">,</span>
+            <span class="n">prep_lmp_config</span><span class="o">=</span><span class="n">prep_lmp_step_config</span><span class="p">,</span>
+            <span class="n">run_lmp_config</span><span class="o">=</span><span class="n">run_lmp_step_config</span><span class="p">,</span>
+            <span class="n">prep_train_config</span><span class="o">=</span><span class="n">prep_train_step_config</span><span class="p">,</span>
+            <span class="n">run_train_config</span><span class="o">=</span><span class="n">run_train_step_config</span><span class="p">,</span>
+            <span class="n">collect_data_config</span><span class="o">=</span><span class="n">collect_data_step_config</span><span class="p">,</span>
+            <span class="n">pert_gen_config</span><span class="o">=</span><span class="n">pert_gen_step_config</span><span class="p">,</span>
+            <span class="n">inference_config</span><span class="o">=</span><span class="n">inference_step_config</span><span class="p">,</span>
+            <span class="n">model_test_config</span><span class="o">=</span><span class="n">model_test_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># make distillation steps</span>
+        <span class="n">dist_step</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+            <span class="s2">&quot;distillation&quot;</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">dist_op</span><span class="p">,</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;dist&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">type_map</span><span class="p">,</span>
+                <span class="s2">&quot;mass_map&quot;</span><span class="p">:</span> <span class="n">mass_map</span><span class="p">,</span>
+                <span class="s2">&quot;pert_config&quot;</span><span class="p">:</span> <span class="n">pert_config</span><span class="p">,</span>
+                <span class="s2">&quot;numb_models&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;explore_config&quot;</span><span class="p">:</span> <span class="n">explore_config</span><span class="p">,</span>
+                <span class="s2">&quot;converge_config&quot;</span><span class="p">:</span> <span class="n">converge_config</span><span class="p">,</span>
+                <span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">:</span> <span class="n">conf_filters_conv</span><span class="p">,</span>
+                <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">template_script</span><span class="p">,</span>
+                <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">train_config</span><span class="p">,</span>
+                <span class="s2">&quot;inference_config&quot;</span><span class="p">:</span> <span class="n">inference_config</span><span class="p">,</span>
+                <span class="s2">&quot;test_size&quot;</span><span class="p">:</span> <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;test_size&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;type_map_train&quot;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">scheduler</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;init_confs&quot;</span><span class="p">:</span> <span class="n">init_confs</span><span class="p">,</span>
+                <span class="s2">&quot;teacher_model&quot;</span><span class="p">:</span> <span class="n">teacher_models</span><span class="p">,</span>
+                <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">init_data</span><span class="p">,</span>
+                <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">upload_artifact</span><span class="p">([]),</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dist_step</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_ft_wf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build a workflow from the OP templates of model finetune</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">default_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;default_step_config&quot;</span><span class="p">]</span>
+        <span class="n">prep_train_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;prep_train_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="n">run_train_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;run_train_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="n">prep_fp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;perp_fp_config&quot;</span><span class="p">,</span> <span class="n">default_config</span><span class="p">)</span>
+        <span class="n">run_fp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;run_fp_config&quot;</span><span class="p">,</span> <span class="n">default_config</span><span class="p">)</span>
+        <span class="n">run_collect_data_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;collect_data_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="n">run_select_confs_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;select_confs_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="n">run_pert_gen_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;pert_gen_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="n">run_inference_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">run_train_config</span><span class="p">)</span>
+        <span class="n">prep_lmp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;prep_explore_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="n">run_lmp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;run_explore_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
+        <span class="p">)</span>
+        <span class="c1"># uploaded python packages</span>
+        <span class="n">upload_python_packages</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">custom_packages</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_python_packages&quot;</span><span class="p">):</span>
+            <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">custom_packages</span><span class="p">)</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dpdata</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dflow</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">pfd</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">dpgen2</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">fpop</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ase</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
+        <span class="c1">## task configs</span>
+        <span class="n">type_map</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;type_map&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;mass_map&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">mass_map</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;mass_map&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mass_map</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">mass</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">type_map</span><span class="p">]</span>
+        <span class="n">train_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">train_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">train_style</span> <span class="o">==</span> <span class="s2">&quot;dp&quot;</span><span class="p">:</span>
+            <span class="n">train_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;init_model_with_finetune&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="n">numb_models</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
+        <span class="n">explore_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">expl_stages</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;stages&quot;</span><span class="p">]</span>
+        <span class="n">explore_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="n">max_iter</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;max_numb_iter&quot;</span><span class="p">]</span>
+        <span class="n">converge_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;convergence&quot;</span><span class="p">]</span>
+        <span class="c1"># conf selectors</span>
+        <span class="n">conf_filters</span> <span class="o">=</span> <span class="n">get_conf_filters</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;filter&quot;</span><span class="p">])</span>
+        <span class="n">render</span> <span class="o">=</span> <span class="n">TrajRenderLammps</span><span class="p">(</span><span class="n">nopbc</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">conf_selector</span> <span class="o">=</span> <span class="n">ConfSelectorFrames</span><span class="p">(</span>
+            <span class="n">render</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;task_max&quot;</span><span class="p">],</span> <span class="n">conf_filters</span>
+        <span class="p">)</span>
+        <span class="n">conf_filters_conv</span> <span class="o">=</span> <span class="n">get_conf_filters_conv</span><span class="p">(</span><span class="n">converge_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;conf_filter&quot;</span><span class="p">))</span>
+        <span class="c1"># task</span>
+        <span class="n">init_training</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">][</span><span class="s2">&quot;init_training&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">init_training</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No initial training before exploration&quot;</span><span class="p">)</span>
+        <span class="n">skip_aimd</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">][</span><span class="s2">&quot;skip_aimd&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">skip_aimd</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AIMD exploration is skipped!&quot;</span><span class="p">)</span>
+        <span class="n">collect_data_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;test_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;test_data&quot;</span><span class="p">,</span> <span class="mf">0.05</span>
+        <span class="p">)</span>
+        <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;system_partition&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;system_partition&quot;</span><span class="p">,</span> <span class="kc">False</span>
+        <span class="p">)</span>
+        <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;labeled_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="c1">## prepare artifacts</span>
+        <span class="c1"># read training template</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">template_script</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+
+        <span class="c1"># init_confs</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_confs_prefix</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;prefix&quot;</span><span class="p">]</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_paths&quot;</span><span class="p">]</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_systems_from_data</span><span class="p">(</span><span class="n">init_confs</span><span class="p">,</span> <span class="n">init_confs_prefix</span><span class="p">)</span>
+            <span class="n">init_confs</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span><span class="n">init_confs</span><span class="p">,</span> <span class="s2">&quot;init_confs&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;init_confs must be provided&quot;</span><span class="p">)</span>
+
+        <span class="n">expl_args</span> <span class="o">=</span> <span class="n">explore_styles</span><span class="p">[</span><span class="n">train_style</span><span class="p">][</span><span class="n">explore_style</span><span class="p">][</span><span class="s2">&quot;task_args&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">stg</span> <span class="ow">in</span> <span class="n">expl_stages</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">task_grp</span> <span class="ow">in</span> <span class="n">stg</span><span class="p">:</span>
+                <span class="n">args</span> <span class="o">=</span> <span class="n">expl_args</span><span class="p">(</span><span class="n">task_grp</span><span class="p">)</span>
+                <span class="n">task_grp</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="n">task_grp</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="n">scheduler</span> <span class="o">=</span> <span class="n">Scheduler</span><span class="p">(</span>
+            <span class="n">model_style</span><span class="o">=</span><span class="n">train_style</span><span class="p">,</span>
+            <span class="n">explore_style</span><span class="o">=</span><span class="n">explore_style</span><span class="p">,</span>
+            <span class="n">explore_stages</span><span class="o">=</span><span class="n">expl_stages</span><span class="p">,</span>
+            <span class="n">mass_map</span><span class="o">=</span><span class="n">mass_map</span><span class="p">,</span>
+            <span class="n">type_map</span><span class="o">=</span><span class="n">type_map</span><span class="p">,</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># init_data</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_uri&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_sys&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">init_data_prefix</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_prefix&quot;</span><span class="p">]</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;init_data_sys&quot;</span><span class="p">]</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">get_systems_from_data</span><span class="p">(</span><span class="n">init_data</span><span class="p">,</span> <span class="n">init_data_prefix</span><span class="p">)</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span><span class="n">init_data</span><span class="p">,</span> <span class="s2">&quot;init_data&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">init_data</span> <span class="o">=</span> <span class="n">upload_artifact</span><span class="p">([])</span>
+        <span class="n">iter_data</span> <span class="o">=</span> <span class="n">upload_artifact</span><span class="p">([])</span>
+        <span class="n">init_models_paths</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_path&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using uploaded model at: &quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_uri&quot;</span><span class="p">])</span>
+            <span class="n">init_models</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">][</span><span class="s2">&quot;base_model_uri&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">init_models_paths</span><span class="p">:</span>
+            <span class="n">init_models</span> <span class="o">=</span> <span class="n">upload_artifact_and_print_uri</span><span class="p">(</span><span class="n">init_models_paths</span><span class="p">,</span> <span class="s2">&quot;base_model&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Pre-trained model must exist!&quot;</span><span class="p">)</span>
+
+        <span class="n">fp_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">fp_inputs_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;inputs_config&quot;</span><span class="p">]</span>
+        <span class="n">fp_type</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">fp_inputs</span> <span class="o">=</span> <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_type</span><span class="p">][</span><span class="s2">&quot;inputs&quot;</span><span class="p">](</span><span class="o">**</span><span class="n">fp_inputs_config</span><span class="p">)</span>
+        <span class="n">fp_config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fp_inputs</span>
+        <span class="n">fp_config</span><span class="p">[</span><span class="s2">&quot;run&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">][</span><span class="s2">&quot;run_config&quot;</span><span class="p">]</span>
+        <span class="n">fp_config</span><span class="p">[</span><span class="s2">&quot;extra_output_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;fp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extra_output_files&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="c1"># aimd exploration</span>
+        <span class="n">aimd_config</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">skip_aimd</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">aimd_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">fp_config</span><span class="p">)</span>
+            <span class="n">aimd_inputs_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fp_inputs_config</span><span class="p">)</span>
+            <span class="n">aimd_inputs_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;aimd&quot;</span><span class="p">][</span><span class="s2">&quot;inputs_config&quot;</span><span class="p">])</span>
+            <span class="n">aimd_inputs</span> <span class="o">=</span> <span class="n">fp_styles</span><span class="p">[</span><span class="n">fp_type</span><span class="p">][</span><span class="s2">&quot;inputs&quot;</span><span class="p">](</span><span class="o">**</span><span class="n">aimd_inputs_config</span><span class="p">)</span>
+            <span class="n">aimd_config</span><span class="p">[</span><span class="s2">&quot;inputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aimd_inputs</span>
+
+        <span class="n">aimd_sample_conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;labeled_data&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;multi_sys_name&quot;</span><span class="p">:</span> <span class="s2">&quot;init&quot;</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;aimd&quot;</span><span class="p">][</span><span class="s2">&quot;confs&quot;</span><span class="p">]:</span>
+            <span class="n">aimd_sample_conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;sample_conf&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;confs&quot;</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;aimd&quot;</span><span class="p">][</span><span class="s2">&quot;confs&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;n_sample&quot;</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;aimd&quot;</span><span class="p">][</span><span class="s2">&quot;n_sample&quot;</span><span class="p">],</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="n">inference_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;inference&quot;</span><span class="p">]</span>
+        <span class="n">inference_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">train_style</span><span class="p">})</span>
+        <span class="n">inference_config</span> <span class="o">=</span> <span class="n">normalize_infer_args</span><span class="p">(</span><span class="n">inference_config</span><span class="p">)</span>
+        <span class="c1"># get rid of irrelevant argument</span>
+        <span class="n">inference_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;max_force&quot;</span><span class="p">)</span>
+
+        <span class="c1"># make distillation op</span>
+        <span class="n">ft_op</span> <span class="o">=</span> <span class="n">make_ft_op</span><span class="p">(</span>
+            <span class="n">fp_style</span><span class="o">=</span><span class="n">fp_type</span><span class="p">,</span>
+            <span class="n">train_style</span><span class="o">=</span><span class="n">train_style</span><span class="p">,</span>
+            <span class="n">explore_style</span><span class="o">=</span><span class="n">explore_style</span><span class="p">,</span>
+            <span class="n">pert_gen_step_config</span><span class="o">=</span><span class="n">run_pert_gen_config</span><span class="p">,</span>
+            <span class="n">prep_fp_config</span><span class="o">=</span><span class="n">prep_fp_config</span><span class="p">,</span>
+            <span class="n">run_fp_config</span><span class="o">=</span><span class="n">run_fp_config</span><span class="p">,</span>
+            <span class="n">prep_train_config</span><span class="o">=</span><span class="n">prep_train_config</span><span class="p">,</span>
+            <span class="n">run_train_config</span><span class="o">=</span><span class="n">run_train_config</span><span class="p">,</span>
+            <span class="n">prep_lmp_config</span><span class="o">=</span><span class="n">prep_lmp_config</span><span class="p">,</span>
+            <span class="n">run_lmp_config</span><span class="o">=</span><span class="n">run_lmp_config</span><span class="p">,</span>
+            <span class="n">collect_data_step_config</span><span class="o">=</span><span class="n">run_collect_data_config</span><span class="p">,</span>
+            <span class="n">select_confs_step_config</span><span class="o">=</span><span class="n">run_select_confs_config</span><span class="p">,</span>
+            <span class="n">inference_step_config</span><span class="o">=</span><span class="n">run_inference_config</span><span class="p">,</span>
+            <span class="n">upload_python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
+            <span class="n">init_training</span><span class="o">=</span><span class="n">init_training</span><span class="p">,</span>
+            <span class="n">skip_aimd</span><span class="o">=</span><span class="n">skip_aimd</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">ft_step</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
+            <span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+            <span class="n">template</span><span class="o">=</span><span class="n">ft_op</span><span class="p">,</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">type_map</span><span class="p">,</span>
+                <span class="s2">&quot;mass_map&quot;</span><span class="p">:</span> <span class="n">mass_map</span><span class="p">,</span>
+                <span class="s2">&quot;pert_config&quot;</span><span class="p">:</span> <span class="n">pert_config</span><span class="p">,</span>  <span class="c1"># Total input parameter file: to be changed in the future</span>
+                <span class="s2">&quot;numb_models&quot;</span><span class="p">:</span> <span class="n">numb_models</span><span class="p">,</span>
+                <span class="s2">&quot;conf_selector&quot;</span><span class="p">:</span> <span class="n">conf_selector</span><span class="p">,</span>
+                <span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">:</span> <span class="n">conf_filters_conv</span><span class="p">,</span>
+                <span class="s2">&quot;converge_config&quot;</span><span class="p">:</span> <span class="n">converge_config</span><span class="p">,</span>
+                <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">scheduler</span><span class="p">,</span>
+                <span class="s2">&quot;explore_config&quot;</span><span class="p">:</span> <span class="n">explore_config</span><span class="p">,</span>
+                <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">template_script</span><span class="p">,</span>
+                <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">train_config</span><span class="p">,</span>
+                <span class="s2">&quot;fp_config&quot;</span><span class="p">:</span> <span class="n">fp_config</span><span class="p">,</span>
+                <span class="s2">&quot;aimd_config&quot;</span><span class="p">:</span> <span class="n">aimd_config</span><span class="p">,</span>
+                <span class="s2">&quot;aimd_sample_conf&quot;</span><span class="p">:</span> <span class="n">aimd_sample_conf</span><span class="p">,</span>
+                <span class="s2">&quot;collect_data_config&quot;</span><span class="p">:</span> <span class="n">collect_data_config</span><span class="p">,</span>
+                <span class="s2">&quot;inference_config&quot;</span><span class="p">:</span> <span class="n">inference_config</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;init_models&quot;</span><span class="p">:</span> <span class="n">init_models</span><span class="p">,</span>
+                <span class="s2">&quot;init_confs&quot;</span><span class="p">:</span> <span class="n">init_confs</span><span class="p">,</span>
+                <span class="s2">&quot;expl_models&quot;</span><span class="p">:</span> <span class="n">init_models</span><span class="p">,</span>
+                <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">init_data</span><span class="p">,</span>
+                <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">iter_data</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ft_step</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_moniter_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running...&quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">step_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
+            <span class="n">wf_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">query_status</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">wf_status</span> <span class="o">==</span> <span class="s2">&quot;Failed&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Workflow failed (ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">, UID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">uid</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dist_post</span> <span class="o">=</span> <span class="n">step_info</span><span class="o">.</span><span class="n">get_step</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;distillation&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">dist_post</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Succeeded&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Distillation finished (ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">, UID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">uid</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieving completed tasks to local...&quot;</span><span class="p">)</span>
+                <span class="n">download_artifact</span><span class="p">(</span>
+                    <span class="n">artifact</span><span class="o">=</span><span class="n">dist_post</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">],</span>
+                    <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">download_path</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+
+    <span class="k">def</span> <span class="nf">_moniter_ft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">step_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">query</span><span class="p">()</span>
+            <span class="n">wf_status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">query_status</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">wf_status</span> <span class="o">==</span> <span class="s2">&quot;Failed&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Workflow failed (ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">, UID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">uid</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">dist_post</span> <span class="o">=</span> <span class="n">step_info</span><span class="o">.</span><span class="n">get_step</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;finetune&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">dist_post</span><span class="p">[</span><span class="s2">&quot;phase&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Succeeded&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Distillation finished (ID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">, UID: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">uid</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieving completed tasks to local...&quot;</span><span class="p">)</span>
+                <span class="n">download_artifact</span><span class="p">(</span>
+                    <span class="n">artifact</span><span class="o">=</span><span class="n">dist_post</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;fine_tuned_model&quot;</span><span class="p">],</span>
+                    <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">download_path</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">break</span>
+
+<div class="viewcode-block" id="FlowGen.submit">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.FlowGen.submit">[docs]</a>
+    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">reuse_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">ArgoStep</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">no_submission</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">only_submit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">no_submission</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">reuse_step</span><span class="o">=</span><span class="n">reuse_step</span><span class="p">)</span>
+            <span class="c1"># return self.workflow</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">only_submit</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wf_type</span> <span class="o">==</span> <span class="s2">&quot;dist&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_moniter_dist</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">wf_type</span> <span class="o">==</span> <span class="s2">&quot;finetune&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_moniter_ft</span><span class="p">()</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="successful_step_keys">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.successful_step_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">successful_step_keys</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">unsuccessful_step_keys</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">all_step_keys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="n">wf</span><span class="o">.</span><span class="n">query_step</span><span class="p">()</span>
+    <span class="c1"># For reused steps whose startedAt are identical, sort them by key</span>
+    <span class="n">steps</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">startedAt</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">key</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">unsuccessful_step_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">step</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">step</span><span class="o">.</span><span class="n">phase</span> <span class="o">==</span> <span class="s2">&quot;Succeeded&quot;</span><span class="p">:</span>
+                <span class="n">all_step_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">step</span><span class="o">.</span><span class="n">key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">all_step_keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">all_step_keys</span></div>
+
+
+
+<div class="viewcode-block" id="get_superop">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.get_superop">[docs]</a>
+<span class="k">def</span> <span class="nf">get_superop</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;prep-train&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;prep-train&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-train&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;run-train-&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;run-train-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-train&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;prep-lmp&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;prep-lmp&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;run-lmp-&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;run-lmp-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;prep-fp&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;prep-fp&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;run-fp-&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;run-fp-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;prep-caly-input&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;prep-caly-input&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;collect-run-calypso-&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;collect-run-calypso-[0-9]*-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;prep-dp-optim-&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;prep-dp-optim-[0-9]*-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;run-dp-optim-&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;run-dp-optim-[0-9]*-[0-9]*-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;prep-caly-model-devi&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;prep-caly-model-devi&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;run-caly-model-devi&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;run-caly-model-devi-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;caly-evo-step&quot;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;caly-evo-step-[0-9]*&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="fold_keys">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.fold_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">fold_keys</span><span class="p">(</span><span class="n">all_step_keys</span><span class="p">):</span>
+    <span class="n">folded_keys</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">all_step_keys</span><span class="p">:</span>
+        <span class="n">is_superop</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">superop</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prep-run-train&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span> <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">superop</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">folded_keys</span><span class="p">:</span>
+                    <span class="n">folded_keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">is_superop</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">is_superop</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">superop</span> <span class="o">=</span> <span class="n">get_superop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="c1"># if its super OP is succeeded, fold it into its super OP</span>
+        <span class="k">if</span> <span class="n">superop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">superop</span> <span class="ow">in</span> <span class="n">all_step_keys</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">superop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">folded_keys</span><span class="p">:</span>
+                <span class="n">folded_keys</span><span class="p">[</span><span class="n">superop</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">folded_keys</span><span class="p">[</span><span class="n">superop</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">folded_keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">folded_keys</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="n">folded_keys</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">folded_keys</span></div>
+
+
+
+<div class="viewcode-block" id="get_resubmit_keys">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.get_resubmit_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">get_resubmit_keys</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">unsuccessful_step_keys</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">all_step_keys</span> <span class="o">=</span> <span class="n">successful_step_keys</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">unsuccessful_step_keys</span><span class="p">)</span>
+
+    <span class="n">step_keys</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;pert-gen&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sample-aimd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-run-train&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-train&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run-train&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;modify-train-script&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-caly-input&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-caly-model-devi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run-caly-model-devi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-lmp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run-lmp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;select-confs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-run-fp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prep-fp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;run-fp&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;collect-data&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;validation-test&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;scheduler&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;inference-test&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;inference-train&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">all_step_keys</span> <span class="o">=</span> <span class="n">matched_step_key</span><span class="p">(</span>
+        <span class="n">all_step_keys</span><span class="p">,</span>
+        <span class="n">step_keys</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">all_step_keys</span> <span class="o">=</span> <span class="n">sort_slice_ops</span><span class="p">(</span>
+        <span class="n">all_step_keys</span><span class="p">,</span>
+        <span class="p">[</span><span class="s2">&quot;run-train&quot;</span><span class="p">,</span> <span class="s2">&quot;run-lmp&quot;</span><span class="p">,</span> <span class="s2">&quot;run-fp&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="n">folded_keys</span> <span class="o">=</span> <span class="n">fold_keys</span><span class="p">(</span><span class="n">all_step_keys</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">folded_keys</span></div>
+
+
+
+<div class="viewcode-block" id="resubmit_workflow">
+<a class="viewcode-back" href="../../../development/pfd.entrypoint.html#pfd.entrypoint.submit.resubmit_workflow">[docs]</a>
+<span class="k">def</span> <span class="nf">resubmit_workflow</span><span class="p">(</span>
+    <span class="n">wf_config</span><span class="p">,</span>
+    <span class="n">wfid</span><span class="p">,</span>
+    <span class="n">list_steps</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reuse</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fold</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">unsuccessful_step_keys</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">global_config_workflow</span><span class="p">(</span><span class="n">normalize_args</span><span class="p">(</span><span class="n">wf_config</span><span class="p">))</span>
+    <span class="n">old_wf</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">wfid</span><span class="p">)</span>
+    <span class="n">folded_keys</span> <span class="o">=</span> <span class="n">get_resubmit_keys</span><span class="p">(</span><span class="n">old_wf</span><span class="p">,</span> <span class="n">unsuccessful_step_keys</span><span class="p">)</span>
+    <span class="n">all_step_keys</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">folded_keys</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="p">[])</span>
+    <span class="k">if</span> <span class="n">list_steps</span><span class="p">:</span>
+        <span class="n">prt_str</span> <span class="o">=</span> <span class="n">print_keys_in_nice_format</span><span class="p">(</span>
+            <span class="n">all_step_keys</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;run-train&quot;</span><span class="p">,</span> <span class="s2">&quot;run-lmp&quot;</span><span class="p">,</span> <span class="s2">&quot;run-fp&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">prt_str</span><span class="p">)</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">reuse</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">reuse_idx</span> <span class="o">=</span> <span class="n">expand_idx</span><span class="p">(</span><span class="n">reuse</span><span class="p">)</span>
+    <span class="n">reused_keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">all_step_keys</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">reuse_idx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">fold</span><span class="p">:</span>
+        <span class="n">reused_folded_keys</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">reused_keys</span><span class="p">:</span>
+            <span class="n">superop</span> <span class="o">=</span> <span class="n">get_superop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">superop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">superop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">reused_folded_keys</span><span class="p">:</span>
+                    <span class="n">reused_folded_keys</span><span class="p">[</span><span class="n">superop</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">reused_folded_keys</span><span class="p">[</span><span class="n">superop</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reused_folded_keys</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">reused_folded_keys</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># reuse the super OP iif all steps within it are reused</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">folded_keys</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">folded_keys</span><span class="p">[</span><span class="n">k</span><span class="p">]):</span>
+                <span class="n">reused_folded_keys</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">reused_keys</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">reused_folded_keys</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="p">[])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">reused_keys</span><span class="p">)</span>
+    <span class="n">reuse_step</span> <span class="o">=</span> <span class="n">old_wf</span><span class="o">.</span><span class="n">query_step</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">reused_keys</span><span class="p">)</span>
+    <span class="c1"># For reused steps whose startedAt are identical, sort them by key</span>
+    <span class="n">reuse_step</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">startedAt</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">key</span><span class="p">))</span>
+    <span class="n">wf</span> <span class="o">=</span> <span class="n">FlowGen</span><span class="p">(</span><span class="n">wf_config</span><span class="p">)</span>
+    <span class="n">wf</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">reuse_step</span><span class="o">=</span><span class="n">reuse_step</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

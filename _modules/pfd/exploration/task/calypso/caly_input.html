@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task.calypso.caly_input &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task.calypso.caly_input</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.exploration.task.calypso.caly_input</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">dpdata</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.constants</span> <span class="k">as</span> <span class="nn">pc</span>
+<span class="kn">from</span> <span class="nn">packaging.version</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Version</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">lmp_traj_name</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">calypso_run_opt_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#!/usr/bin/env python3</span>
+
+<span class="s2">import os</span>
+<span class="s2">import sys</span>
+<span class="s2">import time</span>
+<span class="s2">import glob</span>
+<span class="s2">import numpy as np</span>
+
+<span class="s2">from ase.io import read, write</span>
+<span class="s2">from ase.io.trajectory import Trajectory</span>
+<span class="s2">from ase.optimize import LBFGS</span>
+<span class="s2">from ase.constraints import UnitCellFilter</span>
+
+<span class="s2">from deepmd.calculator import DP</span>
+
+<span class="s2"># structure optimization with DP model and ASE</span>
+<span class="s2"># PSTRESS and fmax should exist in input.dat</span>
+
+<span class="s2">def Get_Element_Num(elements):</span>
+<span class="s2">    # Using the Atoms.symples to Know Element&amp;Num</span>
+<span class="s2">    element = []</span>
+<span class="s2">    ele = </span><span class="si">{}</span>
+<span class="s2">    element.append(elements[0])</span>
+<span class="s2">    for x in elements:</span>
+<span class="s2">        if x not in element :</span>
+<span class="s2">            element.append(x)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        ele[x] = elements.count(x)</span>
+<span class="s2">    return element, ele</span>
+
+<span class="s2">def Write_Contcar(contcar, element, ele, lat, pos):</span>
+<span class="s2">    # Write CONTCAR</span>
+<span class="s2">    f = open(contcar,&#39;w&#39;)</span>
+<span class="s2">    f.write(&#39;ASE-DP-OPT</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;1.0</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    for i in range(3):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(lat[i]))</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(x + &#39;  &#39;)</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(str(ele[x]) + &#39;  &#39;)</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;Direct</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    na = sum(ele.values())</span>
+<span class="s2">    dpos = np.dot(pos,np.linalg.inv(lat))</span>
+<span class="s2">    for i in range(na):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(dpos[i]))</span>
+
+<span class="s2">def Write_Outcar(outcar, element, ele, volume, lat, pos, ene, force, stress, pstress):</span>
+<span class="s2">    # Write OUTCAR</span>
+<span class="s2">    f = open(outcar,&#39;w&#39;)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(&#39;VRHFIN =&#39; + str(x) + &#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;ions per type =&#39;)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%5d</span><span class="s2">&#39; </span><span class="si">% e</span><span class="s2">le[x])</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">nDirection     XX             YY             ZZ             XY             YZ             ZX</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;in kB&#39;)</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[0])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[1])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[2])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[3])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[4])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[5])</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    ext_pressure = np.sum(stress[0] + stress[1] + stress[2])/3.0 - pstress</span>
+<span class="s2">    f.write(&#39;external pressure = </span><span class="si">%20.6f</span><span class="s2"> kB    Pullay stress = </span><span class="si">%20.6f</span><span class="s2">  kB</span><span class="se">\\</span><span class="s2">n&#39;% (ext_pressure, pstress))</span>
+<span class="s2">    f.write(&#39;volume of cell : </span><span class="si">%20.6f</span><span class="se">\\</span><span class="s2">n&#39; % volume)</span>
+<span class="s2">    f.write(&#39;direct lattice vectors</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    for i in range(3):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(lat[i]))</span>
+<span class="s2">    f.write(&#39;POSITION                                       TOTAL-FORCE(eV/Angst)</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;-------------------------------------------------------------------</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    na = sum(ele.values())</span>
+<span class="s2">    for i in range(na):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2">&#39; % tuple(pos[i]))</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(force[i]))</span>
+<span class="s2">    f.write(&#39;-------------------------------------------------------------------</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;energy  without entropy= </span><span class="si">%20.6f</span><span class="s2"> </span><span class="si">%20.6f</span><span class="se">\\</span><span class="s2">n&#39; % (ene, ene/na))</span>
+<span class="s2">    enthalpy = ene + pstress * volume / 1602.17733</span>
+<span class="s2">    f.write(&#39;enthalpy is  TOTEN    = </span><span class="si">%20.6f</span><span class="s2"> </span><span class="si">%20.6f</span><span class="se">\\</span><span class="s2">n&#39; % (enthalpy, enthalpy/na))</span>
+
+<span class="s2">def run_opt(fmax, stress, opt_step):</span>
+<span class="s2">    # Using the ASE&amp;DP to Optimize Configures</span>
+
+<span class="s2">    calc = DP(model=sys.argv[1])    # init the model before iteration</span>
+
+<span class="s2">    start = time.time()</span>
+<span class="s2">    # pstress kbar</span>
+<span class="s2">    pstress = stress</span>
+<span class="s2">    # kBar to eV/A^3</span>
+<span class="s2">    # 1 eV/A^3 = 160.21766028 GPa</span>
+<span class="s2">    # 1 / 160.21766028 ~ 0.006242</span>
+<span class="s2">    aim_stress = 1.0 * pstress* 0.01 * 0.6242 / 10.0</span>
+
+<span class="s2">    poscar_list = sorted(glob.glob(&quot;POSCAR_*&quot;), key=lambda x: x.strip(&quot;POSCAR_&quot;))</span>
+<span class="s2">    for poscar in poscar_list:</span>
+<span class="s2">        to_be_opti = read(poscar)</span>
+<span class="s2">        to_be_opti.calc = calc</span>
+<span class="s2">        ucf = UnitCellFilter(to_be_opti, scalar_pressure=aim_stress)</span>
+<span class="s2">        opt = LBFGS(ucf,trajectory=poscar.strip(&quot;POSCAR_&quot;) + &#39;.traj&#39;)</span>
+<span class="s2">        opt.run(fmax=fmax,steps=opt_step)</span>
+<span class="s2">        atoms_lat = to_be_opti.cell</span>
+<span class="s2">        atoms_pos = to_be_opti.positions</span>
+<span class="s2">        atoms_force = to_be_opti.get_forces()</span>
+<span class="s2">        atoms_stress = to_be_opti.get_stress()</span>
+<span class="s2">        # eV/A^3 to GPa</span>
+<span class="s2">        atoms_stress = atoms_stress/(0.01*0.6242)</span>
+<span class="s2">        atoms_symbols = to_be_opti.get_chemical_symbols()</span>
+<span class="s2">        atoms_ene = to_be_opti.get_potential_energy()</span>
+<span class="s2">        atoms_vol = to_be_opti.get_volume()</span>
+<span class="s2">        element, ele = Get_Element_Num(atoms_symbols)</span>
+<span class="s2">        outcar = poscar.replace(&quot;POSCAR&quot;, &quot;OUTCAR&quot;)</span>
+<span class="s2">        contcar = poscar.replace(&quot;POSCAR&quot;, &quot;CONTCAR&quot;)</span>
+
+<span class="s2">        Write_Contcar(contcar, element, ele, atoms_lat, atoms_pos)</span>
+<span class="s2">        Write_Outcar(outcar, element, ele, atoms_vol, atoms_lat, atoms_pos, atoms_ene, atoms_force, atoms_stress * -10.0, pstress)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">calypso_run_opt_str_end</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">if __name__ == &#39;__main__&#39;:</span>
+<span class="s2">    run_opt(fmax=</span><span class="si">%.3f</span><span class="s2">, stress=</span><span class="si">%.3f</span><span class="s2">, opt_step=</span><span class="si">%.3f</span><span class="s2">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">calypso_check_opt_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;#!/usr/bin/env python3</span>
+
+<span class="s2">import os</span>
+<span class="s2">import numpy as np</span>
+<span class="s2">from ase.io import read, write</span>
+<span class="s2">from ase.io.trajectory import Trajectory, TrajectoryWriter</span>
+
+<span class="s2"># check if structure optimization worked well</span>
+<span class="s2"># if not, this script will generate a fake outcar</span>
+
+<span class="s2">def Get_Element_Num(elements):</span>
+<span class="s2">    # Using the Atoms.symples to Know Element&amp;Num</span>
+<span class="s2">    element = []</span>
+<span class="s2">    ele = </span><span class="si">{}</span>
+<span class="s2">    element.append(elements[0])</span>
+<span class="s2">    for x in elements:</span>
+<span class="s2">        if x not in element :</span>
+<span class="s2">            element.append(x)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        ele[x] = elements.count(x)</span>
+<span class="s2">    return element, ele</span>
+
+<span class="s2">def Write_Contcar(element, ele, lat, pos):</span>
+<span class="s2">    # Write CONTCAR</span>
+<span class="s2">    f = open(&#39;CONTCAR&#39;,&#39;w&#39;)</span>
+<span class="s2">    f.write(&#39;ASE-DP-FAILED</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;1.0</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    for i in range(3):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(lat[i]))</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(x + &#39;  &#39;)</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(str(ele[x]) + &#39;  &#39;)</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;Direct</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    na = sum(ele.values())</span>
+<span class="s2">    dpos = np.dot(pos,np.linalg.inv(lat))</span>
+<span class="s2">    for i in range(na):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="s2"> </span><span class="si">%15.10f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(dpos[i]))</span>
+
+<span class="s2">def Write_Outcar(element, ele, volume, lat, pos, ene, force, stress,pstress):</span>
+<span class="s2">    # Write OUTCAR</span>
+<span class="s2">    f = open(&#39;OUTCAR&#39;,&#39;w&#39;)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(&#39;VRHFIN =&#39; + str(x) + &#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;ions per type =&#39;)</span>
+<span class="s2">    for x in element:</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%5d</span><span class="s2">&#39; </span><span class="si">% e</span><span class="s2">le[x])</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">nDirection     XX             YY             ZZ             XY             YZ             ZX</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;in kB&#39;)</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[0])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[1])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[2])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[3])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[4])</span>
+<span class="s2">    f.write(&#39;</span><span class="si">%15.6f</span><span class="s2">&#39; </span><span class="si">% s</span><span class="s2">tress[5])</span>
+<span class="s2">    f.write(&#39;</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    ext_pressure = np.sum(stress[0] + stress[1] + stress[2])/3.0 - pstress</span>
+<span class="s2">    f.write(&#39;external pressure = </span><span class="si">%20.6f</span><span class="s2"> kB    Pullay stress = </span><span class="si">%20.6f</span><span class="s2">  kB</span><span class="se">\\</span><span class="s2">n&#39;% (ext_pressure, pstress))</span>
+<span class="s2">    f.write(&#39;volume of cell : </span><span class="si">%20.6f</span><span class="se">\\</span><span class="s2">n&#39; % volume)</span>
+<span class="s2">    f.write(&#39;direct lattice vectors</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    for i in range(3):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="s2"> </span><span class="si">%10.6f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(lat[i]))</span>
+<span class="s2">    f.write(&#39;POSITION                                       TOTAL-FORCE(eV/Angst)</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;-------------------------------------------------------------------</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    na = sum(ele.values())</span>
+<span class="s2">    for i in range(na):</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2">&#39; % tuple(pos[i]))</span>
+<span class="s2">        f.write(&#39;</span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="s2"> </span><span class="si">%15.6f</span><span class="se">\\</span><span class="s2">n&#39; % tuple(force[i]))</span>
+<span class="s2">    f.write(&#39;-------------------------------------------------------------------</span><span class="se">\\</span><span class="s2">n&#39;)</span>
+<span class="s2">    f.write(&#39;energy  without entropy= </span><span class="si">%20.6f</span><span class="s2"> </span><span class="si">%20.6f</span><span class="se">\\</span><span class="s2">n&#39; % (ene, ene))</span>
+<span class="s2">    enthalpy = ene + pstress * volume / 1602.17733</span>
+<span class="s2">    f.write(&#39;enthalpy is  TOTEN    = </span><span class="si">%20.6f</span><span class="s2"> </span><span class="si">%20.6f</span><span class="se">\\</span><span class="s2">n&#39; % (enthalpy, enthalpy))</span>
+
+<span class="s2">def check():</span>
+<span class="s2">    to_be_opti = read(&#39;POSCAR&#39;)</span>
+<span class="s2">    traj = TrajectoryWriter(&#39;traj.traj&#39;, &#39;w&#39;, to_be_opti)</span>
+<span class="s2">    traj.write()</span>
+<span class="s2">    traj.close()</span>
+<span class="s2">    atoms_symbols_f = to_be_opti.get_chemical_symbols()</span>
+<span class="s2">    element_f, ele_f = Get_Element_Num(atoms_symbols_f)</span>
+<span class="s2">    atoms_vol_f = to_be_opti.get_volume()</span>
+<span class="s2">    atoms_stress_f = np.array([0, 0, 0, 0, 0, 0])</span>
+<span class="s2">    atoms_lat_f = to_be_opti.cell</span>
+<span class="s2">    atoms_pos_f = to_be_opti.positions</span>
+<span class="s2">    atoms_force_f = np.zeros((atoms_pos_f.shape[0], 3))</span>
+<span class="s2">    atoms_ene_f =  610612509</span>
+<span class="s2">    Write_Contcar(element_f, ele_f, atoms_lat_f, atoms_pos_f)</span>
+<span class="s2">    Write_Outcar(element_f, ele_f, atoms_vol_f, atoms_lat_f, atoms_pos_f, atoms_ene_f, atoms_force_f, atoms_stress_f * -10.0, 0)</span>
+
+<span class="s2">if __name__ == &quot;__main__&quot;:</span>
+<span class="s2">    cwd = os.getcwd()</span>
+<span class="s2">    if not os.path.exists(os.path.join(cwd,&#39;OUTCAR&#39;)):</span>
+<span class="s2">        check()&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="make_calypso_input">
+<a class="viewcode-back" href="../../../../../development/pfd.exploration.task.calypso.html#pfd.exploration.task.calypso.caly_input.make_calypso_input">[docs]</a>
+<span class="k">def</span> <span class="nf">make_calypso_input</span><span class="p">(</span>
+    <span class="n">numb_of_species</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">name_of_atoms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">atomic_number</span><span class="p">,</span>
+    <span class="n">numb_of_atoms</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+    <span class="n">distance_of_ions</span><span class="p">,</span>
+    <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">max_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">system_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;CALYPSO&quot;</span><span class="p">,</span>
+    <span class="n">numb_of_formula</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">pressure</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span>  <span class="c1"># KBar</span>
+    <span class="n">fmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">volume</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">ialgo</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">pso_ratio</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">icode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="n">numb_of_lbest</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">numb_of_local_optim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sh submit.sh&quot;</span><span class="p">,</span>
+    <span class="n">max_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">9000</span><span class="p">,</span>
+    <span class="n">gen_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">pick_up</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">pick_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">parallel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">split</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">spec_space_group</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+    <span class="n">vsc</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">ctrl_range</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span>
+    <span class="n">max_numb_atoms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">distance_of_ions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">distance_of_ions</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">(</span>
+        <span class="n">numb_of_species</span>
+        <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">name_of_atoms</span><span class="p">)</span>
+        <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">atomic_number</span><span class="p">)</span>
+        <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">numb_of_atoms</span><span class="p">)</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">numb_of_species</span><span class="si">:}</span><span class="s2">, </span><span class="si">{</span><span class="n">name_of_atoms</span><span class="si">:}</span><span class="s2"> </span><span class="si">{</span><span class="n">atomic_number</span><span class="si">:}</span><span class="s2"> </span><span class="si">{</span><span class="n">numb_of_atoms</span><span class="si">:}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="n">distance_of_ions</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span>
+        <span class="n">numb_of_species</span><span class="p">,</span>
+        <span class="n">numb_of_species</span><span class="p">,</span>
+    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">distance_of_ions</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">numb_of_species</span><span class="si">:}</span><span class="s2">&quot;</span>
+
+    <span class="n">necessary_keys</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;NumberOfSpecies&quot;</span><span class="p">:</span> <span class="n">numb_of_species</span><span class="p">,</span>
+        <span class="s2">&quot;NameOfAtoms&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">name_of_atoms</span><span class="p">))),</span>
+        <span class="s2">&quot;AtomicNumber&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">atomic_number</span><span class="p">))),</span>
+        <span class="s2">&quot;NumberOfAtoms&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">numb_of_atoms</span><span class="p">))),</span>
+        <span class="s2">&quot;PopSize&quot;</span><span class="p">:</span> <span class="n">pop_size</span><span class="p">,</span>
+        <span class="s2">&quot;MaxStep&quot;</span><span class="p">:</span> <span class="n">max_step</span><span class="p">,</span>
+        <span class="s2">&quot;DistanceOfIon&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">i</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">distance_of_ions</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="c1"># @DistanceOfIon</span>
+        <span class="c1"># @end</span>
+    <span class="p">}</span>
+
+    <span class="n">default_key_value</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;SystemName&quot;</span><span class="p">:</span> <span class="n">system_name</span><span class="p">,</span>
+        <span class="s2">&quot;NumberOfFormula&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">numb_of_formula</span><span class="p">))),</span>
+        <span class="s2">&quot;Volume&quot;</span><span class="p">:</span> <span class="n">volume</span><span class="p">,</span>
+        <span class="s2">&quot;Ialgo&quot;</span><span class="p">:</span> <span class="n">ialgo</span><span class="p">,</span>
+        <span class="s2">&quot;PsoRatio&quot;</span><span class="p">:</span> <span class="n">pso_ratio</span><span class="p">,</span>
+        <span class="s2">&quot;ICode&quot;</span><span class="p">:</span> <span class="n">icode</span><span class="p">,</span>
+        <span class="s2">&quot;NumberOfLbest&quot;</span><span class="p">:</span> <span class="n">numb_of_lbest</span><span class="p">,</span>
+        <span class="s2">&quot;NumberOfLocalOptim&quot;</span><span class="p">:</span> <span class="n">numb_of_local_optim</span><span class="p">,</span>
+        <span class="s2">&quot;Command&quot;</span><span class="p">:</span> <span class="n">command</span><span class="p">,</span>
+        <span class="s2">&quot;MaxTime&quot;</span><span class="p">:</span> <span class="n">max_time</span><span class="p">,</span>
+        <span class="s2">&quot;GenType&quot;</span><span class="p">:</span> <span class="n">gen_type</span><span class="p">,</span>
+        <span class="s2">&quot;PickUp&quot;</span><span class="p">:</span> <span class="n">pick_up</span><span class="p">,</span>
+        <span class="s2">&quot;PickStep&quot;</span><span class="p">:</span> <span class="n">pick_step</span><span class="p">,</span>
+        <span class="s2">&quot;Parallel&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">parallel</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Split&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">split</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;SpeSpaceGroup&quot;</span><span class="p">:</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">spec_space_group</span><span class="p">))),</span>
+        <span class="s2">&quot;VSC&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span> <span class="k">if</span> <span class="n">vsc</span> <span class="k">else</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;MaxNumAtom&quot;</span><span class="p">:</span> <span class="n">max_numb_atoms</span><span class="p">,</span>
+        <span class="s2">&quot;CtrlRange&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">i</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ctrl_range</span><span class="p">]),</span>
+        <span class="c1"># @CtrlRange</span>
+        <span class="c1"># @end</span>
+    <span class="p">}</span>
+    <span class="n">distance_of_ions_str</span> <span class="o">=</span> <span class="n">necessary_keys</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;DistanceOfIon&quot;</span><span class="p">)</span>
+    <span class="n">vsc_ctrl_range</span> <span class="o">=</span> <span class="n">default_key_value</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;CtrlRange&quot;</span><span class="p">)</span>
+
+    <span class="n">file_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">necessary_keys</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">file_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">default_key_value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">file_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;@DistanceOfIon</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="n">distance_of_ions_str</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;@End</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;@CtrlRange</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="n">vsc_ctrl_range</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">file_str</span> <span class="o">+=</span> <span class="s2">&quot;@End</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="n">opt_step</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;opt_step&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+    <span class="n">run_opt_str</span> <span class="o">=</span> <span class="n">calypso_run_opt_str</span> <span class="o">+</span> <span class="n">calypso_run_opt_str_end</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">fmax</span><span class="p">,</span>
+        <span class="n">pressure</span><span class="p">,</span>
+        <span class="n">opt_step</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">check_opt_str</span> <span class="o">=</span> <span class="n">calypso_check_opt_str</span>
+
+    <span class="k">return</span> <span class="n">file_str</span><span class="p">,</span> <span class="n">run_opt_str</span><span class="p">,</span> <span class="n">check_opt_str</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

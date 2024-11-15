@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task.customized_lmp_template_task_group &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task.customized_lmp_template_task_group</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.exploration.task.customized_lmp_template_task_group</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Path</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">Union</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dflow.python</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FatalError</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">lmp_conf_name</span><span class="p">,</span>
+    <span class="n">lmp_input_name</span><span class="p">,</span>
+    <span class="n">model_name_pattern</span><span class="p">,</span>
+    <span class="n">plm_input_name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dpgen2.utils</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">run_command</span><span class="p">,</span>
+    <span class="n">set_directory</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.conf_sampling_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConfSamplingTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.lmp</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_lmp_input</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.lmp_template_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LmpTemplateTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.task</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExplorationTask</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="CustomizedLmpTemplateTaskGroup">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup">[docs]</a>
+<span class="k">class</span> <span class="nc">CustomizedLmpTemplateTaskGroup</span><span class="p">(</span><span class="n">ConfSamplingTaskGroup</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_set</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="CustomizedLmpTemplateTaskGroup.set_lmp">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.set_lmp">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_lmp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">numb_models</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">custom_shell_commands</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">revisions</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">traj_freq</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="n">input_lmp_conf_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">lmp_conf_name</span><span class="p">,</span>
+        <span class="n">input_lmp_tmpl_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">lmp_input_name</span><span class="p">,</span>
+        <span class="n">input_plm_tmpl_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">input_extra_files</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+        <span class="n">output_dir_pattern</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span><span class="p">,</span>
+        <span class="n">output_lmp_conf_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">lmp_conf_name</span><span class="p">,</span>
+        <span class="n">output_lmp_tmpl_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">lmp_input_name</span><span class="p">,</span>
+        <span class="n">output_plm_tmpl_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Set lammps task.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        numb_models : int</span>
+<span class="sd">            Number of models</span>
+<span class="sd">        custom_shell_commands : str</span>
+<span class="sd">            Customized shell commands to be run for each configuration.</span>
+<span class="sd">            The commands require `input_lmp_conf_name` as input conf file,</span>
+<span class="sd">            `input_lmp_tmpl_name` and `input_plm_tmpl_name` as templates,</span>
+<span class="sd">            and `input_extra_files` as extra input files.</span>
+<span class="sd">            By running the commands a series folders in pattern</span>
+<span class="sd">            `output_dir_pattern` are supposed to be generated,</span>
+<span class="sd">            and each folder is supposed to contain a configuration file</span>
+<span class="sd">            `output_lmp_conf_name`, a lammps template file `output_lmp_tmpl_name`</span>
+<span class="sd">            and a plumed template file `output_plm_tmpl_name`.</span>
+<span class="sd">        revisions : dict</span>
+<span class="sd">            Revision dictionary. Provided in {key: [enumerated values]} format</span>
+<span class="sd">        traj_freq : int</span>
+<span class="sd">            Frequency along trajectory of checking model deviation</span>
+<span class="sd">        input_lmp_conf_name : str</span>
+<span class="sd">            Input conf file name for the shell commands.</span>
+<span class="sd">        input_lmp_tmpl_name : str</span>
+<span class="sd">            Template file name of lammps input</span>
+<span class="sd">        input_plm_tmpl_name : str</span>
+<span class="sd">            Template file name of the plumed input</span>
+<span class="sd">        input_extra_files : List[str]</span>
+<span class="sd">            Extra files that may be needed to execute the shell commands</span>
+<span class="sd">        output_dir_pattern : Union[str, List[str]]</span>
+<span class="sd">            Pattern of resultant folders generated by the shell commands.</span>
+<span class="sd">        output_lmp_conf_name : str</span>
+<span class="sd">            Generated conf file name.</span>
+<span class="sd">        output_lmp_tmpl_name : str</span>
+<span class="sd">            Generated lmp input file name.</span>
+<span class="sd">        output_plm_tmpl_name : str</span>
+<span class="sd">            Generated plm input file name.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numb_models</span> <span class="o">=</span> <span class="n">numb_models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_lmp_tmpl_name</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revisions</span> <span class="o">=</span> <span class="n">revisions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traj_freq</span> <span class="o">=</span> <span class="n">traj_freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_plm</span> <span class="o">=</span> <span class="n">input_plm_tmpl_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">do_custom</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">custom_shell_commands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">custom_shell_commands</span> <span class="o">!=</span> <span class="p">[]</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">do_custom</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;no customized shell command is found, please provide at least 1 &quot;</span>
+                <span class="s2">&quot;or use LmpTemplateTaskGroup instead&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template_fn</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_lmp_tmpl_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template_fc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">input_lmp_tmpl_name</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_plm</span><span class="p">:</span>
+            <span class="n">tmp_input_plm_tmpl_name</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">input_plm_tmpl_name</span> <span class="k">if</span> <span class="n">input_plm_tmpl_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plm_template_fn</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmp_input_plm_tmpl_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plm_template_fc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmp_input_plm_tmpl_name</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+        <span class="n">tmp_input_extra_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">input_extra_files</span><span class="p">]</span>
+        <span class="n">tmp_input_extra_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lmp_template_fn</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_plm</span><span class="p">:</span>
+            <span class="n">tmp_input_extra_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plm_template_fn</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">custom_shell_commands</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_extra_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">tmp_input_extra_files</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_extra_file_contents</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">Path</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">tmp_input_extra_files</span>
+            <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_shell_commands</span> <span class="o">=</span> <span class="n">custom_shell_commands</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_dir_pattern</span> <span class="o">=</span> <span class="n">output_dir_pattern</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir_pattern</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_dir_pattern</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir_pattern</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_lmp_conf_name</span> <span class="o">=</span> <span class="n">input_lmp_conf_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_lmp_conf_name</span> <span class="o">=</span> <span class="n">output_lmp_conf_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_lmp_tmpl_name</span> <span class="o">=</span> <span class="n">output_lmp_tmpl_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_plm_tmpl_name</span> <span class="o">=</span> <span class="n">output_plm_tmpl_name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_set</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_plm</span> <span class="k">else</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="CustomizedLmpTemplateTaskGroup.make_task">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.customized_lmp_template_task_group.CustomizedLmpTemplateTaskGroup.make_task">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_task</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CustomizedLmpTemplateTaskGroup&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;confs are not set&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lmp_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Lammps template and revisions are not set&quot;</span><span class="p">)</span>
+
+        <span class="c1"># clear all existing tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="c1"># sample confs</span>
+        <span class="n">confs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_confs</span><span class="p">()</span>
+        <span class="c1"># loop over confs to generate tasks</span>
+        <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">confs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_make_customized_task_group</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_make_customized_task_group</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">conf</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;CustomizedLmpTemplateTaskGroup&quot;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmpdir</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">set_directory</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">)):</span>
+                <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_lmp_conf_name</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">conf</span><span class="p">)</span>
+                <span class="c1"># copy all customized files</span>
+                <span class="k">for</span> <span class="n">ff</span><span class="p">,</span> <span class="n">cc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">input_extra_files</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_extra_file_contents</span>
+                <span class="p">):</span>
+                    <span class="n">Path</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">cc</span><span class="p">)</span>
+                <span class="c1"># run all customized shell commands</span>
+                <span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_shell_commands</span><span class="p">:</span>
+                    <span class="c1"># run shell command with dpgen2.utils.run_command</span>
+                    <span class="n">ret</span><span class="p">,</span> <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">run_command</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                            <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                                <span class="p">(</span>
+                                    <span class="sa">f</span><span class="s2">&quot;customized shell command </span><span class="si">{</span><span class="n">ss</span><span class="si">}</span><span class="s2"> failed with return code </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;out msg&quot;</span><span class="p">,</span>
+                                    <span class="n">out</span><span class="p">,</span>
+                                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;err msg: &quot;</span><span class="p">,</span>
+                                    <span class="n">err</span><span class="p">,</span>
+                                    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+                                <span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">FatalError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;customized shell command </span><span class="si">{</span><span class="n">ss</span><span class="si">}</span><span class="s2"> failed with return code </span><span class="si">{</span><span class="n">ret</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+                <span class="c1"># loop over all pattern matched result dirs</span>
+                <span class="k">for</span> <span class="n">ff</span> <span class="ow">in</span> <span class="p">[</span>
+                    <span class="n">ii</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span> <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+                <span class="p">]:</span>
+                    <span class="n">matched_ff</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">for</span> <span class="n">pp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_dir_pattern</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">ff</span><span class="p">):</span>
+                            <span class="n">matched_ff</span> <span class="o">=</span> <span class="n">ff</span>
+                            <span class="k">break</span>
+                    <span class="c1"># no matched continue</span>
+                    <span class="k">if</span> <span class="n">matched_ff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">&quot;Dir </span><span class="si">{</span><span class="n">ff</span><span class="si">}</span><span class="s2"> does not matches the patter </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">output_dir_pattern</span><span class="si">}</span><span class="s2"> &quot;</span>
+                        <span class="p">)</span>
+                        <span class="k">continue</span>
+                    <span class="k">with</span> <span class="n">set_directory</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">matched_ff</span><span class="p">)):</span>
+                        <span class="n">lmp_tgroup</span> <span class="o">=</span> <span class="n">LmpTemplateTaskGroup</span><span class="p">()</span>
+                        <span class="n">lmp_tgroup</span><span class="o">.</span><span class="n">set_lmp</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">numb_models</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">output_lmp_tmpl_name</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">output_plm_tmpl_name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_plm</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                            <span class="n">revisions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">revisions</span><span class="p">,</span>
+                            <span class="n">traj_freq</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">traj_freq</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="n">conf_fc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output_lmp_conf_name</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+                        <span class="n">lmp_tgroup</span><span class="o">.</span><span class="n">set_conf</span><span class="p">(</span>
+                            <span class="p">[</span><span class="n">conf_fc</span><span class="p">],</span>
+                            <span class="mi">1</span><span class="p">,</span>
+                        <span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_group</span><span class="p">(</span><span class="n">lmp_tgroup</span><span class="o">.</span><span class="n">make_task</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

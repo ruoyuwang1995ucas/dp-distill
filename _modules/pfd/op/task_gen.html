@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.op.task_gen &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.op.task_gen</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.op.task_gen</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">dpdata</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Path</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">Tuple</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">dflow</span> <span class="kn">import</span> <span class="n">upload_artifact</span>
+
+
+<span class="kn">from</span> <span class="nn">dflow.python</span> <span class="kn">import</span> <span class="n">OP</span><span class="p">,</span> <span class="n">OPIO</span><span class="p">,</span> <span class="n">Artifact</span><span class="p">,</span> <span class="n">BigParameter</span><span class="p">,</span> <span class="n">OPIOSign</span><span class="p">,</span> <span class="n">Parameter</span>
+
+<span class="kn">from</span> <span class="nn">dpdata.lammps.lmp</span> <span class="kn">import</span> <span class="n">from_system_data</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="n">lmp_task_pattern</span><span class="p">,</span> <span class="n">pytorch_model_name_pattern</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.task</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExplorationStage</span><span class="p">,</span>
+    <span class="n">BaseExplorationTaskGroup</span><span class="p">,</span>
+    <span class="n">ExplorationTaskGroup</span><span class="p">,</span>
+    <span class="n">make_lmp_task_group_from_config</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="TaskGen">
+<a class="viewcode-back" href="../../../development/pfd.op.html#pfd.op.task_gen.TaskGen">[docs]</a>
+<span class="k">class</span> <span class="nc">TaskGen</span><span class="p">(</span><span class="n">OP</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Generate tasks for exploration</span>
+
+<span class="sd">    A list of working directories (defined by `ip[&quot;task&quot;]`)</span>
+<span class="sd">    containing all files needed to start LAMMPS tasks will be</span>
+<span class="sd">    created. The paths of the directories will be returned as</span>
+<span class="sd">    `op[&quot;task_paths&quot;]`. The identities of the tasks are returned as</span>
+<span class="sd">    `op[&quot;task_names&quot;]`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TaskGen.get_input_sign">
+<a class="viewcode-back" href="../../../development/pfd.op.html#pfd.op.task_gen.TaskGen.get_input_sign">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_input_sign</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OPIOSign</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="c1"># &quot;lmp_task_grp&quot;: BigParameter(BaseExplorationTaskGroup),</span>
+                <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]),</span>
+                <span class="s2">&quot;type_map&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]),</span>
+                <span class="s2">&quot;mass_map&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]),</span>
+                <span class="s2">&quot;expl_tasks&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span>
+                    <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
+                <span class="p">),</span>  <span class="c1"># this should be the generation config for each group</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TaskGen.get_output_sign">
+<a class="viewcode-back" href="../../../development/pfd.op.html#pfd.op.task_gen.TaskGen.get_output_sign">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_output_sign</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">OPIOSign</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;lmp_task_grp&quot;</span><span class="p">:</span> <span class="n">BigParameter</span><span class="p">(</span><span class="n">BaseExplorationTaskGroup</span><span class="p">),</span>
+                <span class="c1"># &quot;type_map&quot;:Parameter(List[str])</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TaskGen.execute">
+<a class="viewcode-back" href="../../../development/pfd.op.html#pfd.op.task_gen.TaskGen.execute">[docs]</a>
+    <span class="nd">@OP</span><span class="o">.</span><span class="n">exec_sign_check</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ip</span><span class="p">:</span> <span class="n">OPIO</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OPIO</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Execute the OP.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ip : dict</span>
+<span class="sd">            Input dict with components:</span>
+<span class="sd">            - `lmp_task_grp` : (`BigParameter(Path)`) Can be pickle loaded as a ExplorationTaskGroup. Definitions for LAMMPS tasks</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        op : dict</span>
+<span class="sd">            Output dict with components:</span>
+
+<span class="sd">            - `task_names`: (`List[str]`) The name of tasks. Will be used as the identities of the tasks. The names of different tasks are different.</span>
+<span class="sd">            - `task_paths`: (`Artifact(List[Path])`) The parepared working paths of the tasks. Contains all input files needed to start the LAMMPS simulation. The order fo the Paths should be consistent with `op[&quot;task_names&quot;]`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># perturbed systems</span>
+        <span class="n">systems</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">]</span>
+        <span class="n">expl_tasks</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;expl_tasks&quot;</span><span class="p">]</span>
+        <span class="n">type_map</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;type_map&quot;</span><span class="p">]</span>
+        <span class="n">mass_map</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;mass_map&quot;</span><span class="p">]</span>
+        <span class="n">expl_grp</span> <span class="o">=</span> <span class="n">BaseExplorationTaskGroup</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">expl_tasks</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+            <span class="n">task_grp</span> <span class="o">=</span> <span class="n">gen_expl_grp</span><span class="p">(</span><span class="n">systems</span><span class="p">,</span> <span class="n">type_map</span><span class="p">,</span> <span class="n">mass_map</span><span class="p">,</span> <span class="n">task</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">task_grp</span><span class="o">.</span><span class="n">task_list</span><span class="p">:</span>
+                <span class="n">expl_grp</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">OPIO</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;lmp_task_grp&quot;</span><span class="p">:</span> <span class="n">expl_grp</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="gen_expl_grp">
+<a class="viewcode-back" href="../../../development/pfd.op.html#pfd.op.task_gen.gen_expl_grp">[docs]</a>
+<span class="k">def</span> <span class="nf">gen_expl_grp</span><span class="p">(</span><span class="n">systems</span><span class="p">,</span> <span class="n">type_map</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">mass_map</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+    <span class="n">task_grp</span> <span class="o">=</span> <span class="n">BaseExplorationTaskGroup</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">task</span><span class="p">[</span><span class="s2">&quot;conf_idx&quot;</span><span class="p">]:</span>
+        <span class="n">sys</span> <span class="o">=</span> <span class="n">dpdata</span><span class="o">.</span><span class="n">System</span><span class="p">(</span><span class="n">systems</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;deepmd/npy&quot;</span><span class="p">,</span> <span class="n">type_map</span><span class="o">=</span><span class="n">type_map</span><span class="p">)</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="p">[</span><span class="n">from_system_data</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">f_idx</span><span class="o">=</span><span class="n">ii</span><span class="p">)</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">())]</span>
+        <span class="n">task</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;model_name_pattern&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pytorch_model_name_pattern</span>
+        <span class="n">task_grp_tmp</span> <span class="o">=</span> <span class="n">make_lmp_task_group_from_config</span><span class="p">(</span>
+            <span class="n">numb_models</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mass_map</span><span class="o">=</span><span class="n">mass_map</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">task</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">task_grp_tmp</span><span class="o">.</span><span class="n">set_conf</span><span class="p">(</span>
+            <span class="n">conf_list</span><span class="o">=</span><span class="n">conf</span><span class="p">,</span>
+            <span class="n">n_sample</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_sample&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">random_sample</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">task_grp_tmp</span><span class="o">.</span><span class="n">make_task</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">task_grp_tmp</span><span class="o">.</span><span class="n">task_list</span><span class="p">:</span>
+            <span class="n">task_grp</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">ii</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">task_grp</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

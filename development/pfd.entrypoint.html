@@ -1,0 +1,488 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.entrypoint package &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pfd.exploration package" href="pfd.exploration.html" />
+    <link rel="prev" title="pfd package" href="pfd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pfd.html">pfd package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pfd.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pfd.entrypoint package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.html">pfd.exploration package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.flow.html">pfd.flow package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.fp.html">pfd.fp package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.op.html">pfd.op package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.superop.html">pfd.superop package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.train.html">pfd.train package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.utils.html">pfd.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd.constants">pfd.constants module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.html#module-pfd">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">API documentation</a></li>
+          <li class="breadcrumb-item"><a href="pfd.html">pfd package</a></li>
+      <li class="breadcrumb-item active">pfd.entrypoint package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/development/pfd.entrypoint.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pfd-entrypoint-package">
+<h1>pfd.entrypoint package<a class="headerlink" href="#pfd-entrypoint-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-pfd.entrypoint.args">
+<span id="pfd-entrypoint-args-module"></span><h2>pfd.entrypoint.args module<a class="headerlink" href="#module-pfd.entrypoint.args" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.aimd_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">aimd_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#aimd_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.aimd_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.bohrium_conf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">bohrium_conf_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#bohrium_conf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.bohrium_conf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.conf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">conf_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#conf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.conf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.conf_gen_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">conf_gen_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#conf_gen_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.conf_gen_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.conf_generation_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">conf_generation_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#conf_generation_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.conf_generation_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.default_step_config_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">default_step_config_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#default_step_config_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.default_step_config_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.dflow_conf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">dflow_conf_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#dflow_conf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.dflow_conf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.explore_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">explore_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#explore_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.explore_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.fp_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">fp_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#fp_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.fp_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.gen_doc">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">gen_doc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_anchor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">make_link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#gen_doc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.gen_doc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.infer_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">infer_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#infer_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.infer_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.input_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">input_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#input_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.input_args" title="Link to this definition"></a></dt>
+<dd><p>The input parameters and artifacts of PFD workflow</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.label_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">label_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#label_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.label_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.lmp_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">lmp_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#lmp_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.lmp_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.make_link">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">make_link</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#make_link"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.make_link" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.normalize">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">normalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#normalize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.normalize" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.normalize_infer_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">normalize_infer_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#normalize_infer_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.normalize_infer_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.pert_gen">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">pert_gen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#pert_gen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.pert_gen" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.pfd_step_config_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">pfd_step_config_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#pfd_step_config_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.pfd_step_config_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.submit_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">submit_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_step_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'dptechnology/dpgen2:latest',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#submit_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.submit_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.task_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">task_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#task_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.task_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.task_finetune">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">task_finetune</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#task_finetune"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.task_finetune" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.train_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">train_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_train</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#train_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.train_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.training_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">training_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#training_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.training_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_conv">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_conv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_conv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_conv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_conv_filter">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_conv_filter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_conv_filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_conv_filter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_explore">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_explore</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_explore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_explore" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_fp">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_fp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_fp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_fp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_frame_selector">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_frame_selector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_frame_selector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_frame_selector" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_infer">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_infer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_infer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_infer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_task">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_task</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_task"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_task" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.variant_train">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">variant_train</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#variant_train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.variant_train" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.args.wf_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.args.</span></span><span class="sig-name descname"><span class="pre">wf_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">default_step_config</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'dptechnology/dpgen2:latest',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/args.html#wf_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.args.wf_args" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.entrypoint.common">
+<span id="pfd-entrypoint-common-module"></span><h2>pfd.entrypoint.common module<a class="headerlink" href="#module-pfd.entrypoint.common" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.common.expand_idx">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.common.</span></span><span class="sig-name descname"><span class="pre">expand_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pfd/entrypoint/common.html#expand_idx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.common.expand_idx" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.common.expand_sys_str">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.common.</span></span><span class="sig-name descname"><span class="pre">expand_sys_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/pfd/entrypoint/common.html#expand_sys_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.common.expand_sys_str" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.common.global_config_workflow">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.common.</span></span><span class="sig-name descname"><span class="pre">global_config_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf_config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/common.html#global_config_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.common.global_config_workflow" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.entrypoint.download">
+<span id="pfd-entrypoint-download-module"></span><h2>pfd.entrypoint.download module<a class="headerlink" href="#module-pfd.entrypoint.download" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.download.download">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.download.</span></span><span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wf_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wf_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chk_pnt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/download.html#download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.download.download" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.download.download_by_def">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.download.</span></span><span class="sig-name descname"><span class="pre">download_by_def</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wf_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_defs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chk_pnt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/download.html#download_by_def"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.download.download_by_def" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.download.download_end_result">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.download.</span></span><span class="sig-name descname"><span class="pre">download_end_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">workflow_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wf_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/download.html#download_end_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.download.download_end_result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.entrypoint.main">
+<span id="pfd-entrypoint-main-module"></span><h2>pfd.entrypoint.main module<a class="headerlink" href="#module-pfd.entrypoint.main" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.main.main">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/main.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.main.main" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.main.main_parser">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.main.</span></span><span class="sig-name descname"><span class="pre">main_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ArgumentParser</span></span></span><a class="reference internal" href="../_modules/pfd/entrypoint/main.html#main_parser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.main.main_parser" title="Link to this definition"></a></dt>
+<dd><p>PFD-kit commandline options argument parser.</p>
+<p class="rubric">Notes</p>
+<p>This function is used by documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the argument parser</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>argparse.ArgumentParser</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.main.parse_args">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.main.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/main.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.main.parse_args" title="Link to this definition"></a></dt>
+<dd><p>PFD-kit commandline options argument parsing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – list of command line arguments, main purpose is testing default option None
+takes arguments from sys.argv</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-pfd.entrypoint.submit">
+<span id="pfd-entrypoint-submit-module"></span><h2>pfd.entrypoint.submit module<a class="headerlink" href="#module-pfd.entrypoint.submit" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.FlowGen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">FlowGen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">PosixPath('.')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#FlowGen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.FlowGen" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.FlowGen.download_path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">download_path</span></span><a class="headerlink" href="#pfd.entrypoint.submit.FlowGen.download_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.FlowGen.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reuse_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ArgoStep</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_submission</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_submit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#FlowGen.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.FlowGen.submit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.FlowGen.wf_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wf_type</span></span><a class="headerlink" href="#pfd.entrypoint.submit.FlowGen.wf_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.fold_keys">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">fold_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_step_keys</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#fold_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.fold_keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.get_conf_filters">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">get_conf_filters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#get_conf_filters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.get_conf_filters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.get_conf_filters_conv">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">get_conf_filters_conv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#get_conf_filters_conv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.get_conf_filters_conv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.get_resubmit_keys">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">get_resubmit_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsuccessful_step_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#get_resubmit_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.get_resubmit_keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.get_superop">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">get_superop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#get_superop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.get_superop" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.get_systems_from_data">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">get_systems_from_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#get_systems_from_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.get_systems_from_data" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.make_data_gen_op">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">make_data_gen_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'vasp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_fp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_fp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_python_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#make_data_gen_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.make_data_gen_op" title="Link to this definition"></a></dt>
+<dd><p>Creates a DataGen operation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fp_style</strong> (<em>str</em>) – The style of the force field calculation (default is “vasp”).</p></li>
+<li><p><strong>prep_fp_config</strong> (<em>dict</em>) – Configuration for preparing the force field calculation.</p></li>
+<li><p><strong>run_fp_config</strong> (<em>dict</em>) – Configuration for running the force field calculation.</p></li>
+<li><p><strong>pert_gen_config</strong> (<em>dict</em>) – Configuration for perturbation generation.</p></li>
+<li><p><strong>collect_data_config</strong> (<em>dict</em>) – Configuration for data collection.</p></li>
+<li><p><strong>upload_python_packages</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>os.PathLike</em><em>]</em><em>]</em>) – List of Python packages to upload.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the DataGen class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pfd.flow.html#pfd.flow.data_gen.DataGen" title="pfd.flow.data_gen.DataGen">DataGen</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.make_dist_op">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">make_dist_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">teacher_model_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explore_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lmp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_lmp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_lmp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_train_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_train_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_test_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_python_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#make_dist_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.make_dist_op" title="Link to this definition"></a></dt>
+<dd><p>Make a super OP template for distillation process</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.make_ft_op">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">make_ft_op</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fp_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'vasp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">explore_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'lmp'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pert_gen_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_fp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_fp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_train_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_train_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prep_lmp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_lmp_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_data_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">select_confs_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_step_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{'continue_on_failed':</span> <span class="pre">False,</span> <span class="pre">'continue_on_num_success':</span> <span class="pre">None,</span> <span class="pre">'continue_on_success_ratio':</span> <span class="pre">None,</span> <span class="pre">'executor':</span> <span class="pre">None,</span> <span class="pre">'parallelism':</span> <span class="pre">None,</span> <span class="pre">'template_config':</span> <span class="pre">{'envs':</span> <span class="pre">None,</span> <span class="pre">'image':</span> <span class="pre">'registry.dp.tech/dptech/deepmd-kit:v3.0.0a1-2024Q1',</span> <span class="pre">'retry_on_transient_error':</span> <span class="pre">None,</span> <span class="pre">'timeout':</span> <span class="pre">None,</span> <span class="pre">'timeout_as_transient_error':</span> <span class="pre">False}}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upload_python_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_training</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_aimd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#make_ft_op"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.make_ft_op" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.resubmit_workflow">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">resubmit_workflow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wfid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reuse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsuccessful_step_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#resubmit_workflow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.resubmit_workflow" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pfd.entrypoint.submit.successful_step_keys">
+<span class="sig-prename descclassname"><span class="pre">pfd.entrypoint.submit.</span></span><span class="sig-name descname"><span class="pre">successful_step_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unsuccessful_step_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pfd/entrypoint/submit.html#successful_step_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pfd.entrypoint.submit.successful_step_keys" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pfd.entrypoint">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pfd.entrypoint" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pfd.html" class="btn btn-neutral float-left" title="pfd package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pfd.exploration.html" class="btn btn-neutral float-right" title="pfd.exploration package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

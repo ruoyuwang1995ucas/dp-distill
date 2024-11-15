@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task.lmp_template_task_group &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task.lmp_template_task_group</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.exploration.task.lmp_template_task_group</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Path</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">lmp_conf_name</span><span class="p">,</span>
+    <span class="n">lmp_input_name</span><span class="p">,</span>
+    <span class="n">lmp_traj_name</span><span class="p">,</span>
+    <span class="n">model_name_pattern</span><span class="p">,</span>
+    <span class="n">plm_input_name</span><span class="p">,</span>
+    <span class="n">plm_output_name</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.conf_sampling_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ConfSamplingTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.lmp</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">make_lmp_input</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.task</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ExplorationTask</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="LmpTemplateTaskGroup">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup">[docs]</a>
+<span class="k">class</span> <span class="nc">LmpTemplateTaskGroup</span><span class="p">(</span><span class="n">ConfSamplingTaskGroup</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_set</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="LmpTemplateTaskGroup.set_lmp">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.set_lmp">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_lmp</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">numb_models</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">lmp_template</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">plm_template</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">revisions</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{},</span>
+        <span class="n">traj_freq</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">lmp_template</span>  <span class="c1"># Path(lmp_template_fname).read_text().split(&quot;\n&quot;)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">revisions</span> <span class="o">=</span> <span class="n">revisions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">traj_freq</span> <span class="o">=</span> <span class="n">traj_freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_set</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">model_name_pattern</span> <span class="o">%</span> <span class="n">ii</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numb_models</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span> <span class="o">=</span> <span class="n">revise_lmp_input_model</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">traj_freq</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span> <span class="o">=</span> <span class="n">revise_lmp_input_dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">traj_freq</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">plm_template</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plm_template</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">plm_template</span>  <span class="c1"># Path(plm_template_fname).read_text().split(&quot;\n&quot;)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="LmpTemplateTaskGroup.make_task">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_task">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_task</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LmpTemplateTaskGroup&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">conf_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;confs are not set&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">lmp_set</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Lammps template and revisions are not set&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span><span class="p">:</span>
+            <span class="n">lmp_template</span> <span class="o">=</span> <span class="n">revise_lmp_input_plm</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span><span class="p">,</span>
+                <span class="n">plm_input_name</span><span class="p">,</span>
+                <span class="n">out_plm</span><span class="o">=</span><span class="n">plm_output_name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lmp_template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lmp_template</span>
+        <span class="c1"># clear all existing tasks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">confs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sample_confs</span><span class="p">()</span>
+        <span class="n">templates</span> <span class="o">=</span> <span class="p">[</span><span class="n">lmp_template</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span><span class="p">:</span>
+            <span class="n">templates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plm_template</span><span class="p">)</span>
+        <span class="n">conts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_cont</span><span class="p">(</span><span class="n">templates</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revisions</span><span class="p">)</span>
+        <span class="n">nconts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">conts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">cc</span><span class="p">,</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">confs</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">nconts</span><span class="p">)):</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">plm_set</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_lmp_task</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">conts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">ii</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_lmp_task</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">conts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">ii</span><span class="p">],</span> <span class="n">conts</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">ii</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="LmpTemplateTaskGroup.make_cont">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.LmpTemplateTaskGroup.make_cont">[docs]</a>
+    <span class="k">def</span> <span class="nf">make_cont</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">templates</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">revisions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">revisions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">prod_vv</span> <span class="o">=</span> <span class="p">[</span><span class="n">revisions</span><span class="p">[</span><span class="n">kk</span><span class="p">]</span> <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
+        <span class="n">ntemplate</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">templates</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntemplate</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">vv</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="o">*</span><span class="n">prod_vv</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntemplate</span><span class="p">):</span>
+                <span class="n">tt</span> <span class="o">=</span> <span class="n">templates</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">ret</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">revise_by_keys</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">vv</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_make_lmp_task</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">conf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">lmp_cont</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">plm_cont</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExplorationTask</span><span class="p">:</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">ExplorationTask</span><span class="p">()</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">lmp_conf_name</span><span class="p">,</span> <span class="n">conf</span><span class="p">,)</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span>
+            <span class="n">lmp_input_name</span><span class="p">,</span>
+            <span class="n">lmp_cont</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">plm_cont</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span>
+                <span class="n">plm_input_name</span><span class="p">,</span>
+                <span class="n">plm_cont</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">task</span></div>
+
+
+
+<div class="viewcode-block" id="find_only_one_key">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.find_only_one_key">[docs]</a>
+<span class="k">def</span> <span class="nf">find_only_one_key</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">)):</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">lmp_lines</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">nkey</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">nkey</span> <span class="ow">and</span> <span class="n">words</span><span class="p">[:</span><span class="n">nkey</span><span class="p">]</span> <span class="o">==</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">found</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;found </span><span class="si">%d</span><span class="s2"> keywords </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">),</span> <span class="n">key</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;failed to find keyword </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="revise_lmp_input_model">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_model">[docs]</a>
+<span class="k">def</span> <span class="nf">revise_lmp_input_model</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="n">task_model_list</span><span class="p">,</span> <span class="n">trj_freq</span><span class="p">,</span> <span class="n">deepmd_version</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">find_only_one_key</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;pair_style&quot;</span><span class="p">,</span> <span class="s2">&quot;deepmd&quot;</span><span class="p">])</span>
+    <span class="n">graph_list</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">task_model_list</span><span class="p">)</span>
+    <span class="n">lmp_lines</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pair_style      deepmd </span><span class="si">%s</span><span class="s2"> out_freq </span><span class="si">%d</span><span class="s2"> out_file model_devi.out&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">graph_list</span><span class="p">,</span>
+        <span class="n">trj_freq</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">lmp_lines</span></div>
+
+
+
+<div class="viewcode-block" id="revise_lmp_input_dump">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_dump">[docs]</a>
+<span class="k">def</span> <span class="nf">revise_lmp_input_dump</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="n">trj_freq</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">find_only_one_key</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;dump&quot;</span><span class="p">,</span> <span class="s2">&quot;dpgen_dump&quot;</span><span class="p">])</span>
+    <span class="n">lmp_lines</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;dump            dpgen_dump all custom %d </span><span class="si">{</span><span class="n">lmp_traj_name</span><span class="si">}</span><span class="s2"> id type x y z&quot;</span>
+        <span class="o">%</span> <span class="n">trj_freq</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">lmp_lines</span></div>
+
+
+
+<div class="viewcode-block" id="revise_lmp_input_plm">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_lmp_input_plm">[docs]</a>
+<span class="k">def</span> <span class="nf">revise_lmp_input_plm</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="n">in_plm</span><span class="p">,</span> <span class="n">out_plm</span><span class="o">=</span><span class="s2">&quot;output.plumed&quot;</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">find_only_one_key</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;fix&quot;</span><span class="p">,</span> <span class="s2">&quot;dpgen_plm&quot;</span><span class="p">])</span>
+    <span class="n">lmp_lines</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;fix             dpgen_plm all plumed plumedfile </span><span class="si">%s</span><span class="s2"> outfile </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+        <span class="n">in_plm</span><span class="p">,</span>
+        <span class="n">out_plm</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">lmp_lines</span></div>
+
+
+
+<div class="viewcode-block" id="revise_by_keys">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.lmp_template_task_group.revise_by_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">revise_by_keys</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">vv</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lmp_lines</span><span class="p">)):</span>
+            <span class="n">lmp_lines</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">lmp_lines</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">kk</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">vv</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">lmp_lines</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

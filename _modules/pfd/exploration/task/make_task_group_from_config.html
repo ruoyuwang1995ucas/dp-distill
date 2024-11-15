@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pfd.exploration.task.make_task_group_from_config &mdash; pfd-kit 0.3.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            pfd-kit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../basics/getting-started.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-cli.html">Command guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/guide-on-script.html">Input script guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/argument-for-script.html">Arguments of the input script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../usage/examples.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../development/modules.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">pfd-kit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pfd.exploration.task.make_task_group_from_config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pfd.exploration.task.make_task_group_from_config</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">dargs</span>
+<span class="kn">from</span> <span class="nn">dargs</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Argument</span><span class="p">,</span>
+    <span class="n">Variant</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">dpgen2.constants</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">lmp_conf_name</span><span class="p">,</span>
+    <span class="n">lmp_input_name</span><span class="p">,</span>
+    <span class="n">model_name_pattern</span><span class="p">,</span>
+    <span class="n">plm_input_name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.task.caly_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CalyTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.task.customized_lmp_template_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CustomizedLmpTemplateTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.task.lmp_template_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LmpTemplateTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.task.npt_task_group</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">NPTTaskGroup</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">doc_conf_idx</span> <span class="o">=</span> <span class="s2">&quot;The configurations of `configurations[conf_idx]` will be used to generate the initial configurations of the tasks. This key provides the index of selected item in the `configurations` array.&quot;</span>
+<span class="n">doc_n_sample</span> <span class="o">=</span> <span class="s2">&quot;Number of configurations. If this number is smaller than the number of configruations in `configruations[conf_idx]`, then `n_sample` configruations are randomly sampled from `configruations[conf_idx]`, otherwise all configruations in `configruations[conf_idx]` will be used. If not provided, all configruations in `configruations[conf_idx]` will be used.&quot;</span>
+
+
+<div class="viewcode-block" id="npt_task_group_args">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.npt_task_group_args">[docs]</a>
+<span class="k">def</span> <span class="nf">npt_task_group_args</span><span class="p">():</span>
+    <span class="n">doc_temps</span> <span class="o">=</span> <span class="s2">&quot;A list of temperatures in K. Also used to initialize the temperature&quot;</span>
+    <span class="n">doc_press</span> <span class="o">=</span> <span class="s2">&quot;A list of pressures in bar.&quot;</span>
+    <span class="n">doc_ens</span> <span class="o">=</span> <span class="s2">&quot;The ensemble. Allowd options are &#39;nve&#39;, &#39;nvt&#39;, &#39;npt&#39;, &#39;npt-a&#39;, &#39;npt-t&#39;. &#39;npt-a&#39; stands for anisotrpic box sampling and &#39;npt-t&#39; stands for triclinic box sampling.&quot;</span>
+    <span class="n">doc_dt</span> <span class="o">=</span> <span class="s2">&quot;The time step&quot;</span>
+    <span class="n">doc_nsteps</span> <span class="o">=</span> <span class="s2">&quot;The number of steps&quot;</span>
+    <span class="n">doc_traj_freq</span> <span class="o">=</span> <span class="s2">&quot;The frequency of dumping configurations and thermodynamic states&quot;</span>
+    <span class="n">doc_tau_t</span> <span class="o">=</span> <span class="s2">&quot;The time scale of thermostat&quot;</span>
+    <span class="n">doc_tau_p</span> <span class="o">=</span> <span class="s2">&quot;The time scale of barostat&quot;</span>
+    <span class="n">doc_pka_e</span> <span class="o">=</span> <span class="s2">&quot;The energy of primary knock-on atom&quot;</span>
+    <span class="n">doc_neidelay</span> <span class="o">=</span> <span class="s2">&quot;The delay of updating the neighbor list&quot;</span>
+    <span class="n">doc_no_pbc</span> <span class="o">=</span> <span class="s2">&quot;Not using the periodic boundary condition&quot;</span>
+    <span class="n">doc_use_clusters</span> <span class="o">=</span> <span class="s2">&quot;Calculate atomic model deviation&quot;</span>
+    <span class="n">doc_relative_f_epsilon</span> <span class="o">=</span> <span class="s2">&quot;Calculate relative force model deviation&quot;</span>
+    <span class="n">doc_relative_v_epsilon</span> <span class="o">=</span> <span class="s2">&quot;Calculate relative virial model deviation&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;conf_idx&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_conf_idx</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sys_idx&quot;</span><span class="p">]),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;n_sample&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_n_sample</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;temps&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_temps</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Ts&quot;</span><span class="p">]),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;press&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_press</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Ps&quot;</span><span class="p">]),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;ens&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;nve&quot;</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_ens</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ensemble&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;dt&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_dt</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;nsteps&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_nsteps</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;trj_freq&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_nsteps</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;t_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;trj_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;traj_freq&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;tau_t&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">5e-2</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_tau_t</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;tau_p&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">5e-1</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_tau_p</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;pka_e&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_pka_e</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;neidelay&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_neidelay</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;no_pbc&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_no_pbc</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;use_clusters&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_use_clusters</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;relative_f_epsilon&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_relative_f_epsilon</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;relative_v_epsilon&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_relative_v_epsilon</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="lmp_template_task_group_args">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.lmp_template_task_group_args">[docs]</a>
+<span class="k">def</span> <span class="nf">lmp_template_task_group_args</span><span class="p">():</span>
+    <span class="n">doc_lmp_template_fname</span> <span class="o">=</span> <span class="s2">&quot;The file name of lammps input template&quot;</span>
+    <span class="n">doc_plm_template_fname</span> <span class="o">=</span> <span class="s2">&quot;The file name of plumed input template&quot;</span>
+    <span class="n">doc_revisions</span> <span class="o">=</span> <span class="s2">&quot;The revisions. Should be a dict providing the key - list of desired values pair. Key is the word to be replaced in the templates, and it may appear in both the lammps and plumed input templates. All values in the value list will be enmerated.&quot;</span>
+    <span class="n">doc_traj_freq</span> <span class="o">=</span> <span class="s2">&quot;The frequency of dumping configurations and thermodynamic states&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;conf_idx&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_conf_idx</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sys_idx&quot;</span><span class="p">]),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;n_sample&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_n_sample</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;lmp_template_fname&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_lmp_template_fname</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lmp_template&quot;</span><span class="p">,</span> <span class="s2">&quot;lmp&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;plm_template_fname&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_plm_template_fname</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plm_template&quot;</span><span class="p">,</span> <span class="s2">&quot;plm&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;revisions&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{}),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;traj_freq&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_traj_freq</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;t_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;trj_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;trj_freq&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="customized_lmp_template_task_group_args">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.customized_lmp_template_task_group_args">[docs]</a>
+<span class="k">def</span> <span class="nf">customized_lmp_template_task_group_args</span><span class="p">():</span>
+    <span class="n">doc_input_lmp_tmpl_name</span> <span class="o">=</span> <span class="s2">&quot;The file name of lammps input template&quot;</span>
+    <span class="n">doc_input_plm_tmpl_name</span> <span class="o">=</span> <span class="s2">&quot;The file name of plumed input template&quot;</span>
+    <span class="n">doc_revisions</span> <span class="o">=</span> <span class="s2">&quot;The revisions. Should be a dict providing the key - list of desired values pair. Key is the word to be replaced in the templates, and it may appear in both the lammps and plumed input templates. All values in the value list will be enmerated.&quot;</span>
+    <span class="n">doc_traj_freq</span> <span class="o">=</span> <span class="s2">&quot;The frequency of dumping configurations and thermodynamic states&quot;</span>
+    <span class="n">doc_custom_shell_commands</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Customized shell commands to be run for each configuration. &quot;</span>
+        <span class="s2">&quot;The commands require `input_lmp_conf_name` as input conf file, &quot;</span>
+        <span class="s2">&quot;`input_lmp_tmpl_name` and `input_plm_tmpl_name` as templates, &quot;</span>
+        <span class="s2">&quot;and `input_extra_files` as extra input files. &quot;</span>
+        <span class="s2">&quot;By running the commands a series folders in pattern &quot;</span>
+        <span class="s2">&quot;`output_dir_pattern` are supposed to be generated, &quot;</span>
+        <span class="s2">&quot;and each folder is supposed to contain a configuration file &quot;</span>
+        <span class="s2">&quot;`output_lmp_conf_name`, a lammps template file `output_lmp_tmpl_name` &quot;</span>
+        <span class="s2">&quot;and a plumed template file `output_plm_tmpl_name`.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_input_extra_files</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Extra files that may be needed to execute the shell commands&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_output_dir_pattern</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;Pattern of resultant folders generated by the shell commands.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">doc_input_lmp_conf_name</span> <span class="o">=</span> <span class="s2">&quot;Input conf file name for the shell commands.&quot;</span>
+    <span class="n">doc_output_lmp_conf_name</span> <span class="o">=</span> <span class="s2">&quot;Generated conf file name.&quot;</span>
+    <span class="n">doc_output_lmp_tmpl_name</span> <span class="o">=</span> <span class="s2">&quot;Generated lmp input file name.&quot;</span>
+    <span class="n">doc_output_plm_tmpl_name</span> <span class="o">=</span> <span class="s2">&quot;Generated plm input file name.&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;conf_idx&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_conf_idx</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sys_idx&quot;</span><span class="p">]),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;n_sample&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_n_sample</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;custom_shell_commands&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_custom_shell_commands</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;revisions&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">{},</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_revisions</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;traj_freq&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_traj_freq</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;t_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;trj_freq&quot;</span><span class="p">,</span> <span class="s2">&quot;trj_freq&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;input_lmp_conf_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">lmp_conf_name</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_input_lmp_conf_name</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;input_lmp_tmpl_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">lmp_input_name</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_input_lmp_tmpl_name</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lmp_template&quot;</span><span class="p">,</span> <span class="s2">&quot;lmp&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;input_plm_tmpl_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_input_plm_tmpl_name</span><span class="p">,</span>
+            <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;plm_template&quot;</span><span class="p">,</span> <span class="s2">&quot;plm&quot;</span><span class="p">],</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;input_extra_files&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_input_extra_files</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;output_dir_pattern&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_output_dir_pattern</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;output_lmp_conf_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">lmp_conf_name</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_output_lmp_conf_name</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;output_lmp_tmpl_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">lmp_input_name</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_output_lmp_tmpl_name</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;output_plm_tmpl_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">plm_input_name</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="n">doc_output_plm_tmpl_name</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="variant_task_group">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.variant_task_group">[docs]</a>
+<span class="k">def</span> <span class="nf">variant_task_group</span><span class="p">():</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s2">&quot;the type of the task group&quot;</span>
+    <span class="n">doc_lmp_md</span> <span class="o">=</span> <span class="s2">&quot;Lammps MD tasks. DPGEN will generate the lammps input script&quot;</span>
+    <span class="n">doc_lmp_template</span> <span class="o">=</span> <span class="s2">&quot;Lammps MD tasks defined by templates. User provide lammps (and plumed) template for lammps tasks. The variables in templates are revised by the revisions key. Notice that the lines for pair style, dump and plumed are reserved for the revision of dpgen2, and the users should not write these lines by themselves. Rather, users notify dpgen2 the poistion of the line for `pair_style` by writting &#39;pair_style deepmd&#39;, the line for `dump` by writting &#39;dump dpgen_dump&#39;. If plumed is used, the line for `fix plumed` shouldbe written exactly as &#39;fix dpgen_plm&#39;. &quot;</span>
+    <span class="n">doc_customized_lmp_template</span> <span class="o">=</span> <span class="s2">&quot;Lammps MD tasks defined by user customized shell commands and templates. User provided shell script generates a series of folders, and each folder contains a lammps template task group. &quot;</span>
+    <span class="k">return</span> <span class="n">Variant</span><span class="p">(</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">,</span>
+        <span class="p">[</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;lmp-md&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">npt_task_group_args</span><span class="p">(),</span> <span class="n">alias</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lmp-npt&quot;</span><span class="p">],</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc_lmp_md</span>
+            <span class="p">),</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;lmp-template&quot;</span><span class="p">,</span>
+                <span class="nb">dict</span><span class="p">,</span>
+                <span class="n">lmp_template_task_group_args</span><span class="p">(),</span>
+                <span class="n">doc</span><span class="o">=</span><span class="n">doc_lmp_template</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">Argument</span><span class="p">(</span>
+                <span class="s2">&quot;customized-lmp-template&quot;</span><span class="p">,</span>
+                <span class="nb">dict</span><span class="p">,</span>
+                <span class="n">customized_lmp_template_task_group_args</span><span class="p">(),</span>
+                <span class="n">doc</span><span class="o">=</span><span class="n">doc_customized_lmp_template</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">],</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="lmp_task_group_args">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.lmp_task_group_args">[docs]</a>
+<span class="k">def</span> <span class="nf">lmp_task_group_args</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;task_group&quot;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[</span><span class="n">variant_task_group</span><span class="p">()])</span></div>
+
+
+
+<div class="viewcode-block" id="lmp_normalize">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.lmp_normalize">[docs]</a>
+<span class="k">def</span> <span class="nf">lmp_normalize</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">lmp_task_group_args</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">normalize_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">trim_pattern</span><span class="o">=</span><span class="s2">&quot;_*&quot;</span><span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">check_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="caly_task_grp_args">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.caly_task_grp_args">[docs]</a>
+<span class="k">def</span> <span class="nf">caly_task_grp_args</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">Argument</span><span class="p">(</span><span class="s2">&quot;numb_of_species&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;number of species.&quot;</span><span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;name_of_atoms&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;name of atoms.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;atomic_number&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;atomic number of each element.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;numb_of_atoms&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;number of each atom.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;distance_of_ions&quot;</span><span class="p">,</span>
+            <span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the distance matrix between different elements.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;pop_size&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the number of structures would be generated in each step.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;max_step&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the max iteration number of CALYPSO loop.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;system_name&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;CALYPSO&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;system name.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;numb_of_formula&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the formula range of simulation cell.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;pressure&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the aim pressure (in Kbar) when using MLP to optimize structures.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;fmax&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the converge criterion. The force on all individual atoms should be less than `fmax`.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;opt_step&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the converge criterion. The force on all individual atoms should be less than `fmax`.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;volume&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the volume of simulation cell in one formula.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;ialgo&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the evolution algorithm of CALYPSO. 1: global pso, 2: local pso, 3: sabc.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;pso_ratio&quot;</span><span class="p">,</span>
+            <span class="nb">float</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the ratio of structures generated by evolution algorithm in one step.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;icode&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the software of structure optimization. 1: VASP, 15: DP.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;numb_of_lbest&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the number of evolution direction when using LPSO.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;numb_of_local_optim&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the number of making structure optimization when using dft.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;command&quot;</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">&quot;sh submit.sh&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the command of running structure optimization.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;max_time&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">9000</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the max time (in second) of structure optimization. &quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;pick_up&quot;</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;whether to continue the calculation. &quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;pick_step&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;from which step to continue the calculation. &quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;parallel&quot;</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;whether to run calypso in parallel.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;split&quot;</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;sperate generating structures and structure optimizations. in dpgen2, split must be True.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;spec_space_group&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">230</span><span class="p">],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the range of spacegroup.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;vsc&quot;</span><span class="p">,</span>
+            <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;whether to run calypso in variational stoichiometry way.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;ctrl_range&quot;</span><span class="p">,</span>
+            <span class="nb">list</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]],</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the atom range of each atoms.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">Argument</span><span class="p">(</span>
+            <span class="s2">&quot;max_numb_atoms&quot;</span><span class="p">,</span>
+            <span class="nb">int</span><span class="p">,</span>
+            <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;the max number of atoms.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="caly_task_group_args">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.caly_task_group_args">[docs]</a>
+<span class="k">def</span> <span class="nf">caly_task_group_args</span><span class="p">():</span>
+    <span class="n">doc_caly_task_grp</span> <span class="o">=</span> <span class="s2">&quot;CALYPSO structure prediction tasks. DPGEN will generate the calypso input script&quot;</span>
+    <span class="k">return</span> <span class="n">Argument</span><span class="p">(</span>
+        <span class="s2">&quot;task_group&quot;</span><span class="p">,</span>
+        <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">caly_task_grp_args</span><span class="p">(),</span>
+        <span class="n">doc</span><span class="o">=</span><span class="n">doc_caly_task_grp</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="caly_normalize">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.caly_normalize">[docs]</a>
+<span class="k">def</span> <span class="nf">caly_normalize</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">caly_task_group_args</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">normalize_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">trim_pattern</span><span class="o">=</span><span class="s2">&quot;_*&quot;</span><span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">check_value</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<div class="viewcode-block" id="config_strip_confidx">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.config_strip_confidx">[docs]</a>
+<span class="k">def</span> <span class="nf">config_strip_confidx</span><span class="p">(</span>
+    <span class="n">config</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">cc</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;conf_idx&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;conf_idx&quot;</span> <span class="ow">in</span> <span class="n">cc</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">cc</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;n_sample&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;n_sample&quot;</span> <span class="ow">in</span> <span class="n">cc</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">cc</span></div>
+
+
+
+<div class="viewcode-block" id="make_calypso_task_group_from_config">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.make_calypso_task_group_from_config">[docs]</a>
+<span class="k">def</span> <span class="nf">make_calypso_task_group_from_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">caly_normalize</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+    <span class="n">tgroup</span> <span class="o">=</span> <span class="n">CalyTaskGroup</span><span class="p">()</span>
+    <span class="n">tgroup</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tgroup</span></div>
+
+
+
+<div class="viewcode-block" id="make_lmp_task_group_from_config">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.make_lmp_task_group_from_config">[docs]</a>
+<span class="k">def</span> <span class="nf">make_lmp_task_group_from_config</span><span class="p">(</span>
+    <span class="n">numb_models</span><span class="p">,</span>
+    <span class="n">mass_map</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="c1"># Work around the required conf_idx.</span>
+    <span class="c1"># May not be a good design!!!</span>
+    <span class="c1"># config[&quot;conf_idx&quot;] = [] if &quot;conf_idx&quot; not in config else None</span>
+    <span class="c1"># config = lmp_normalize(config)</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">config_strip_confidx</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;lmp-md&quot;</span><span class="p">:</span>
+        <span class="n">tgroup</span> <span class="o">=</span> <span class="n">NPTTaskGroup</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+        <span class="n">tgroup</span><span class="o">.</span><span class="n">set_md</span><span class="p">(</span>
+            <span class="n">numb_models</span><span class="p">,</span>
+            <span class="n">mass_map</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">config</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;lmp-template&quot;</span><span class="p">:</span>
+        <span class="n">tgroup</span> <span class="o">=</span> <span class="n">LmpTemplateTaskGroup</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+        <span class="n">lmp_template</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;lmp_template&quot;</span><span class="p">)</span>
+        <span class="n">tgroup</span><span class="o">.</span><span class="n">set_lmp</span><span class="p">(</span>
+            <span class="n">numb_models</span><span class="p">,</span>
+            <span class="n">lmp_template</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">config</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;customized-lmp-template&quot;</span><span class="p">:</span>
+        <span class="n">tgroup</span> <span class="o">=</span> <span class="n">CustomizedLmpTemplateTaskGroup</span><span class="p">()</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
+        <span class="n">sh_cmd</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;custom_shell_commands&quot;</span><span class="p">)</span>
+        <span class="n">tgroup</span><span class="o">.</span><span class="n">set_lmp</span><span class="p">(</span>
+            <span class="n">numb_models</span><span class="p">,</span>
+            <span class="n">sh_cmd</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">config</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;unknown task group type: &quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">tgroup</span></div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">lmp_normalize</span><span class="p">({</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;lmp-md&quot;</span><span class="p">}))</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Ruoyu Wang, Hongyu Wu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
