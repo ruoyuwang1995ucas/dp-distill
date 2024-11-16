@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; pfd-kit 0.3.1 documentation</title>
+  <title>Index &mdash; pfd-kit 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=4621528c"></script>
+      <script src="_static/documentation_options.js?v=71d9d8e6"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -124,7 +124,11 @@
       <li><a href="development/pfd.utils.html#pfd.utils.download_pfd_artifacts.DownloadDefinition.add_output">add_output() (pfd.utils.download_pfd_artifacts.DownloadDefinition method)</a>
 </li>
       <li><a href="development/pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.add_report">add_report() (pfd.exploration.inference.eval_model.TestReports method)</a>
+
+      <ul>
+        <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.add_report">(pfd.exploration.scheduler.sheduler.Scheduler method)</a>
 </li>
+      </ul></li>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.task_group.BaseExplorationTaskGroup.add_task">add_task() (pfd.exploration.task.task_group.BaseExplorationTaskGroup method)</a>
 </li>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.stage.ExplorationStage.add_task_group">add_task_group() (pfd.exploration.task.stage.ExplorationStage method)</a>
@@ -263,7 +267,13 @@
 </li>
       <li><a href="development/pfd.exploration.selector.html#pfd.exploration.selector.conf_selector_frame.ConfSelectorFrames">ConfSelectorFrames (class in pfd.exploration.selector.conf_selector_frame)</a>
 </li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.converged">converged (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
+</li>
       <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.convergence">convergence (pfd.exploration.scheduler.sheduler.Scheduler property)</a>
+</li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport">ConvReport (class in pfd.exploration.converge.check_conv)</a>
+</li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.criteria">criteria (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
 </li>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.customized_lmp_template_task_group_args">customized_lmp_template_task_group_args() (in module pfd.exploration.task.make_task_group_from_config)</a>
 </li>
@@ -347,6 +357,8 @@
 </li>
       <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.energy_conv.EnerConvRMSE">EnerConvRMSE (class in pfd.exploration.converge.energy_conv)</a>
 </li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.energy_rmse">energy_rmse (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
+</li>
       <li><a href="development/pfd.exploration.selector.html#pfd.exploration.selector.energy_select.EnergySelect">EnergySelect (class in pfd.exploration.selector.energy_select)</a>
 </li>
       <li><a href="development/pfd.op.html#pfd.op.converge.EvalConv">EvalConv (class in pfd.op.converge)</a>
@@ -363,12 +375,6 @@
 
       <ul>
         <li><a href="development/pfd.op.html#pfd.op.converge.EvalConv.execute">(pfd.op.converge.EvalConv method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.IterCounter.execute">(pfd.op.converge.IterCounter method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.NextLoop.execute">(pfd.op.converge.NextLoop method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.NextLoopOld.execute">(pfd.op.converge.NextLoopOld method)</a>
 </li>
         <li><a href="development/pfd.op.html#pfd.op.inference.InferenceOP.execute">(pfd.op.inference.InferenceOP method)</a>
 </li>
@@ -427,19 +433,23 @@
 </li>
       <li><a href="development/pfd.entrypoint.html#pfd.entrypoint.submit.FlowGen">FlowGen (class in pfd.entrypoint.submit)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="development/pfd.entrypoint.html#pfd.entrypoint.submit.fold_keys">fold_keys() (in module pfd.entrypoint.submit)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.task_group.FooTask">FooTask (class in pfd.exploration.task.task_group)</a>
 </li>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.task_group.FooTaskGroup">FooTaskGroup (class in pfd.exploration.task.task_group)</a>
+</li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.force_rmse">force_rmse (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
 </li>
       <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.energy_conv_filter.ForceConfFilter">ForceConfFilter (class in pfd.exploration.converge.energy_conv_filter)</a>
 </li>
       <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.force_conv.ForceConvRMSE">ForceConvRMSE (class in pfd.exploration.converge.force_conv)</a>
 </li>
       <li><a href="development/pfd.entrypoint.html#pfd.entrypoint.args.fp_args">fp_args() (in module pfd.entrypoint.args)</a>
+</li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.frame">frame (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -490,12 +500,6 @@
       <ul>
         <li><a href="development/pfd.op.html#pfd.op.converge.EvalConv.get_input_sign">(pfd.op.converge.EvalConv class method)</a>
 </li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.IterCounter.get_input_sign">(pfd.op.converge.IterCounter class method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.NextLoop.get_input_sign">(pfd.op.converge.NextLoop class method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.NextLoopOld.get_input_sign">(pfd.op.converge.NextLoopOld class method)</a>
-</li>
         <li><a href="development/pfd.op.html#pfd.op.inference.InferenceOP.get_input_sign">(pfd.op.inference.InferenceOP class method)</a>
 </li>
         <li><a href="development/pfd.op.html#pfd.op.model_test.ModelTestOP.get_input_sign">(pfd.op.model_test.ModelTestOP class method)</a>
@@ -523,12 +527,6 @@
 
       <ul>
         <li><a href="development/pfd.op.html#pfd.op.converge.EvalConv.get_output_sign">(pfd.op.converge.EvalConv class method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.IterCounter.get_output_sign">(pfd.op.converge.IterCounter class method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.NextLoop.get_output_sign">(pfd.op.converge.NextLoop class method)</a>
-</li>
-        <li><a href="development/pfd.op.html#pfd.op.converge.NextLoopOld.get_output_sign">(pfd.op.converge.NextLoopOld class method)</a>
 </li>
         <li><a href="development/pfd.op.html#pfd.op.inference.InferenceOP.get_output_sign">(pfd.op.inference.InferenceOP class method)</a>
 </li>
@@ -625,7 +623,7 @@
 </li>
       <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.iter_numb">iter_numb (pfd.exploration.scheduler.sheduler.Scheduler property)</a>
 </li>
-      <li><a href="development/pfd.op.html#pfd.op.converge.IterCounter">IterCounter (class in pfd.op.converge)</a>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.iteration">iteration (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -660,6 +658,8 @@
 </li>
       </ul></li>
       <li><a href="development/pfd.utils.html#pfd.utils.obj_artifact.load_object_from_file">load_object_from_file() (in module pfd.utils.obj_artifact)</a>
+</li>
+      <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.log">log (pfd.exploration.scheduler.sheduler.Scheduler property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -892,18 +892,14 @@
 </li>
       <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.next_stage">next_stage() (pfd.exploration.scheduler.sheduler.Scheduler method)</a>
 </li>
-      <li><a href="development/pfd.op.html#pfd.op.converge.NextLoop">NextLoop (class in pfd.op.converge)</a>
-</li>
-      <li><a href="development/pfd.op.html#pfd.op.converge.NextLoopOld">NextLoopOld (class in pfd.op.converge)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="development/pfd.entrypoint.html#pfd.entrypoint.args.normalize">normalize() (in module pfd.entrypoint.args)</a>
 
       <ul>
         <li><a href="development/pfd.utils.html#pfd.utils.step_config.normalize">(in module pfd.utils.step_config)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="development/pfd.entrypoint.html#pfd.entrypoint.args.normalize_infer_args">normalize_infer_args() (in module pfd.entrypoint.args)</a>
 </li>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.make_task_group_from_config.npt_task_group_args">npt_task_group_args() (in module pfd.exploration.task.make_task_group_from_config)</a>
@@ -1574,6 +1570,8 @@
       </ul></li>
       <li><a href="development/pfd.op.html#pfd.op.select_confs.SelectConfs">SelectConfs (class in pfd.op.select_confs)</a>
 </li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.selected_frame">selected_frame (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
+</li>
       <li><a href="development/pfd.exploration.task.html#pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup.set_conf">set_conf() (pfd.exploration.task.conf_sampling_task_group.ConfSamplingTaskGroup method)</a>
 </li>
       <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.set_convergence">set_convergence() (pfd.exploration.scheduler.sheduler.Scheduler method)</a>
@@ -1646,6 +1644,8 @@
 </li>
       <li><a href="development/pfd.exploration.render.html#pfd.exploration.render.traj_render_lammps.TrajRenderLammps">TrajRenderLammps (class in pfd.exploration.render.traj_render_lammps)</a>
 </li>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.type">type (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
+</li>
       <li><a href="development/pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.type_map">type_map (pfd.exploration.scheduler.sheduler.Scheduler property)</a>
 </li>
   </ul></td>
@@ -1654,10 +1654,12 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="development/pfd.utils.html#pfd.utils.artifact_uri.upload_artifact_and_print_uri">upload_artifact_and_print_uri() (in module pfd.utils.artifact_uri)</a>
+      <li><a href="development/pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.unconverged_frame">unconverged_frame (pfd.exploration.converge.check_conv.ConvReport attribute)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="development/pfd.utils.html#pfd.utils.artifact_uri.upload_artifact_and_print_uri">upload_artifact_and_print_uri() (in module pfd.utils.artifact_uri)</a>
+</li>
       <li><a href="development/pfd.flow.html#pfd.flow.data_gen.DataGen.upload_python_packages">upload_python_packages (pfd.flow.data_gen.DataGen attribute)</a>
 </li>
   </ul></td>

@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command guide &mdash; pfd-kit 0.3.1 documentation</title>
+  <title>Command guide &mdash; pfd-kit 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -51,10 +51,12 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Command guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submitting-a-workflow">Submitting a Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#checking-status">Checking status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#restarting-from-a-checkpoint">Restarting from a Checkpoint</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#downloading-results">Downloading Results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pfd-kit-command-arguments">PFD-kit Command Arguments</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#subcommand-submit">Subcommand: <code class="docutils literal notranslate"><span class="pre">submit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#subcommand-status">Subcommand: <code class="docutils literal notranslate"><span class="pre">status</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#subcommand-resubmit">Subcommand: <code class="docutils literal notranslate"><span class="pre">resubmit</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#subcommand-download">Subcommand: <code class="docutils literal notranslate"><span class="pre">download</span></code></a></li>
 </ul>
@@ -105,6 +107,13 @@
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">input.json</span></code> contains workflow definitions. The workflow ID will be printed upon successful submission.</p>
 </section>
+<section id="checking-status">
+<h2>Checking status<a class="headerlink" href="#checking-status" title="Link to this heading"></a></h2>
+<p>To check the status of exploration, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>status<span class="w"> </span>input.json<span class="w"> </span>workflow_id
+</pre></div>
+</div>
+</section>
 <section id="restarting-from-a-checkpoint">
 <h2>Restarting from a Checkpoint<a class="headerlink" href="#restarting-from-a-checkpoint" title="Link to this heading"></a></h2>
 <p>To restart a workflow with modified input parameters, use:</p>
@@ -146,6 +155,18 @@
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>: Path to the configuration script in <code class="docutils literal notranslate"><span class="pre">json</span></code> format.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-m,</span> <span class="pre">--monitoring</span></code>: Monitor workflow progress and auto-download the output model upon successful completion.</p></li>
+</ul>
+</section>
+<section id="subcommand-status">
+<h3>Subcommand: <code class="docutils literal notranslate"><span class="pre">status</span></code><a class="headerlink" href="#subcommand-status" title="Link to this heading"></a></h3>
+<p>Usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>status<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span>CONFIG<span class="w"> </span>ID
+</pre></div>
+</div>
+<p>Arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>: Path to the configuration script in <code class="docutils literal notranslate"><span class="pre">json</span></code> format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ID</span></code>: Workflow ID of an existing PFD workflow.</p></li>
 </ul>
 </section>
 <section id="subcommand-resubmit">

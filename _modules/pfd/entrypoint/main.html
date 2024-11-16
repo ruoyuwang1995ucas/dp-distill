@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.entrypoint.main &mdash; pfd-kit 0.3.1 documentation</title>
+  <title>pfd.entrypoint.main &mdash; pfd-kit 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -95,7 +95,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pfd</span> <span class="kn">import</span> <span class="n">__version__</span>
 <span class="kn">from</span> <span class="nn">.download</span> <span class="kn">import</span> <span class="n">download</span><span class="p">,</span> <span class="n">download_by_def</span><span class="p">,</span> <span class="n">download_end_result</span>
-
+<span class="kn">from</span> <span class="nn">.status</span> <span class="kn">import</span> <span class="n">status</span>
 <span class="kn">from</span> <span class="nn">.submit</span> <span class="kn">import</span> <span class="n">FlowGen</span><span class="p">,</span> <span class="n">resubmit_workflow</span>
 <span class="kn">from</span> <span class="nn">.common</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">expand_idx</span><span class="p">,</span>
@@ -234,6 +234,17 @@
         <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s2">&quot;if specified, download regardless whether check points exist.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="c1">#########################################</span>
+    <span class="c1"># status</span>
+    <span class="n">parser_status</span> <span class="o">=</span> <span class="n">subparsers</span><span class="o">.</span><span class="n">add_parser</span><span class="p">(</span>
+        <span class="s2">&quot;status&quot;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Check exploration status&quot;</span><span class="p">,</span>
+        <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentDefaultsHelpFormatter</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">parser_status</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+        <span class="s2">&quot;CONFIG&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the config file in json format defining the workflow.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">parser_status</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;the ID of existing workflow&quot;</span><span class="p">)</span>
 
     <span class="c1"># Add the version argument</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
@@ -328,6 +339,11 @@
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">download_end_result</span><span class="p">(</span><span class="n">wfid</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">prefix</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="o">==</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">CONFIG</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="n">wfid</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">ID</span>
+        <span class="n">status</span><span class="p">(</span><span class="n">wfid</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">command</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">pass</span>

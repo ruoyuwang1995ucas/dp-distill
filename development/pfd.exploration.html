@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.exploration package &mdash; pfd-kit 0.3.1 documentation</title>
+  <title>pfd.exploration package &mdash; pfd-kit 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -120,6 +120,18 @@
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.get_checker"><code class="docutils literal notranslate"><span class="pre">CheckConv.get_checker()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.get_checkers"><code class="docutils literal notranslate"><span class="pre">CheckConv.get_checkers()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.CheckConv.register"><code class="docutils literal notranslate"><span class="pre">CheckConv.register()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport"><code class="docutils literal notranslate"><span class="pre">ConvReport</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.converged"><code class="docutils literal notranslate"><span class="pre">ConvReport.converged</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.criteria"><code class="docutils literal notranslate"><span class="pre">ConvReport.criteria</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.energy_rmse"><code class="docutils literal notranslate"><span class="pre">ConvReport.energy_rmse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.force_rmse"><code class="docutils literal notranslate"><span class="pre">ConvReport.force_rmse</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.frame"><code class="docutils literal notranslate"><span class="pre">ConvReport.frame</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.iteration"><code class="docutils literal notranslate"><span class="pre">ConvReport.iteration</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.selected_frame"><code class="docutils literal notranslate"><span class="pre">ConvReport.selected_frame</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.type"><code class="docutils literal notranslate"><span class="pre">ConvReport.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.converge.html#pfd.exploration.converge.check_conv.ConvReport.unconverged_frame"><code class="docutils literal notranslate"><span class="pre">ConvReport.unconverged_frame</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -270,6 +282,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pfd.exploration.scheduler.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pfd.exploration.scheduler.html#module-pfd.exploration.scheduler.sheduler">pfd.exploration.scheduler.sheduler module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler"><code class="docutils literal notranslate"><span class="pre">Scheduler</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.add_report"><code class="docutils literal notranslate"><span class="pre">Scheduler.add_report()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.convergence"><code class="docutils literal notranslate"><span class="pre">Scheduler.convergence</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.expl_stages"><code class="docutils literal notranslate"><span class="pre">Scheduler.expl_stages</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.explore_style"><code class="docutils literal notranslate"><span class="pre">Scheduler.explore_style</span></code></a></li>
@@ -277,6 +290,7 @@
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.idx_stage"><code class="docutils literal notranslate"><span class="pre">Scheduler.idx_stage</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.is_first_iteration"><code class="docutils literal notranslate"><span class="pre">Scheduler.is_first_iteration</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.iter_numb"><code class="docutils literal notranslate"><span class="pre">Scheduler.iter_numb</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.log"><code class="docutils literal notranslate"><span class="pre">Scheduler.log</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.mass_map"><code class="docutils literal notranslate"><span class="pre">Scheduler.mass_map</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.max_iteration"><code class="docutils literal notranslate"><span class="pre">Scheduler.max_iteration</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="pfd.exploration.scheduler.html#pfd.exploration.scheduler.sheduler.Scheduler.model_style"><code class="docutils literal notranslate"><span class="pre">Scheduler.model_style</span></code></a></li>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.exploration.converge.energy_conv &mdash; pfd-kit 0.3.1 documentation</title>
+  <title>pfd.exploration.converge.energy_conv &mdash; pfd-kit 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../../_static/documentation_options.js?v=71d9d8e6"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -84,6 +84,7 @@
 <span></span><span class="kn">from</span> <span class="nn">.check_conv</span> <span class="kn">import</span> <span class="n">CheckConv</span>
 <span class="kn">from</span> <span class="nn">dargs</span> <span class="kn">import</span> <span class="n">Argument</span>
 <span class="kn">from</span> <span class="nn">pfd.exploration.inference</span> <span class="kn">import</span> <span class="n">TestReports</span>
+<span class="kn">from</span> <span class="nn">pfd.exploration.converge</span> <span class="kn">import</span> <span class="n">ConvReport</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
 
@@ -93,7 +94,7 @@
 <span class="k">class</span> <span class="nc">EnerConvRMSE</span><span class="p">(</span><span class="n">CheckConv</span><span class="p">):</span>
 <div class="viewcode-block" id="EnerConvRMSE.check_conv">
 <a class="viewcode-back" href="../../../../development/pfd.exploration.converge.html#pfd.exploration.converge.energy_conv.EnerConvRMSE.check_conv">[docs]</a>
-    <span class="k">def</span> <span class="nf">check_conv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="n">TestReports</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">check_conv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reports</span><span class="p">:</span> <span class="n">TestReports</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">conv_report</span><span class="p">:</span> <span class="n">ConvReport</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check convergence, and selected systems for following iterations</span>
 <span class="sd">        Args:</span>
@@ -104,17 +105,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">conv_rmse</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;RMSE&quot;</span><span class="p">]</span>
         <span class="n">converged</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">num_frame</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reports</span><span class="p">)</span>
+        <span class="c1"># updata convergence report</span>
+        <span class="n">conv_report</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s2">&quot;Energy_RMSE&quot;</span>
+        <span class="n">conv_report</span><span class="o">.</span><span class="n">criteria</span> <span class="o">=</span> <span class="n">conv_rmse</span>
+        <span class="n">conv_report</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">num_frame</span>
+        <span class="n">conv_report</span><span class="o">.</span><span class="n">force_rmse</span> <span class="o">=</span> <span class="n">reports</span><span class="o">.</span><span class="n">get_weighted_rmse_f</span><span class="p">()</span>
+        <span class="n">conv_report</span><span class="o">.</span><span class="n">energy_rmse</span> <span class="o">=</span> <span class="n">reports</span><span class="o">.</span><span class="n">get_weighted_rmse_e_atom</span><span class="p">()</span>
         <span class="c1"># select</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;adaptive&quot;</span><span class="p">):</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Adaptively add new training samples&quot;</span><span class="p">)</span>
-            <span class="n">selected_reports</span> <span class="o">=</span> <span class="n">TestReports</span><span class="p">()</span>
+            <span class="n">num_not_converged</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">reports</span><span class="p">:</span>
                 <span class="n">selection_thr</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;thr&quot;</span><span class="p">,</span> <span class="n">conv_rmse</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">rmse_f</span> <span class="o">&gt;</span> <span class="n">selection_thr</span><span class="p">:</span>
-                    <span class="n">selected_reports</span><span class="o">.</span><span class="n">add_report</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">rmse_e_atom</span> <span class="o">&gt;</span> <span class="n">selection_thr</span><span class="p">:</span>
+                    <span class="n">num_not_converged</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="n">prec</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;adaptive&quot;</span><span class="p">][</span><span class="s2">&quot;prec&quot;</span><span class="p">]</span>
+            <span class="n">conv_report</span><span class="o">.</span><span class="n">unconverged_frame</span> <span class="o">=</span> <span class="n">num_not_converged</span>
+            <span class="n">conv_report</span><span class="o">.</span><span class="n">criteria</span> <span class="o">=</span> <span class="n">prec</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">reports</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_reports</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">reports</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">prec</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">num_not_converged</span> <span class="o">/</span> <span class="n">num_frame</span> <span class="o">&gt;</span> <span class="n">prec</span><span class="p">:</span>
                     <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">weighted_rmse</span> <span class="o">=</span> <span class="n">reports</span><span class="o">.</span><span class="n">get_weighted_rmse_e_atom</span><span class="p">()</span>
@@ -132,6 +142,7 @@
                 <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                     <span class="s2">&quot;#### Iteration not converged! Continue to the next iteration...&quot;</span>
                 <span class="p">)</span>
+        <span class="n">conv_report</span><span class="o">.</span><span class="n">converged</span> <span class="o">=</span> <span class="n">converged</span>
         <span class="k">return</span> <span class="n">converged</span><span class="p">,</span> <span class="n">reports</span></div>
 
 

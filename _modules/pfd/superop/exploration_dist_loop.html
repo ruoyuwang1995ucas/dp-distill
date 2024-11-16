@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.superop.exploration_dist_loop &mdash; pfd-kit 0.3.1 documentation</title>
+  <title>pfd.superop.exploration_dist_loop &mdash; pfd-kit 0.3.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=4621528c"></script>
+      <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -116,7 +116,7 @@
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">dpgen2.utils.step_config</span> <span class="kn">import</span> <span class="n">init_executor</span>
-<span class="kn">from</span> <span class="nn">pfd.op</span> <span class="kn">import</span> <span class="n">ModelTestOP</span><span class="p">,</span> <span class="n">EvalConv</span><span class="p">,</span> <span class="n">IterCounter</span><span class="p">,</span> <span class="n">StageScheduler</span><span class="p">,</span> <span class="n">NextLoop</span>
+<span class="kn">from</span> <span class="nn">pfd.op</span> <span class="kn">import</span> <span class="n">ModelTestOP</span><span class="p">,</span> <span class="n">EvalConv</span><span class="p">,</span> <span class="n">StageScheduler</span>
 
 
 <div class="viewcode-block" id="ExplDistBlock">
@@ -156,7 +156,10 @@
             <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>  <span class="c1"># empty list</span>
             <span class="s2">&quot;validation_data&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">OutputParameter</span><span class="p">()}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">OutputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">OutputParameter</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+        <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_artifacts</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">OutputArtifact</span><span class="p">(),</span>
             <span class="s2">&quot;dist_model&quot;</span><span class="p">:</span> <span class="n">OutputArtifact</span><span class="p">(),</span>
@@ -232,6 +235,7 @@
             <span class="s2">&quot;type_map_train&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
             <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
             <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+            <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_artifacts</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(),</span>  <span class="c1"># starting systems for model deviation</span>
@@ -241,7 +245,7 @@
                 <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>  <span class="c1"># datas collected during previous exploration</span>
         <span class="p">}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">OutputParameter</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_artifacts</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;dist_model&quot;</span><span class="p">:</span> <span class="n">OutputArtifact</span><span class="p">(),</span>
@@ -460,6 +464,9 @@
     <span class="n">steps</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span>
         <span class="s2">&quot;converged&quot;</span>
     <span class="p">]</span><span class="o">.</span><span class="n">value_from_parameter</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">]</span>
+    <span class="n">steps</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span>
+        <span class="s2">&quot;report&quot;</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">value_from_parameter</span> <span class="o">=</span> <span class="n">evaluate</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">steps</span>
 
 
@@ -486,6 +493,7 @@
         <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
             <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">],</span>
         <span class="p">},</span>
         <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">],</span>
@@ -551,6 +559,8 @@
         <span class="s2">&quot;type_map_train&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;type_map_train&quot;</span><span class="p">],</span>
         <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">],</span>
         <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;test_size&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;test_size&quot;</span><span class="p">],</span>
     <span class="p">}</span>
     <span class="n">next_step</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
         <span class="n">name</span><span class="o">=</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-exploration-finetune-next&quot;</span><span class="p">,</span>
@@ -571,6 +581,11 @@
         <span class="p">),</span>
     <span class="p">)</span>
     <span class="n">loop</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">next_step</span><span class="p">)</span>
+    <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_from_expression</span> <span class="o">=</span> <span class="n">if_expression</span><span class="p">(</span>
+        <span class="n">_if</span><span class="o">=</span><span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
+        <span class="n">_then</span><span class="o">=</span><span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">],</span>
+        <span class="n">_else</span><span class="o">=</span><span class="n">next_step</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">],</span>
+    <span class="p">)</span>
     <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">from_expression</span> <span class="o">=</span> <span class="n">if_expression</span><span class="p">(</span>
         <span class="n">_if</span><span class="o">=</span><span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
         <span class="n">_then</span><span class="o">=</span><span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">],</span>

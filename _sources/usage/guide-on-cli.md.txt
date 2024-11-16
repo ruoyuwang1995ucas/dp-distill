@@ -12,6 +12,13 @@ pfd submit input.json
 
 `input.json` contains workflow definitions. The workflow ID will be printed upon successful submission.
 
+## Checking status
+To check the status of exploration, use:
+
+```bash
+pfd status input.json workflow_id
+```
+
 ## Restarting from a Checkpoint
 
 To restart a workflow with modified input parameters, use:
@@ -59,6 +66,16 @@ Arguments:
 
 - `CONFIG`: Path to the configuration script in `json` format.
 - `-m, --monitoring`: Monitor workflow progress and auto-download the output model upon successful completion.
+
+### Subcommand: `status`
+Usage:
+```bash
+pfd status [-h] CONFIG ID
+```
+Arguments:
+
+- `CONFIG`: Path to the configuration script in `json` format.
+- `ID`: Workflow ID of an existing PFD workflow.
 
 ### Subcommand: `resubmit`
 Usage:
