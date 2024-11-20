@@ -1,5 +1,9 @@
 # Command guide
-
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
 Various tasks can be performed through the command line interface of PFD-kit. Here is a guide to the available commands.
 
 ## Submitting a Workflow

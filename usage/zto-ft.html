@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A Model Fine-tuning Example for Hexa-Doped Perovskites &mdash; pfd-kit 0.3.2 documentation</title>
+  <title>A Model Fine-tuning Example for Hexa-Doped Perovskites &mdash; pfd-kit 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
+      <script src="../_static/documentation_options.js?v=d5a15cff"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -103,7 +103,11 @@
              
   <section id="a-model-fine-tuning-example-for-hexa-doped-perovskites">
 <h1>A Model Fine-tuning Example for Hexa-Doped Perovskites<a class="headerlink" href="#a-model-fine-tuning-example-for-hexa-doped-perovskites" title="Link to this heading"></a></h1>
-<blockquote>
+<style>
+  p {
+    text-align: justify;
+  }
+</style><blockquote>
 <div><p><strong>More is different —— Philip W. Anderson</strong></p>
 </div></blockquote>
 <p>Author: why; And English version is translated from Chinese by ChatGPT 4o, if there is anything hard to read, please let me know.</p>
@@ -202,16 +206,13 @@
 <span class="w">                </span><span class="nt">&quot;_comment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;group 1 stage 1 of finetune-exploration&quot;</span><span class="p">,</span>
 <span class="w">                </span><span class="nt">&quot;conf_idx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
 <span class="w">                </span><span class="nt">&quot;n_sample&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;exploration&quot;</span><span class="p">:{</span>
-<span class="w">                    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp-md&quot;</span><span class="p">,</span>
-<span class="w">                    </span><span class="nt">&quot;ensemble&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npt&quot;</span><span class="p">,</span>
-<span class="w">                    </span><span class="nt">&quot;dt&quot;</span><span class="p">:</span><span class="mf">0.001</span><span class="p">,</span>
-<span class="w">                    </span><span class="nt">&quot;nsteps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span>
-<span class="w">                    </span><span class="nt">&quot;temps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">300</span><span class="p">],</span>
-<span class="w">                    </span><span class="nt">&quot;press&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">],</span>
-<span class="w">                    </span><span class="nt">&quot;trj_freq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span>
-<span class="w">                    </span><span class="p">},</span>
-<span class="w">                </span><span class="nt">&quot;max_sample&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp-md&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;ensemble&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npt&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;dt&quot;</span><span class="p">:</span><span class="mf">0.001</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;nsteps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;temps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">300</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;press&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;trj_freq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span>
 <span class="w">                </span><span class="p">}]]</span>
 </pre></div>
 </div>

@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; pfd-kit 0.3.2 documentation</title>
+  <title>Quickstart &mdash; pfd-kit 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
+      <script src="../_static/documentation_options.js?v=d5a15cff"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -46,8 +46,21 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#submitting-jobs">Submitting jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#easy-install">Easy Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#job-submission">Job submission</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorial-c-si">Tutorial: c-Si</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fine-tuning">Fine-tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#preparing-input-script">Preparing input script</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submit-job">Submit job</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#distillation">Distillation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Preparing input script</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Submit job</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -89,23 +102,314 @@
              
   <section id="quickstart">
 <h1>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h1>
-<p>This section provides basics steps to take before running PFD-kit</p>
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<p>PFD-kit can be built and installed form the source.</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ruoyuwang1995nya/pfd-kit.git
-<span class="nb">cd</span><span class="w"> </span>pfd-kit<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+<style>
+  p {
+    text-align: justify;
+  }
+</style><p>This section provides basics steps to take before running PFD-kit</p>
+<section id="easy-install">
+<h2>Easy Install<a class="headerlink" href="#easy-install" title="Link to this heading"></a></h2>
+<p>PFD-kit can be built and installed form the source with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/ruoyuwang1995nya/pfd-kit.git
 </pre></div>
 </div>
 </section>
-<section id="submitting-jobs">
-<h2>Submitting jobs<a class="headerlink" href="#submitting-jobs" title="Link to this heading"></a></h2>
+<section id="job-submission">
+<h2>Job submission<a class="headerlink" href="#job-submission" title="Link to this heading"></a></h2>
 <p>PFD-kit comes with a simple CLI interface. For instance, a finetune workflow can be submitted using following command:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>submit<span class="w"> </span>finetune.json<span class="w"> </span>-t<span class="w"> </span>finetune
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">finetune.json</span></code> specifies imput parameters of the finetune task, whose details can be found in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory.
 It should be noted that PFD-kit is built upon the <a class="reference external" href="https://github.com/dptech-corp/dflow.git">dflow</a> package and utilized OPs from the <a class="reference external" href="https://github.com/deepmodeling/dpgen2.git">DPGEN2</a> project, thus it is best to experience PFD-kit on the cloud-based <a class="reference external" href="https://bohrium.dp.tech">Bohrium</a> platform, though local deployment is also possible.</p>
+</section>
+<section id="tutorial-c-si">
+<h2>Tutorial: c-Si<a class="headerlink" href="#tutorial-c-si" title="Link to this heading"></a></h2>
+<p>This tutorial demmonstrates the general workflow of PFD-kit with a simple example of crystal Si in diamond structure. The relevant input files can be found at <code class="docutils literal notranslate"><span class="pre">/examples/silicon</span></code>. In this example, we need a efficient deep potential model of Si crytal with high accuracy for large scale atomic simulation, which can be easily generated from pretrained atomic through fine-tuning and distillation using PFD-kit.</p>
+<blockquote>
+<div><p><strong>Note</strong>: this tutorial may require <a class="reference external" href="https://bohrium.dp.tech/">Bohrium</a> account.</p>
+</div></blockquote>
+<section id="fine-tuning">
+<h3>Fine-tuning<a class="headerlink" href="#fine-tuning" title="Link to this heading"></a></h3>
+<p>We start from the latest DPA-2 pretrained model (<a class="reference external" href="https://www.aissquare.com/models/detail?pageType=models&amp;name=DPA-2.3.0-v3.0.0b4&amp;id=279">DPA-2.3.0-v3.0.0b4</a>), which is a highly transferable large atomic model with multiple prediction heads. One of the prediction heads is the <code class="docutils literal notranslate"><span class="pre">Domains_SemiCond</span></code>, it is trained with DFT calculations generated by the <code class="docutils literal notranslate"><span class="pre">ABACUS</span></code> software and includes major types of semiconductor material such as Si. Hence, we may fine-tuning our VASP Si model from the <code class="docutils literal notranslate"><span class="pre">Domains_SemiCond</span></code> head. In fine-tuning step, you need to prepare the model file of DPA-2 pretrained model and its associated training script, which can be downloaded from <a class="reference external" href="https://www.aissquare.com/models/detail?pageType=models&amp;name=DPA-2.3.0-v3.0.0b4&amp;id=279">AIS square</a>. You also need to prepare the pseudopotential file for Si. The directory tree of fine-tune step is as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>examples/
+├──<span class="w"> </span>c_Si/<span class="w"> </span>
+│<span class="w">   </span>├──<span class="w"> </span>finetune<span class="w"> </span>
+│<span class="w">   </span><span class="p">|</span><span class="w">   </span>├──<span class="w"> </span>DPA-2.3.0-v3.0.0b4.pt<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>si_ft.json<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>input_torch_medium.json<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>INCAR.fp<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>POSCAR<span class="w">  </span>
+│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>POTCAR
+</pre></div>
+</div>
+<blockquote>
+<div><p>Note: the DPA-2 pretrained model can be downloaded from AIS square</p>
+</div></blockquote>
+<p>The test dataset is extracted from DeePMD trajectories of crystal Si at 500 K and at pressures from 1 Bar up to 10000 Bar and is labeled using VASP with PBE pesudopotential. We first check the accuracy of the pretrained model on the test set. After <em>extracting energy bias</em> caused by different DFT setting (pseudopotential selection, <em>etc.</em>), the prediction error of the <code class="docutils literal notranslate"><span class="pre">Domains_SemiCond</span></code> head is actually not bad, as shown in Figure 1.</p>
+<div style="text-align: center;">
+    <img src="../_static/pt_test.png" alt="Fig1" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none;text-align: center'>Figure 1. Prediction error of pretrained DPA-2 models on crystal Si.</p>
+</div><p>However, the accuracy, escpecially that of force predition, may not be optimal, and the pretrained model, with its huge, complex descriptor, is inefficient for atomic simulation in terms of both computation and memory consumption. Hence, we first use PFD-kit to <strong>fine-tune</strong> a more accurate Si model, generate a much faster, but almost as accurate, “standard” deep potential model for Si crystal through model <strong>distillation</strong>.</p>
+<section id="preparing-input-script">
+<h4>Preparing input script<a class="headerlink" href="#preparing-input-script" title="Link to this heading"></a></h4>
+<p>Then we needs to prepare the input script file <code class="docutils literal notranslate"><span class="pre">si_ft.json</span></code>. The input script is a <code class="docutils literal notranslate"><span class="pre">JSON</span></code> file which contains multiple entries defining various aspects of the PFD workflow. In this tutorial, you should modify the <code class="docutils literal notranslate"><span class="pre">bohrium_config</span></code> section of the script, so that the PFD-kit workflow can access the cloud-based server.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;bohrium_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;urname&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123456&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">123456</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_comment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;all&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Note</strong>: The remaining part of this section can be skipped if you want to run the job first.</p>
+</div></blockquote>
+<p>Then, you need to set up the computation nodes to specify the images and machine types for various computation tasks. Images contain the software installation and neccesary dependencies, and upon execution a container (i.e.，a computation node) would be generated from an image and run by physical machine of selected type. There is a default step setting in the <code class="docutils literal notranslate"><span class="pre">default_step_config</span></code>, which applies to all computation nodes unless otherwise specified.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;default_step_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;template_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.dp.tech/dptech/ubuntu:22.04-py3.10&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;executor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dispatcher&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;image_pull_policy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IfNotPresent&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;machine_dict&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;batch_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bohrium&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;context_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bohrium&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;remote_profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;input_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;job_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;container&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;platform&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ali&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;scass_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c2_m4_cpu&quot;</span><span class="p">}</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<p>Here, a lightweigh Ubuntu image and a cheap machine (”c2_m4_cpu”) is selected. You can check the availiable image and machine type in the <a class="reference external" href="https://bohrium.dp.tech/">Bohrium</a> pages. In fine-tuning, data exploration, data labeling and model training requires extensive computation resources, thus these nodes should be assigned to much more powerful physical machines. We can specify the settings for these key nodes in the <code class="docutils literal notranslate"><span class="pre">step_configs</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;step_configs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;run_fp_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;template_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_vasp_image&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;continue_on_failed&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;continue_on_success_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;executor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">...</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;run_explore_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;template_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.dp.tech/dptech/deepmd-kit:3.0.0b4-cuda12.1&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;continue_on_success_ratio&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;executor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">...</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;run_train_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+<span class="w">            </span><span class="nt">&quot;template_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.dp.tech/dptech/deepmd-kit:3.0.0b4-cuda12.1&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;executor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="err">...</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Note</strong>: to use the VASP image on Bohrium , you may need an authorized license. Otherwise you can build your own image.</p>
+</div></blockquote>
+<p>Then the parameters defining workflow tasks in the example <code class="docutils literal notranslate"><span class="pre">si_ft.json</span></code> file. Firstly, the task type (in this case “finetune”) must be specified. Here we skip the initial data generation and training as the <code class="docutils literal notranslate"><span class="pre">Domains_SemiCond</span></code> branch already contains quite a lot information of crystal Si, and instead directly explore new Si configurations with the pretrained model.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;init_training&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;skip_aimd&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">inputs</span></code> section includes essential input parameters and model files. <code class="docutils literal notranslate"><span class="pre">type_map</span></code> maps the type embedding of pretrained model to corresponding element name. The pretrained model path also needs to be specified.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;Li&quot;</span><span class="p">,</span><span class="s2">&quot;...&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;base_model_path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DPA2_medium_28_10M_beta4.pt&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">conf_generation</span></code> section defines how perturbed structures are generated from initial structure files. Here the 5 randomly perturbed structures of a 2x2x1 Si supercell (”POSCAR”). In this case, atoms within the perturbed structure would be displaced by a maximum of 0.05 Angstrom, and the lattice constant would experience a 3 % contraction or extension.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;conf_generation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;init_configurations&quot;</span><span class="p">:</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;fmt&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vasp/poscar&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="s2">&quot;POSCAR&quot;</span>
+<span class="w">                </span><span class="p">]},</span>
+<span class="w">        </span><span class="nt">&quot;pert_generation&quot;</span><span class="p">:[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;conf_idx&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;atom_pert_distance&quot;</span><span class="p">:</span><span class="mf">0.05</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;cell_pert_fraction&quot;</span><span class="p">:</span><span class="mf">0.03</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;pert_num&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="p">]},</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section defines the data exploration, it explores new Si configurations with molecular dynamics (MD) simulations using LAMMPS and add them into the training set for the next iteration. Here the exploration step only has one “stage”, which generate new frame by running NPT simulation at 1000 K and at various perssure starting from one of the 5 perturbed Si structure. Each LAMMPS trajectory runs for 1000 steps, and a frame is extracted for subsequent labeling (i.e., DFT calculation). The exploration stage would run iteratively until convergence. The exploration converges when the root mean squre error (RMSE) of atomic force prediction falls below 0.06 eV/Angstrom.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;exploration&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;max_iter&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;convergence&quot;</span><span class="p">:{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;force_rmse&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;RMSE&quot;</span><span class="p">:</span><span class="mf">0.06</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;conf_filter&quot;</span><span class="p">:[</span>
+<span class="w">                </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;force_delta&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;thr_l&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;thr_h&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="w"> </span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;filter&quot;</span><span class="p">:[{</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;distance&quot;</span>
+<span class="w">        </span><span class="p">}],</span>
+<span class="w">        </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp -var restart 0&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;head&quot;</span><span class="p">:</span><span class="s2">&quot;Domains_SemiCond&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;model_frozen_head&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Domains_SemiCond&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;stages&quot;</span><span class="p">:[[</span>
+<span class="w">            </span><span class="p">{</span><span class="w">  </span><span class="nt">&quot;_comment&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;group 1 stage 1 of finetune-exploration&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;conf_idx&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;n_sample&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lmp-md&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;ensemble&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;npt&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;dt&quot;</span><span class="p">:</span><span class="mf">0.002</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;nsteps&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;temps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1000</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;press&quot;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="mi">10000</span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;trj_freq&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span>
+<span class="w">                    </span><span class="p">}]]},</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Note</strong>: when fine-tuning from a specific branch of deep potential model, <code class="docutils literal notranslate"><span class="pre">head</span></code> and <code class="docutils literal notranslate"><span class="pre">model_frozen_head</span></code> must be specified in the <code class="docutils literal notranslate"><span class="pre">exploration/config</span></code>.</p>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">fp</span></code> section defines DFT calculation settings. The path to the VASP input file as well as the pseudopotential file for each element are specified. The VASP command at <code class="docutils literal notranslate"><span class="pre">fp/run_config/command</span></code> should be configured according to the machine type for optimal performance.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;fp&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vasp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;task_max&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;run_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;source /opt/intel/oneapi/setvars.sh &amp;&amp; mpirun -n 32 vasp_std&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;inputs_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;incar&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;INCAR.fp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;pp_files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;Si&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;POTCAR&quot;</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;kspacing&quot;</span><span class="p">:</span><span class="mf">0.2</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">train</span></code> section defines the type of pretrained model and the specific training configuration. The detailed training script can be provided either as a <code class="docutils literal notranslate"><span class="pre">dict</span></code> or in an additional script (as shown below). It is crucial to provide the path to the pretrained model in the <code class="docutils literal notranslate"><span class="pre">init_models_paths</span></code> entry.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;train&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;impl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pytorch&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;head&quot;</span><span class="p">:</span><span class="s2">&quot;Domains_SemiCond&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;template_script&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;train.json&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="submit-job">
+<h4>Submit job<a class="headerlink" href="#submit-job" title="Link to this heading"></a></h4>
+<p>After modifying the input script, you can submit the fine-tune job using CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>submit<span class="w"> </span>si_ft.json
+</pre></div>
+</div>
+<p>With a successful submission, a workflow ID and a link to the Argo server would be printed out to the console. You can check the link to monitor the workflow progression. Additionally, you can also check the completed exploration cycles with the <code class="docutils literal notranslate"><span class="pre">status</span></code> command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pfd<span class="w"> </span>status<span class="w"> </span>si_ft.json<span class="w"> </span>WORKFLOW_ID
++-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
+<span class="p">|</span><span class="w">   </span>iteration<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nb">type</span><span class="w">       </span><span class="p">|</span><span class="w">   </span>criteria<span class="w"> </span><span class="p">|</span><span class="w">   </span>force_rmse<span class="w"> </span><span class="p">|</span><span class="w">   </span>energy_rmse<span class="w"> </span><span class="p">|</span><span class="w">   </span>frame<span class="w"> </span><span class="p">|</span><span class="w"> </span>unconverged_frame<span class="w">   </span><span class="p">|</span><span class="w">   </span>selected_frame<span class="w"> </span><span class="p">|</span><span class="w"> </span>converged<span class="w">   </span><span class="p">|</span>
++<span class="o">=============</span>+<span class="o">============</span>+<span class="o">============</span>+<span class="o">==============</span>+<span class="o">===============</span>+<span class="o">=========</span>+<span class="o">=====================</span>+<span class="o">==================</span>+<span class="o">=============</span>+
+<span class="p">|</span><span class="w">         </span><span class="m">000</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Force_RMSE<span class="w"> </span><span class="p">|</span><span class="w">       </span><span class="m">0</span>.06<span class="w"> </span><span class="p">|</span><span class="w">    </span><span class="m">0</span>.102363<span class="w">  </span><span class="p">|</span><span class="w">  </span><span class="m">101</span>.472<span class="w">      </span><span class="p">|</span><span class="w">      </span><span class="m">33</span><span class="w"> </span><span class="p">|</span><span class="w">                     </span><span class="p">|</span><span class="w">               </span><span class="m">30</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>False<span class="w">       </span><span class="p">|</span>
++-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
+<span class="p">|</span><span class="w">         </span><span class="m">001</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Force_RMSE<span class="w"> </span><span class="p">|</span><span class="w">       </span><span class="m">0</span>.06<span class="w"> </span><span class="p">|</span><span class="w">    </span><span class="m">0</span>.0375587<span class="w"> </span><span class="p">|</span><span class="w">    </span><span class="m">0</span>.00145353<span class="w"> </span><span class="p">|</span><span class="w">      </span><span class="m">33</span><span class="w"> </span><span class="p">|</span><span class="w">                     </span><span class="p">|</span><span class="w">                </span><span class="m">4</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>True<span class="w">        </span><span class="p">|</span>
++-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
+</pre></div>
+</div>
+<p>The two iterations of exploration are executed before convergence. In the first iteration (000), 33 frames are selected for DFT calculation and 30 of them are added to the training set for fine-tuning. In the next iteration (111), another 33 frames are labeled, but the fine-tuned model from the last iteration already achieves sufficient accuracy. Hence, the training step at iteration 001 is skipped and the whole exploration ends. The final model can be downloaded to <code class="docutils literal notranslate"><span class="pre">~/si_ft_res/task.0000/model.ckpt.pt</span></code> using <code class="docutils literal notranslate"><span class="pre">download</span></code> command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>download<span class="w"> </span>si_ft.json<span class="w"> </span>WORKFLOW_ID<span class="w"> </span>-p<span class="w"> </span>si_ft_res
+</pre></div>
+</div>
+<p>The fine-tuned model exhibits much better accuracy on the test set, with a high energy prediction error of 0.002 eV/atom and a force prediction error of 0.056 eV/Angstrom, respectively.</p>
+<div style="text-align: center;">
+    <img src="../_static/ft_test.png" alt="Fig2" style="zoom: 100%;">
+    <p style='font-size:1.0rem; text-align: center; font-weight:none'>Figure 2. Prediction error of the fine-tuned Si model.</p>
+</div></section>
+</section>
+<section id="distillation">
+<h3>Distillation<a class="headerlink" href="#distillation" title="Link to this heading"></a></h3>
+<p>As mentioned, the structure of the fine-tuned model is identical to that of the pretrained base model, therefore it is inefficient for large scale atomic simulaiton despite the high accuracy. Fortunately, the complexity of the fine-tuned model is largely redundant given the narrow chemical and configurational space associated with crystal Si. It is then possible to transfer the knowledge of the fine-tuned to a new, lightweight model through a process known as <em>“knowledge distillation”</em>. In model distillation, the fine-tuned model is analogous to an AIMD engine generating training data (but much more efficient!). These data generated by the fine-tuned model would then be used to train the end model for large scale atomic simulation.</p>
+<p>The directory tree of the distillation step is as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>examples/
+├──<span class="w"> </span>c_Si/<span class="w"> </span>
+│<span class="w">   </span>├──<span class="w"> </span>distillation<span class="w"> </span>
+│<span class="w">   </span><span class="p">|</span><span class="w">   </span>├──<span class="w"> </span>DPA-2.3.0-v3.0.0b4.pt<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>POSCAR<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>si_dist.json<span class="w"> </span>
+│<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>dist_train.json
+</pre></div>
+</div>
+<section id="id1">
+<h4>Preparing input script<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<p>The input script for model distillation is very similar to that of fine-tuning, but there are a few key differences. Obviously, the task type needs to be “dist”. You also needs to specify the path to teacher model file and its type (default as “dp”). The training script for the end model, “train.json”, would train a standard DeePMD model with the local <code class="docutils literal notranslate"><span class="pre">se_atten_v2</span></code> descriptor with the local attention turned off.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;dist&quot;</span><span class="p">},</span>
+<span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;teacher_model_path&quot;</span><span class="p">:</span><span class="s2">&quot;path_to_teacher_model&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;teacher_model_style&quot;</span><span class="p">:</span><span class="s2">&quot;dp&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="nt">&quot;conf_generation&quot;</span><span class="p">:{</span><span class="err">...</span><span class="p">},</span>
+<span class="nt">&quot;train&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nt">&quot;template_script&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dist_train.json&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;exploration&quot;</span><span class="p">:{</span>
+<span class="w">    </span><span class="err">...</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;test_set_config&quot;</span><span class="p">:{</span>
+<span class="w">        </span><span class="nt">&quot;test_size&quot;</span><span class="p">:</span><span class="mf">0.2</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Submit job<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<p>Submit job with the same <code class="docutils literal notranslate"><span class="pre">submit</span></code> command</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>submit<span class="w"> </span>si_ft.json
+</pre></div>
+</div>
+<p>The exploration process should converge after one iteration, where 1500 frames are generated and labeled by the fine-tuned model, among which 1350 frames are utilized as training set and the remaining frames as test set.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>+-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
+<span class="p">|</span><span class="w">   </span>iteration<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nb">type</span><span class="w">       </span><span class="p">|</span><span class="w">   </span>criteria<span class="w"> </span><span class="p">|</span><span class="w">   </span>force_rmse<span class="w"> </span><span class="p">|</span><span class="w">   </span>energy_rmse<span class="w"> </span><span class="p">|</span><span class="w">   </span>frame<span class="w"> </span><span class="p">|</span><span class="w"> </span>unconverged_frame<span class="w">   </span><span class="p">|</span><span class="w">   </span>selected_frame<span class="w"> </span><span class="p">|</span><span class="w"> </span>converged<span class="w">   </span><span class="p">|</span>
++<span class="o">=============</span>+<span class="o">============</span>+<span class="o">============</span>+<span class="o">==============</span>+<span class="o">===============</span>+<span class="o">=========</span>+<span class="o">=====================</span>+<span class="o">==================</span>+<span class="o">=============</span>+
+<span class="p">|</span><span class="w">         </span><span class="m">000</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Force_RMSE<span class="w"> </span><span class="p">|</span><span class="w">       </span><span class="m">0</span>.06<span class="w"> </span><span class="p">|</span><span class="w">    </span><span class="m">0</span>.0462139<span class="w"> </span><span class="p">|</span><span class="w">   </span><span class="m">0</span>.000844013<span class="w"> </span><span class="p">|</span><span class="w">       </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w">                     </span><span class="p">|</span><span class="w">                </span><span class="m">1</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>True<span class="w">        </span><span class="p">|</span>
++-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
+</pre></div>
+</div>
+<p>Upon successful completion, the end model can be generated and downloaded. The end model exhibits better accuracy than the pretrained model.</p>
+<div style="text-align: center;">
+    <img src="../_static/dist_test.png" alt="Fig3" style="zoom: 100%;">
+    <p style='font-size:1.0rem; text-align: center;font-weight:none'>Figure 3. Prediction error of the Si model generated through knowledge distillation.</p>
+</div><blockquote>
+<div><p><strong>Note</strong>: the whole process would take about 3 hours to complete (1.5 hour each for fine-tuning and distillation)</p>
+</div></blockquote>
+</section>
+</section>
 </section>
 </section>
 

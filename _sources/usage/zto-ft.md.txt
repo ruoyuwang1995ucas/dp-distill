@@ -1,5 +1,9 @@
 # A Model Fine-tuning Example for Hexa-Doped Perovskites
-
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
 > **More is different —— Philip W. Anderson**
 
 Author: why; And English version is translated from Chinese by ChatGPT 4o, if there is anything hard to read, please let me know.
@@ -113,16 +117,13 @@ Similarly, we reduce the number of MD samples during fine-tuning with the follow
                 "_comment": "group 1 stage 1 of finetune-exploration",
                 "conf_idx": [0],
                 "n_sample":2,
-                "exploration":{
-                    "type": "lmp-md",
-                    "ensemble": "npt",
-                    "dt":0.001,
-                    "nsteps": 3000,
-                    "temps": [300],
-                    "press":[1],
-                    "trj_freq": 500
-                    },
-                "max_sample": 10000
+                "type": "lmp-md",
+                "ensemble": "npt",
+                "dt":0.001,
+                "nsteps": 3000,
+                "temps": [300],
+                "press":[1],
+                "trj_freq": 500
                 }]]
 ```
 

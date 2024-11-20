@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Input script guide &mdash; pfd-kit 0.3.2 documentation</title>
+  <title>Input script guide &mdash; pfd-kit 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
+      <script src="../_static/documentation_options.js?v=d5a15cff"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -94,7 +94,11 @@
              
   <section id="input-script-guide">
 <h1>Input script guide<a class="headerlink" href="#input-script-guide" title="Link to this heading"></a></h1>
-<p>This part gives a concise description for writing the input script of PFD-kit. The input parameter is very similar to that of <a class="reference external" href="https://github.com/deepmodeling/dpgen2.git">DPGEN2</a>, whose online <a class="reference external" href="https://docs.deepmodeling.com/projects/dpgen2/en/latest/index.html">documantation</a> might also be useful.</p>
+<style>
+  p {
+    text-align: justify;
+  }
+</style><p>This part gives a concise description for writing the input script of PFD-kit. The input parameter is very similar to that of <a class="reference external" href="https://github.com/deepmodeling/dpgen2.git">DPGEN2</a>, whose online <a class="reference external" href="https://docs.deepmodeling.com/projects/dpgen2/en/latest/index.html">documantation</a> might also be useful.</p>
 <section id="basics">
 <h2>Basics<a class="headerlink" href="#basics" title="Link to this heading"></a></h2>
 <section id="workflow-host">
@@ -293,7 +297,16 @@ present in the <code class="docutils literal notranslate"><span class="pre">init
 </div>
 <p>You need to specify the teacher model style and path to the teacher model file at the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune.</p>
 <p>A new entry <code class="docutils literal notranslate"><span class="pre">test_set_config</span></code> would be available in the <code class="docutils literal notranslate"><span class="pre">exploration</span></code> section, this setting determines how many labeled frame would serve as the test set (20 % in this case). Moreover, you can add additional parameters into the <code class="docutils literal notranslate"><span class="pre">inference</span></code> section, where configurations with excess atomic forces would be filtered out.</p>
-</section>
+<div style="text-align: center;">
+    <img src="../_static/pt_test.png" alt="Fig1" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none'>Figure 1. Prediction error of pretrained DPA-2 models on crystal Si.</p>
+</div><div style="text-align: center;">
+    <img src="../_static/ft_test.png" alt="Fig2" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none'>Figure 2. Prediction error of the fine-tuned Si model.</p>
+</div><div style="text-align: center;">
+    <img src="../_static/dist_test.png" alt="Fig3" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none'>Figure 3. Prediction error of the Si model generated through knowledge distillation.</p>
+</div></section>
 </section>
 
 

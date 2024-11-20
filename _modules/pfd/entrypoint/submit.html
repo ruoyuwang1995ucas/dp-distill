@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.3.2 documentation</title>
+  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+      <script src="../../../_static/documentation_options.js?v=d5a15cff"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -533,8 +533,10 @@
         <span class="n">pert_gen_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s2">&quot;pert_gen_config&quot;</span><span class="p">,</span> <span class="n">default_step_config</span>
         <span class="p">)</span>
-        <span class="n">inference_step_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">run_lmp_step_config</span><span class="p">)</span>
-        <span class="n">model_test_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">run_train_step_config</span><span class="p">)</span>
+        <span class="n">inference_step_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;inference_config&quot;</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">run_train_step_config</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">model_test_config</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">inference_step_config</span><span class="p">)</span>
         <span class="c1"># uploaded python packages</span>
         <span class="n">upload_python_packages</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">custom_packages</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_python_packages&quot;</span><span class="p">):</span>

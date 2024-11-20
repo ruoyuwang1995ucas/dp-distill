@@ -1,5 +1,11 @@
 # Input script guide
 
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
+
 This part gives a concise description for writing the input script of PFD-kit. The input parameter is very similar to that of [DPGEN2](https://github.com/deepmodeling/dpgen2.git), whose online [documantation](https://docs.deepmodeling.com/projects/dpgen2/en/latest/index.html) might also be useful.
 
 ## Basics
@@ -209,3 +215,18 @@ The input script for tdistillation is actually very similar to that of fine-tune
 You need to specify the teacher model style and path to the teacher model file at the `inputs` part. The relevant setting in the training configuration also needs to be modified, as the distilled model is essentially a simpler model trained from scratch instead of fine-tune. 
 
 A new entry `test_set_config` would be available in the `exploration` section, this setting determines how many labeled frame would serve as the test set (20 % in this case). Moreover, you can add additional parameters into the `inference` section, where configurations with excess atomic forces would be filtered out.
+
+<div style="text-align: center;">
+    <img src="../_static/pt_test.png" alt="Fig1" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none'>Figure 1. Prediction error of pretrained DPA-2 models on crystal Si.</p>
+</div>
+
+<div style="text-align: center;">
+    <img src="../_static/ft_test.png" alt="Fig2" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none'>Figure 2. Prediction error of the fine-tuned Si model.</p>
+</div>
+
+<div style="text-align: center;">
+    <img src="../_static/dist_test.png" alt="Fig3" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none'>Figure 3. Prediction error of the Si model generated through knowledge distillation.</p>
+</div>

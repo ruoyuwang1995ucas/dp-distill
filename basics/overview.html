@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Overview &mdash; pfd-kit 0.3.2 documentation</title>
+  <title>Overview &mdash; pfd-kit 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=71d9d8e6"></script>
+      <script src="../_static/documentation_options.js?v=d5a15cff"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -45,6 +45,7 @@
               <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#backgrounds">Backgrounds</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#workflows">Workflows</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#fine-tune">Fine-tune</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#distillation">Distillation</a></li>
@@ -92,7 +93,23 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
-<p><a class="reference external" href="https://github.com/ruoyuwang1995nya/dp-distill">PFD-kit</a> automates the fine-tuning and distillation process of pre-trained atomic models, such as <a class="reference external" href="https://github.com/deepmodeling/deepmd-kit.git">DPA-2</a>. It enables practical atomistic simualtion with the highly transferable, but computationally expensive pre-trained models. PFD-kit is built upon the  <a class="reference external" href="https://github.com/deepmodeling/dpgen2">DPGEN2</a> workflow and supports the Deep Potential models. The best experience of PFD-kit is found on Bohrium platform.</p>
+<style>
+  p {
+    text-align: justify;
+  }
+</style><p><a class="reference external" href="https://github.com/ruoyuwang1995nya/dp-distill">PFD-kit</a> automates the fine-tuning and distillation process of pre-trained atomic models, such as <a class="reference external" href="https://github.com/deepmodeling/deepmd-kit.git">DPA-2</a>. It enables practical atomistic simualtion with the highly transferable, but computationally expensive pre-trained models. PFD-kit is built upon the  <a class="reference external" href="https://github.com/deepmodeling/dpgen2">DPGEN2</a> workflow and supports the Deep Potential models. The best experience of PFD-kit is found on Bohrium platform.</p>
+<section id="backgrounds">
+<h2>Backgrounds<a class="headerlink" href="#backgrounds" title="Link to this heading"></a></h2>
+<p>Machine learning force fields (e.g., Deep Potential) combine quantum mechanics principles with data-driven algorithms to achieve large-scale atomic simulations with first-principle accuracy. However, machine learning force fields often suffer from limited transferability, high costs in data generation, and extensive human inteference during training, which lead to significant resource expenses. These challenges make training machine learning force fields a difficult task for practical material systems. Figure 1 illustrates two typical material systems. The first is <strong>carbon materials</strong>. Training a force field for bulk carbon with high point group symmetry and small unit cell may require only a few data points, but the surface structures or the disordered phases large supercells and extensive sampling of the huge configuration space, making training almost intractable. The second is high-entropy alloys. In these materials, different spatial arrangements of elements lead to varying interactions, and as the number of elements increases, the possible chemical space grow exponentially, making comprehensive sampling nearly impossible.</p>
+<div>
+    <img src="../_static/mat_sys.png" alt="Fig1" style="zoom: 35%;">
+    <p style='font-size:1.0rem; font-weight:none;text-align: center'>Figure 1. Typical material systems that pose significant challenges to force field training.</p>
+</div><p>Large atom models (LAM, such as DPA-2) pre-trained on extensive datasets and embed transferable knowdge across vast chemical and configuration space, potentially address the above issues. Utilizing the transferable knowledge, fine-tuning of the pretrained LAM can yield high-accuracy among specific material domains with much smaller data sets, usually only one-tenth or even one-hundredth of the data required for training from scratch. The fine-tuned models can predict energy and atomic forces with DFT accuracy at much lower costs, replacing DFT for efficient data sampling and labeling. After extensive data sampling, knowledge distillation can create distilled models from the sampled data. The distilled model has fewer parameters, but still accurately predicts the specific domain of interst. Thus, it is suitable for large scale simulations of millions of atoms over a long periods of time (e.g., nanoseconds). Possible application include two-dimensional materials, metamaterials, semiconductor materials, energy materials, and alloys.</p>
+<p>PFD-kit streamlines the above process, automatically generate from pre-trained model (<strong>P</strong>) an end model through fine-tuning (<strong>F</strong>) and distillation (<strong>D</strong>). PFD-kit reduces the time and computational costs of force fields generation by an order of magnitude compared to traditional from-scratch method, and requires with minimal human interference, thus significantly accelerates high-throughput computing and complex material simulations.</p>
+<div>
+    <img src="../_static/workflow.png" alt="Fig2" style="zoom: 100%;">
+    <p style='font-size:1.0rem; font-weight:none;text-align: center; margin-top: 10px;'>Figure 2. The general conception of PFD-kit workflow.</p>
+</div></section>
 <section id="workflows">
 <h2>Workflows<a class="headerlink" href="#workflows" title="Link to this heading"></a></h2>
 <section id="fine-tune">
@@ -100,14 +117,14 @@
 <p>Fig.1 shows the schematic of fine-tuning workflow. Given the initial structures of fine-tuning systems, the workflow generates perturbed structures, and executes a series of short <em>ab initio</em> molecular dynamics (AIMD) simulation based upon randomly perturbed structures. The pre-trained model is firstly fine-tuned by the AIMD dataset, then MD simulation with the fine-tuned model searches new configurations, which are then labeled by first-principle calculation softwares. If the fine-tuned model cannot predict the labeled dataset with sufficient accuracy, the collected dataset would be added to the fine-tuning training set, and the <em>train-search-label</em> process would iterate until convergence.</p>
 <div>
     <img src="../_static/fine-tune.png" alt="Fig1" style="zoom: 35%;">
-    <p style='font-size:1.0rem; font-weight:none'>Figure 1. Fine-tune workflow.</p>
+    <p style='font-size:1.0rem; font-weight:none;text-align: center'>Figure 3. Schematics of fine-tune workflow.</p>
 </div></section>
 <section id="distillation">
 <h3>Distillation<a class="headerlink" href="#distillation" title="Link to this heading"></a></h3>
 <p>A lightweight model can be generated from a fine-tuned model through distillation, which enables much faster simulation. The distilled model can be generated with training data labeled by the fine-tuned model. Figure 2 shows the schematic of the distillation workflow.</p>
- <div>
+ <div style="align: center;">
     <img src="../_static/distillation.png" alt="Fig2" style="zoom: 25%;">
-    <p style='font-size:1.0rem; font-weight:none'>Figure 2. Distillation workflow.</p>
+    <p style='font-size:1.0rem; font-weight:none;text-align: center'>Figure 4. Schematics of distillation workflow.</p>
 </div></section>
 </section>
 </section>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.superop.exploration_dist_loop &mdash; pfd-kit 0.3.2 documentation</title>
+  <title>pfd.superop.exploration_dist_loop &mdash; pfd-kit 0.3.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=71d9d8e6"></script>
+      <script src="../../../_static/documentation_options.js?v=d5a15cff"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -244,6 +244,7 @@
             <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span>
                 <span class="n">optional</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">),</span>  <span class="c1"># datas collected during previous exploration</span>
+            <span class="s2">&quot;current_model&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(</span><span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_output_parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">OutputParameter</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)}</span>
 
@@ -539,7 +540,7 @@
         <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
             <span class="p">[</span><span class="s2">&quot;iter-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;iter_id&quot;</span><span class="p">],</span> <span class="s2">&quot;explore-block&quot;</span><span class="p">]</span>
         <span class="p">),</span>
-        <span class="c1"># when=&quot;%s == false&quot; % (stage_scheduler.outputs.parameters[&quot;converged&quot;]),</span>
+        <span class="n">when</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> == false&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">]),</span>
     <span class="p">)</span>
     <span class="n">loop</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">expl_dist_blk</span><span class="p">)</span>
 
@@ -569,6 +570,7 @@
         <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">],</span>
             <span class="s2">&quot;teacher_model&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;teacher_model&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;current_model&quot;</span><span class="p">:</span> <span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">],</span>
             <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>
             <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_data&quot;</span><span class="p">],</span>
         <span class="p">},</span>
@@ -588,13 +590,13 @@
     <span class="p">)</span>
     <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">from_expression</span> <span class="o">=</span> <span class="n">if_expression</span><span class="p">(</span>
         <span class="n">_if</span><span class="o">=</span><span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
-        <span class="n">_then</span><span class="o">=</span><span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">],</span>
+        <span class="n">_then</span><span class="o">=</span><span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;current_model&quot;</span><span class="p">],</span>
         <span class="n">_else</span><span class="o">=</span><span class="n">next_step</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;dist_model&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
     <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">from_expression</span> <span class="o">=</span> <span class="n">if_expression</span><span class="p">(</span>
         <span class="n">_if</span><span class="o">=</span><span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
-        <span class="n">_then</span><span class="o">=</span><span class="n">expl_dist_blk</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>
+        <span class="n">_then</span><span class="o">=</span><span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_data&quot;</span><span class="p">],</span>
         <span class="n">_else</span><span class="o">=</span><span class="n">next_step</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
