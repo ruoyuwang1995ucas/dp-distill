@@ -1582,7 +1582,7 @@
 </dl>
 <dl id="conf-generation-pert-generation">
 <dt>pert_generation:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation</span></code></div>
 </div>
 <p>Generation of perturbed structures for PFD exploration</p>
@@ -1777,7 +1777,7 @@
 </dl>
 <dl id="train-dp-template-script">
 <dt>template_script:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">train[dp]/template_script</span></code></div>
 </div>
 <p>File names of the template training script. It can be a <cite>List[str]</cite>, the length of which is the same as <cite>numb_models</cite>. Each template script in the list is used to train a model. Can be a <cite>str</cite>, the models share the same template training script.</p>
@@ -2245,7 +2245,7 @@
 <p>The parameter for initial fp calculation</p>
 <dl id="aimd-confs">
 <dt>confs:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/confs</span></code></div>
 </div>
 <p>The systems selected for initial fp calculation</p>
@@ -2325,7 +2325,7 @@
 </dl>
 <dl id="exploration-lmp-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
 </div>
 <p>The teacher model in <cite>Knowledge Distillation</cite></p>
@@ -2405,7 +2405,7 @@
 <p>The method of convergence check.</p>
 <dl id="exploration-lmp-convergence-conf-filter">
 <dt>conf_filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter</span></code></div>
 </div>
 <p>Filtering configurations with too larger or too small prediction error</p>
@@ -2521,7 +2521,7 @@
 </dl>
 <dl id="exploration-lmp-filter">
 <dt>filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter</span></code></div>
 </div>
 <p>Filter configuration for DFT calculation</p>
