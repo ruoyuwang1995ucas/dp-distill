@@ -3,19 +3,23 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-pfd-kit documentation
+PFD-kit documentation (|version|)
 =====================
-
-PFD-kit version |version| documentation
-----------------------------------------
 
 .. raw:: html
 
-   <div style="text-align: justify;">
-   PFD-kit is a cloud-based workflow written in Python, delicately designed to generate a deep learning based model of interatomic potential energy and force field. PFD-kit is based on pre-trained (P) Large Atomic Models through fine-tune (F) and distillation (D). Compared to concurrent learning method, e.g. DP-GEN, the PFD-kit requires less computational resources and time, eliminates the need for supervision by materials science experts while producing models with stronger generalization capabilities. This makes it highly effective for supporting high-throughput calculations and addressing challenges in training models for complex material systems, such as high-entropy alloys and surfaces/interfaces.
+   <style>
+     p {
+       text-align: justify;
+     }
+   </style>
 
-   The main features of PFD-kit include automated data generation, model training, evaluation and maintain job queues on HPC machines (High Performance Cluster), making it a powerful tool for researchers in the field of computational materials science.
-   </div>
+
+**PFD-kit** is a cloud-based workflow automating the generation of deep-learning based force fields from pre-trained atomic models (**P**) through fine-tuning (**F**) and distillation (**D**) for large scale atomic simulation of practical materials. 
+By exploiting the transferable knowledge in the pre-trained model, force field generation using PFD workflow requires much less training data, saving significant time and computational resources. 
+This feature makes PFD workflow a powerful tool in computational materials science, addressing challenges in training force fields for complex material systems (*e.g.*, high-entropy alloys, surfaces/interfaces) that are previously intractable. 
+
+This documentation gives an in-depth view of PFD-kit, which includes background introduction, hand-on tutorials and detailed explanation for input parameters.
 
 .. toctree::
    :maxdepth: 2

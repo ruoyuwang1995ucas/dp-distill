@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd-kit documentation &mdash; pfd-kit 0.3.3 documentation</title>
+  <title>PFD-kit documentation (0.3.4) &mdash; pfd-kit 0.3.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d5a15cff"></script>
+      <script src="_static/documentation_options.js?v=1e28cc32"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
@@ -72,7 +72,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">pfd-kit documentation</li>
+      <li class="breadcrumb-item active">PFD-kit documentation (0.3.4)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -82,15 +82,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pfd-kit-documentation">
-<h1>pfd-kit documentation<a class="headerlink" href="#pfd-kit-documentation" title="Link to this heading"></a></h1>
-<section id="pfd-kit-version-version-documentation">
-<h2>PFD-kit version 0.3.3 documentation<a class="headerlink" href="#pfd-kit-version-version-documentation" title="Link to this heading"></a></h2>
-<div style="text-align: justify;">
-PFD-kit is a cloud-based workflow written in Python, delicately designed to generate a deep learning based model of interatomic potential energy and force field. PFD-kit is based on pre-trained (P) Large Atomic Models through fine-tune (F) and distillation (D). Compared to concurrent learning method, e.g. DP-GEN, the PFD-kit requires less computational resources and time, eliminates the need for supervision by materials science experts while producing models with stronger generalization capabilities. This makes it highly effective for supporting high-throughput calculations and addressing challenges in training models for complex material systems, such as high-entropy alloys and surfaces/interfaces.
-
-The main features of PFD-kit include automated data generation, model training, evaluation and maintain job queues on HPC machines (High Performance Cluster), making it a powerful tool for researchers in the field of computational materials science.
-</div><div class="toctree-wrapper compound">
+  <section id="pfd-kit-documentation-version">
+<h1>PFD-kit documentation (0.3.4)<a class="headerlink" href="#pfd-kit-documentation-version" title="Link to this heading"></a></h1>
+<style>
+  p {
+    text-align: justify;
+  }
+</style><p><strong>PFD-kit</strong> is a cloud-based workflow automating the generation of deep-learning based force fields from pre-trained atomic models (<strong>P</strong>) through fine-tuning (<strong>F</strong>) and distillation (<strong>D</strong>) for large scale atomic simulation of practical materials.
+By exploiting the transferable knowledge in the pre-trained model, force field generation using PFD workflow requires much less training data, saving significant time and computational resources.
+This feature makes PFD workflow a powerful tool in computational materials science, addressing challenges in training force fields for complex material systems (<em>e.g.</em>, high-entropy alloys, surfaces/interfaces) that are previously intractable.</p>
+<p>This documentation gives an in-depth view of PFD-kit, which includes background introduction, hand-on tutorials and detailed explanation for input parameters.</p>
+<div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">The Basics</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="basics/overview.html">Overview</a><ul>
@@ -147,7 +149,6 @@ The main features of PFD-kit include automated data generation, model training, 
 </li>
 </ul>
 </div>
-</section>
 </section>
 
 

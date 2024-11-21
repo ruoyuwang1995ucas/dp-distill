@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command guide &mdash; pfd-kit 0.3.3 documentation</title>
+  <title>Command guide &mdash; pfd-kit 0.3.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=d5a15cff"></script>
+      <script src="../_static/documentation_options.js?v=1e28cc32"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -185,7 +185,7 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">ID</span></code>: Workflow ID of an existing PFD workflow.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-l,</span> <span class="pre">--list</span></code>: List completed steps of an existing workflow.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-u,</span> <span class="pre">--reuse</span> <span class="pre">REUSE</span></code>: Reuse completed steps from an existing workflow.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-f,</span> <span class="pre">--fold</span></code>: Reuse complex steps as a whole.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-f,</span> <span class="pre">--fold</span></code>: Reuse dflow <code class="docutils literal notranslate"><span class="pre">Steps</span></code> in the workflow as a whole. For instance, failed LAMMPS tasks would be skipped in the resubmitted workflow if the <code class="docutils literal notranslate"><span class="pre">prep-run-explore</span></code> <code class="docutils literal notranslate"><span class="pre">Steps</span></code> it belongs to is asserted as successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-m,</span> <span class="pre">--monitoring</span></code>: Monitor workflow progress and auto-download the output model upon successful completion.</p></li>
 </ul>
 </section>

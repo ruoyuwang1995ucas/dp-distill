@@ -92,7 +92,7 @@ Arguments:
 - `ID`: Workflow ID of an existing PFD workflow.
 - `-l, --list`: List completed steps of an existing workflow.
 - `-u, --reuse REUSE`: Reuse completed steps from an existing workflow.
-- `-f, --fold`: Reuse complex steps as a whole.
+- `-f, --fold`: Reuse dflow `Steps` in the workflow as a whole. For instance, failed LAMMPS tasks would be skipped in the resubmitted workflow if the `prep-run-explore` `Steps` it belongs to is asserted as successful.   
 - `-m, --monitoring`: Monitor workflow progress and auto-download the output model upon successful completion.
 
 ### Subcommand: `download`
