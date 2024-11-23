@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.3.5 documentation</title>
+  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=ba50482b"></script>
+      <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -567,6 +567,11 @@
         <span class="c1"># train (student model) style</span>
         <span class="n">train_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
         <span class="n">train_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
+        <span class="n">train_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;init_model_policy&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
         <span class="c1"># others</span>
         <span class="n">collect_data_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;test_set_config&quot;</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;labeled_data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collect_data_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
@@ -716,6 +721,9 @@
         <span class="n">run_lmp_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;step_configs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s2">&quot;run_explore_config&quot;</span><span class="p">,</span> <span class="n">default_config</span>
         <span class="p">)</span>
+
+        <span class="n">scheduler_config</span> <span class="o">=</span> <span class="n">default_config</span>
+
         <span class="c1"># uploaded python packages</span>
         <span class="n">upload_python_packages</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">custom_packages</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;upload_python_packages&quot;</span><span class="p">):</span>
@@ -734,8 +742,7 @@
             <span class="n">mass_map</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">mass</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">type_map</span><span class="p">]</span>
         <span class="n">train_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
         <span class="n">train_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">train_style</span> <span class="o">==</span> <span class="s2">&quot;dp&quot;</span><span class="p">:</span>
-            <span class="n">train_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;init_model_with_finetune&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+
         <span class="n">numb_models</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
         <span class="n">explore_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
@@ -757,6 +764,16 @@
         <span class="n">skip_aimd</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">][</span><span class="s2">&quot;skip_aimd&quot;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">skip_aimd</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;AIMD exploration is skipped!&quot;</span><span class="p">)</span>
+        <span class="n">recursive_finetune</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">][</span><span class="s2">&quot;recursive&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">recursive_finetune</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">init_training</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">&quot;Initial training is required for recursive finetune!&quot;</span>
+                <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Recursive fine-tune, using init_training policy!&quot;</span><span class="p">)</span>
+
+        <span class="c1"># do not use init model policy in the initial training or naive finetuen mode</span>
+        <span class="n">train_config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;init_model_policy&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">})</span>
         <span class="n">collect_data_config</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">collect_data_config</span><span class="p">[</span><span class="s2">&quot;test_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s2">&quot;test_data&quot;</span><span class="p">,</span> <span class="mf">0.05</span>
@@ -797,6 +814,8 @@
             <span class="n">mass_map</span><span class="o">=</span><span class="n">mass_map</span><span class="p">,</span>
             <span class="n">type_map</span><span class="o">=</span><span class="n">type_map</span><span class="p">,</span>
             <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
+            <span class="n">train_config</span><span class="o">=</span><span class="n">train_config</span><span class="p">,</span>
+            <span class="n">recursive_finetune</span><span class="o">=</span><span class="n">recursive_finetune</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># init_data</span>
@@ -865,6 +884,7 @@
             <span class="n">run_train_config</span><span class="o">=</span><span class="n">run_train_config</span><span class="p">,</span>
             <span class="n">prep_lmp_config</span><span class="o">=</span><span class="n">prep_lmp_config</span><span class="p">,</span>
             <span class="n">run_lmp_config</span><span class="o">=</span><span class="n">run_lmp_config</span><span class="p">,</span>
+            <span class="n">scheduler_config</span><span class="o">=</span><span class="n">scheduler_config</span><span class="p">,</span>
             <span class="n">collect_data_step_config</span><span class="o">=</span><span class="n">run_collect_data_config</span><span class="p">,</span>
             <span class="n">select_confs_step_config</span><span class="o">=</span><span class="n">run_select_confs_config</span><span class="p">,</span>
             <span class="n">inference_step_config</span><span class="o">=</span><span class="n">run_inference_config</span><span class="p">,</span>
@@ -1080,7 +1100,7 @@
         <span class="s2">&quot;run-fp&quot;</span><span class="p">,</span>
         <span class="s2">&quot;collect-data&quot;</span><span class="p">,</span>
         <span class="s2">&quot;validation-test&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;scheduler&quot;</span><span class="p">,</span>
+        <span class="c1"># &quot;scheduler&quot;,</span>
         <span class="s2">&quot;id&quot;</span><span class="p">,</span>
         <span class="s2">&quot;inference-test&quot;</span><span class="p">,</span>
         <span class="s2">&quot;inference-train&quot;</span><span class="p">,</span>

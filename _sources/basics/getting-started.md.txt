@@ -297,7 +297,7 @@ The input script for model distillation is very similar to that of fine-tuning, 
 #### Submit job
 Submit job with the same `submit` command
 ```bash
-pfd submit si_ft.json
+pfd submit si_dist.json
 ```
 
 The exploration process should converge after one iteration, where 1500 frames are generated and labeled by the fine-tuned model, among which 1350 frames are utilized as training set and the remaining frames as test set.

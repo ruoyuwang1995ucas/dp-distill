@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.superop.exploration_finetune_loop &mdash; pfd-kit 0.3.5 documentation</title>
+  <title>pfd.superop.exploration_finetune_loop &mdash; pfd-kit 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=ba50482b"></script>
+      <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -149,6 +149,7 @@
             <span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
             <span class="s2">&quot;converge_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">{}),</span>
             <span class="s2">&quot;inference_config&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(),</span>
+            <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="n">InputParameter</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;finetune&quot;</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_artifacts</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">InputArtifact</span><span class="p">(),</span>  <span class="c1"># starting systems for model deviation</span>
@@ -443,7 +444,7 @@
             <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span>
             <span class="s2">&quot;run_optional_parameter&quot;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">&quot;mixed_type&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-                <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;finetune&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;finetune_mode&quot;</span><span class="p">],</span>
             <span class="p">},</span>
         <span class="p">},</span>
         <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
@@ -503,7 +504,11 @@
             <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">],</span>
             <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">],</span>
         <span class="p">},</span>
-        <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">]},</span>
+        <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;init_model&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_model&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;current_model&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;current_model&quot;</span><span class="p">],</span>
+        <span class="p">},</span>
         <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;iter-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;scheduler&quot;</span><span class="p">]),</span>
         <span class="n">executor</span><span class="o">=</span><span class="n">scheduler_executor</span><span class="p">,</span>
         <span class="o">**</span><span class="n">scheduler_config</span><span class="p">,</span>
@@ -523,7 +528,7 @@
             <span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;conf_filters_conv&quot;</span><span class="p">],</span>
             <span class="s2">&quot;numb_models&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;numb_models&quot;</span><span class="p">],</span>
             <span class="s2">&quot;template_script&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;template_script&quot;</span><span class="p">],</span>
-            <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;train_config&quot;</span><span class="p">],</span>
             <span class="s2">&quot;explore_config&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;explore_config&quot;</span><span class="p">],</span>
             <span class="s2">&quot;inference_config&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;inference_config&quot;</span><span class="p">],</span>
             <span class="s2">&quot;fp_config&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;fp_config&quot;</span><span class="p">],</span>
@@ -534,6 +539,7 @@
             <span class="s2">&quot;dp_test_validation_config&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span>
                 <span class="s2">&quot;dp_test_validation_config&quot;</span>
             <span class="p">],</span>
+            <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;finetune_mode&quot;</span><span class="p">],</span>
         <span class="p">},</span>
         <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
@@ -542,8 +548,8 @@
             <span class="s2">&quot;current_model&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
                 <span class="s2">&quot;current_model&quot;</span>
             <span class="p">],</span>  <span class="c1"># model for exploration</span>
-            <span class="s2">&quot;init_model&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
-                <span class="s2">&quot;init_model&quot;</span>
+            <span class="s2">&quot;init_model&quot;</span><span class="p">:</span> <span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span>
+                <span class="s2">&quot;init_model_next&quot;</span>
             <span class="p">],</span>  <span class="c1"># starting point for finetune</span>
             <span class="s2">&quot;init_data&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_data&quot;</span><span class="p">],</span>
             <span class="s2">&quot;iter_data&quot;</span><span class="p">:</span> <span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.op.stage &mdash; pfd-kit 0.3.5 documentation</title>
+  <title>pfd.op.stage &mdash; pfd-kit 0.4.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=ba50482b"></script>
+      <script src="../../../_static/documentation_options.js?v=6c02275b"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -81,7 +81,8 @@
            <div itemprop="articleBody">
              
   <h1>Source code for pfd.op.stage</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span></span><span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">Param</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
 <span class="kn">from</span> <span class="nn">dflow.python</span> <span class="kn">import</span> <span class="n">OP</span><span class="p">,</span> <span class="n">OPIO</span><span class="p">,</span> <span class="n">Artifact</span><span class="p">,</span> <span class="n">BigParameter</span><span class="p">,</span> <span class="n">OPIOSign</span><span class="p">,</span> <span class="n">Parameter</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">pfd.exploration.scheduler.sheduler</span> <span class="kn">import</span> <span class="n">Scheduler</span>
@@ -104,6 +105,8 @@
             <span class="p">{</span>
                 <span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">Scheduler</span><span class="p">),</span>
                 <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">]),</span>
+                <span class="s2">&quot;init_model&quot;</span><span class="p">:</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                <span class="s2">&quot;current_model&quot;</span><span class="p">:</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                 <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                 <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">ConvReport</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
             <span class="p">}</span>
@@ -122,6 +125,9 @@
                 <span class="s2">&quot;iter_id&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span>
                 <span class="s2">&quot;next_iter_id&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span>
                 <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="nb">bool</span><span class="p">),</span>
+                <span class="s2">&quot;init_model_next&quot;</span><span class="p">:</span> <span class="n">Artifact</span><span class="p">(</span><span class="n">List</span><span class="p">[</span><span class="n">Path</span><span class="p">],</span> <span class="n">optional</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">Dict</span><span class="p">),</span>
+                <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;finetune&quot;</span><span class="p">),</span>
             <span class="p">}</span>
         <span class="p">)</span></div>
 
@@ -139,14 +145,26 @@
         <span class="n">systems</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">]</span>
         <span class="n">scheduler</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;scheduler&quot;</span><span class="p">]</span>
         <span class="n">converged</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">]</span>
+        <span class="n">init_model</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;init_model&quot;</span><span class="p">]</span>
+        <span class="n">current_model</span> <span class="o">=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;current_model&quot;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">report</span> <span class="o">:=</span> <span class="n">ip</span><span class="p">[</span><span class="s2">&quot;report&quot;</span><span class="p">]:</span>
             <span class="n">scheduler</span><span class="o">.</span><span class="n">add_report</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;init_model_next&quot;</span><span class="p">:</span> <span class="n">init_model</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">rec_ft</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;init_model_next&quot;</span><span class="p">:</span> <span class="n">current_model</span><span class="p">,</span> <span class="s2">&quot;finetune_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;no&quot;</span><span class="p">})</span>
+            <span class="n">scheduler</span><span class="o">.</span><span class="n">_train_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;init_model_with_finetune&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="s2">&quot;init_model_policy&quot;</span><span class="p">:</span> <span class="s2">&quot;yes&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
         <span class="c1"># check convergence</span>
         <span class="n">scheduler</span><span class="o">.</span><span class="n">set_convergence</span><span class="p">(</span><span class="n">convergence_stage</span><span class="o">=</span><span class="n">converged</span><span class="p">)</span>
 
-        <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="c1"># if not converged</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">convergence</span><span class="p">:</span>
             <span class="n">task_grp</span> <span class="o">=</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">set_explore_tasks</span><span class="p">(</span><span class="n">systems</span><span class="p">)</span>
@@ -159,6 +177,7 @@
                 <span class="s2">&quot;iter_id&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%03d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">iter_numb</span><span class="p">,</span>
                 <span class="s2">&quot;next_iter_id&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%03d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">scheduler</span><span class="o">.</span><span class="n">iter_numb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
                 <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">convergence</span><span class="p">,</span>
+                <span class="s2">&quot;train_config&quot;</span><span class="p">:</span> <span class="n">scheduler</span><span class="o">.</span><span class="n">train_config</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span>
 
