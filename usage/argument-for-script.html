@@ -1596,7 +1596,7 @@
 <p>Generation of perturbed structures for PFD exploration</p>
 <dl id="conf-generation-pert-generation-conf-idx">
 <dt>conf_idx:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/conf_idx</span></code></div>
 </div>
 </dd>
@@ -2333,7 +2333,7 @@
 </dl>
 <dl id="exploration-lmp-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
 </div>
 <p>The teacher model in <cite>Knowledge Distillation</cite></p>
@@ -2413,7 +2413,7 @@
 <p>The method of convergence check.</p>
 <dl id="exploration-lmp-convergence-conf-filter">
 <dt>conf_filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter</span></code></div>
 </div>
 <p>Filtering configurations with too larger or too small prediction error</p>
@@ -2529,7 +2529,7 @@
 </dl>
 <dl id="exploration-lmp-filter">
 <dt>filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter</span></code></div>
 </div>
 <p>Filter configuration for DFT calculation</p>
