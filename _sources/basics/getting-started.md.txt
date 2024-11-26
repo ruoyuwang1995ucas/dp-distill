@@ -121,6 +121,7 @@ Here, a lightweigh Ubuntu image and a cheap machine ("c2_m4_cpu") is selected. Y
 
 > **Note**: to use the VASP image on Bohrium , you may need an authorized license. Otherwise you can build your own image.
 
+> **Note**: images with correct version number must be selected! Since we use the `DPA-2.3.0-v3.0.0b4` model, thus the `registry.dp.tech/dptech/deepmd-kit:3.0.0b4-cuda12.1` image with corresponding DeePMD-kit version is chosen for model training and MD exploration. 
 
 Then the parameters defining workflow tasks in the example `si_ft.json` file. Firstly, the task type (in this case "finetune") must be specified. Here we skip the initial data generation and training as the `Domains_SemiCond` branch already contains quite a lot information of crystal Si, and instead directly explore new Si configurations with the pretrained model. 
 

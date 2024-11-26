@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; pfd-kit 0.4.0 documentation</title>
+  <title>Quickstart &mdash; pfd-kit 0.4.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=6c02275b"></script>
+      <script src="../_static/documentation_options.js?v=c87aa342"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -221,6 +221,9 @@ It should be noted that PFD-kit is built upon the <a class="reference external" 
 </div>
 <blockquote>
 <div><p><strong>Note</strong>: to use the VASP image on Bohrium , you may need an authorized license. Otherwise you can build your own image.</p>
+</div></blockquote>
+<blockquote>
+<div><p><strong>Note</strong>: images with correct version number must be selected! Since we use the <code class="docutils literal notranslate"><span class="pre">DPA-2.3.0-v3.0.0b4</span></code> model, thus the <code class="docutils literal notranslate"><span class="pre">registry.dp.tech/dptech/deepmd-kit:3.0.0b4-cuda12.1</span></code> image with corresponding DeePMD-kit version is chosen for model training and MD exploration.</p>
 </div></blockquote>
 <p>Then the parameters defining workflow tasks in the example <code class="docutils literal notranslate"><span class="pre">si_ft.json</span></code> file. Firstly, the task type (in this case “finetune”) must be specified. Here we skip the initial data generation and training as the <code class="docutils literal notranslate"><span class="pre">Domains_SemiCond</span></code> branch already contains quite a lot information of crystal Si, and instead directly explore new Si configurations with the pretrained model.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span>
