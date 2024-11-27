@@ -246,7 +246,7 @@ $ pfd status si_ft.json WORKFLOW_ID
 +-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
 ```  
 
-The two iterations of exploration are executed before convergence. In the first iteration (000), 33 frames are selected for DFT calculation and 30 of them are added to the training set for fine-tuning. In the next iteration (111), another 33 frames are labeled, but the fine-tuned model from the last iteration already achieves sufficient accuracy. Hence, the training step at iteration 001 is skipped and the whole exploration ends. The final model can be downloaded to `~/si_ft_res/task.0000/model.ckpt.pt` using `download` command:
+The two iterations of exploration are executed before convergence. In the first iteration (000), 33 frames are selected for DFT calculation and 30 of them are added to the training set for fine-tuning. In the next iteration (111), another 33 frames are labeled, but the fine-tuned model from the last iteration already achieves sufficient accuracy. Hence, the training step at iteration 001 is skipped and the whole exploration ends. The final model can be downloaded to `~/si_ft_res/model/task.0000/model.ckpt.pt` using `download` command:
 ```bash
 pfd download si_ft.json WORKFLOW_ID -p si_ft_res
 ```
@@ -266,11 +266,12 @@ The directory tree of the distillation step is as follows:
 examples/
 ├── c_Si/ 
 │   ├── distillation 
-│   |   ├── DPA-2.3.0-v3.0.0b4.pt 
+│   |   ├── model.ckpt.pt
 │   │   ├── POSCAR 
 │   │   ├── si_dist.json 
 │   │   └── dist_train.json
 ```
+> **Note**: you should copy the fine-tuned model file here.
 
 #### Preparing input script
 The input script for model distillation is very similar to that of fine-tuning, but there are a few key differences. Obviously, the task type needs to be "dist". You also needs to specify the path to teacher model file and its type (default as "dp"). The training script for the end model, "train.json", would train a standard DeePMD model with the local `se_atten_v2` descriptor with the local attention turned off.   
@@ -278,7 +279,7 @@ The input script for model distillation is very similar to that of fine-tuning, 
 "task":{"type":"dist"},
 "inputs":{
     "type_map":["..."],
-    "teacher_model_path":"path_to_teacher_model",
+    "teacher_model_path":"model.ckpt.pt",
     "teacher_model_style":"dp"
     },
 "conf_generation":{...},

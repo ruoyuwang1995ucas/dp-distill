@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quickstart &mdash; pfd-kit 0.4.1 documentation</title>
+  <title>Quickstart &mdash; pfd-kit 0.4.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=c87aa342"></script>
+      <script src="../_static/documentation_options.js?v=ff822928"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -343,7 +343,7 @@ It should be noted that PFD-kit is built upon the <a class="reference external" 
 +-------------+------------+------------+--------------+---------------+---------+---------------------+------------------+-------------+
 </pre></div>
 </div>
-<p>The two iterations of exploration are executed before convergence. In the first iteration (000), 33 frames are selected for DFT calculation and 30 of them are added to the training set for fine-tuning. In the next iteration (111), another 33 frames are labeled, but the fine-tuned model from the last iteration already achieves sufficient accuracy. Hence, the training step at iteration 001 is skipped and the whole exploration ends. The final model can be downloaded to <code class="docutils literal notranslate"><span class="pre">~/si_ft_res/task.0000/model.ckpt.pt</span></code> using <code class="docutils literal notranslate"><span class="pre">download</span></code> command:</p>
+<p>The two iterations of exploration are executed before convergence. In the first iteration (000), 33 frames are selected for DFT calculation and 30 of them are added to the training set for fine-tuning. In the next iteration (111), another 33 frames are labeled, but the fine-tuned model from the last iteration already achieves sufficient accuracy. Hence, the training step at iteration 001 is skipped and the whole exploration ends. The final model can be downloaded to <code class="docutils literal notranslate"><span class="pre">~/si_ft_res/model/task.0000/model.ckpt.pt</span></code> using <code class="docutils literal notranslate"><span class="pre">download</span></code> command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pfd<span class="w"> </span>download<span class="w"> </span>si_ft.json<span class="w"> </span>WORKFLOW_ID<span class="w"> </span>-p<span class="w"> </span>si_ft_res
 </pre></div>
 </div>
@@ -360,19 +360,22 @@ It should be noted that PFD-kit is built upon the <a class="reference external" 
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>examples/
 ├──<span class="w"> </span>c_Si/<span class="w"> </span>
 │<span class="w">   </span>├──<span class="w"> </span>distillation<span class="w"> </span>
-│<span class="w">   </span><span class="p">|</span><span class="w">   </span>├──<span class="w"> </span>DPA-2.3.0-v3.0.0b4.pt<span class="w"> </span>
+│<span class="w">   </span><span class="p">|</span><span class="w">   </span>├──<span class="w"> </span>model.ckpt.pt
 │<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>POSCAR<span class="w"> </span>
 │<span class="w">   </span>│<span class="w">   </span>├──<span class="w"> </span>si_dist.json<span class="w"> </span>
 │<span class="w">   </span>│<span class="w">   </span>└──<span class="w"> </span>dist_train.json
 </pre></div>
 </div>
+<blockquote>
+<div><p><strong>Note</strong>: you should copy the fine-tuned model file here.</p>
+</div></blockquote>
 <section id="id1">
 <h4>Preparing input script<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
 <p>The input script for model distillation is very similar to that of fine-tuning, but there are a few key differences. Obviously, the task type needs to be “dist”. You also needs to specify the path to teacher model file and its type (default as “dp”). The training script for the end model, “train.json”, would train a standard DeePMD model with the local <code class="docutils literal notranslate"><span class="pre">se_atten_v2</span></code> descriptor with the local attention turned off.</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;task&quot;</span><span class="p">:{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;dist&quot;</span><span class="p">},</span>
 <span class="nt">&quot;inputs&quot;</span><span class="p">:{</span>
 <span class="w">    </span><span class="nt">&quot;type_map&quot;</span><span class="p">:[</span><span class="s2">&quot;...&quot;</span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;teacher_model_path&quot;</span><span class="p">:</span><span class="s2">&quot;path_to_teacher_model&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;teacher_model_path&quot;</span><span class="p">:</span><span class="s2">&quot;model.ckpt.pt&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="nt">&quot;teacher_model_style&quot;</span><span class="p">:</span><span class="s2">&quot;dp&quot;</span>
 <span class="w">    </span><span class="p">},</span>
 <span class="nt">&quot;conf_generation&quot;</span><span class="p">:{</span><span class="err">...</span><span class="p">},</span>

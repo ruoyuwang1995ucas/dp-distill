@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.superop.exploration_dist_loop &mdash; pfd-kit 0.4.1 documentation</title>
+  <title>pfd.superop.exploration_dist_loop &mdash; pfd-kit 0.4.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=c87aa342"></script>
+      <script src="../../../_static/documentation_options.js?v=ff822928"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -316,7 +316,7 @@
     <span class="n">collect_data_executor</span> <span class="o">=</span> <span class="n">init_executor</span><span class="p">(</span><span class="n">collect_data_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;executor&quot;</span><span class="p">))</span>
 
     <span class="n">prep_run_explore</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;prep-run-explore&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-prep-run-explore&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">prep_run_explore_op</span><span class="p">,</span>
         <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span>
@@ -330,7 +330,7 @@
     <span class="n">steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">prep_run_explore</span><span class="p">)</span>
 
     <span class="n">collect_data</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;collect-data&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-collect-data&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
             <span class="n">collect_data_op</span><span class="p">,</span>
             <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
@@ -352,7 +352,7 @@
     <span class="n">steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">collect_data</span><span class="p">)</span>
 
     <span class="n">inference_train</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-inference-train&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-inference&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
             <span class="n">inference_op</span><span class="p">,</span>
             <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
@@ -366,14 +366,14 @@
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">collect_data</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;systems&quot;</span><span class="p">],</span>
             <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;teacher_model&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
         <span class="p">},</span>
-        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;inference-train&quot;</span><span class="p">]),</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;inference&quot;</span><span class="p">]),</span>
         <span class="n">executor</span><span class="o">=</span><span class="n">inference_executor</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">inference_train</span><span class="p">)</span>
 
     <span class="n">collect_data_train</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;collect-data-train&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-collect-data&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
             <span class="n">collect_data_op</span><span class="p">,</span>
             <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
@@ -387,16 +387,14 @@
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">inference_train</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;labeled_systems&quot;</span><span class="p">],</span>
             <span class="s2">&quot;additional_multi_systems&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>
         <span class="p">},</span>
-        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;collect-data-train&quot;</span><span class="p">]</span>
-        <span class="p">),</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;collect-data&quot;</span><span class="p">]),</span>
         <span class="n">executor</span><span class="o">=</span><span class="n">collect_data_executor</span><span class="p">,</span>
         <span class="o">**</span><span class="n">collect_data_config</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">collect_data_train</span><span class="p">)</span>
 
     <span class="n">prep_run_dp</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-prep-run-dp&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-prep-run-train&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">prep_run_train_op</span><span class="p">,</span>
         <span class="n">parameters</span><span class="o">=</span><span class="p">{</span>
             <span class="s2">&quot;block_id&quot;</span><span class="p">:</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span>
@@ -414,7 +412,7 @@
 
     <span class="c1"># the exploration steps for validation</span>
     <span class="n">dp_test</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-dp-test&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-test-model&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
             <span class="n">ModelTestOP</span><span class="p">,</span>
             <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
@@ -430,13 +428,13 @@
             <span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">collect_data_train</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;test_systems&quot;</span><span class="p">],</span>
             <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">prep_run_dp</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;models&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
         <span class="p">},</span>
-        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;validation-test&quot;</span><span class="p">]),</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;test-model&quot;</span><span class="p">]),</span>
         <span class="n">executor</span><span class="o">=</span><span class="n">model_test_executor</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dp_test</span><span class="p">)</span>
 
     <span class="n">evaluate</span> <span class="o">=</span> <span class="n">Step</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;evaluate-converge&quot;</span><span class="p">,</span>
+        <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;-check-converge&quot;</span><span class="p">,</span>
         <span class="n">template</span><span class="o">=</span><span class="n">PythonOPTemplate</span><span class="p">(</span>
             <span class="n">EvalConv</span><span class="p">,</span>
             <span class="n">python_packages</span><span class="o">=</span><span class="n">upload_python_packages</span><span class="p">,</span>
@@ -447,9 +445,7 @@
             <span class="s2">&quot;test_res&quot;</span><span class="p">:</span> <span class="n">dp_test</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;test_res&quot;</span><span class="p">],</span>
         <span class="p">},</span>
         <span class="n">artifacts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;systems&quot;</span><span class="p">:</span> <span class="n">collect_data_train</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;test_systems&quot;</span><span class="p">]},</span>
-        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-            <span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;evaluate-converge&quot;</span><span class="p">]</span>
-        <span class="p">),</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">steps</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;block_id&quot;</span><span class="p">],</span> <span class="s2">&quot;check-converge&quot;</span><span class="p">]),</span>
         <span class="o">**</span><span class="n">collect_data_config</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">steps</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">evaluate</span><span class="p">)</span>
@@ -597,7 +593,7 @@
 
     <span class="n">loop</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">from_expression</span> <span class="o">=</span> <span class="n">if_expression</span><span class="p">(</span>
         <span class="n">_if</span><span class="o">=</span><span class="n">stage_scheduler</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;converged&quot;</span><span class="p">],</span>
-        <span class="n">_then</span><span class="o">=</span><span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;init_data&quot;</span><span class="p">],</span>
+        <span class="n">_then</span><span class="o">=</span><span class="n">loop</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>
         <span class="n">_else</span><span class="o">=</span><span class="n">next_step</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">artifacts</span><span class="p">[</span><span class="s2">&quot;iter_data&quot;</span><span class="p">],</span>
     <span class="p">)</span>
 
