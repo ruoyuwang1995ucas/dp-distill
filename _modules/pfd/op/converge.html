@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.op.converge &mdash; pfd-kit 0.4.2 documentation</title>
+  <title>pfd.op.converge &mdash; pfd-kit 0.4.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -170,10 +170,9 @@
             <span class="n">selected_idx</span> <span class="o">=</span> <span class="n">conf_filters</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">test_res</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">selected_idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_res</span><span class="p">)))</span>
-        <span class="n">selected_systems</span> <span class="o">=</span> <span class="n">test_res</span><span class="o">.</span><span class="n">sub_reports</span><span class="p">(</span><span class="n">selected_idx</span><span class="p">)</span><span class="o">.</span><span class="n">get_and_output_systems</span><span class="p">(</span>
-            <span class="s2">&quot;./systems&quot;</span>
-        <span class="p">)</span>
-        <span class="n">report</span><span class="o">.</span><span class="n">selected_frame</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">selected_idx</span><span class="p">)</span>
+        <span class="n">selected_systems</span> <span class="o">=</span> <span class="n">test_res</span><span class="o">.</span><span class="n">sub_reports</span><span class="p">(</span><span class="n">selected_idx</span><span class="p">)</span>
+        <span class="n">report</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">test_res</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span>
+        <span class="n">report</span><span class="o">.</span><span class="n">selected_frame</span> <span class="o">=</span> <span class="n">selected_systems</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">converged</span> <span class="ow">and</span> <span class="n">report</span><span class="o">.</span><span class="n">selected_frame</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">FatalError</span><span class="p">(</span>
                 <span class="s2">&quot;Model has not converged, but no samples are selected for training either! Please check filter setting!&quot;</span>
@@ -181,7 +180,9 @@
         <span class="k">return</span> <span class="n">OPIO</span><span class="p">(</span>
             <span class="p">{</span>
                 <span class="s2">&quot;converged&quot;</span><span class="p">:</span> <span class="n">converged</span><span class="p">,</span>
-                <span class="s2">&quot;selected_systems&quot;</span><span class="p">:</span> <span class="n">selected_systems</span><span class="p">,</span>
+                <span class="s2">&quot;selected_systems&quot;</span><span class="p">:</span> <span class="n">selected_systems</span><span class="o">.</span><span class="n">get_and_output_systems</span><span class="p">(</span>
+                    <span class="s2">&quot;./systems&quot;</span>
+                <span class="p">),</span>
                 <span class="s2">&quot;report&quot;</span><span class="p">:</span> <span class="n">report</span><span class="p">,</span>
             <span class="p">}</span>
         <span class="p">)</span></div>

@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.exploration.inference.eval_model &mdash; pfd-kit 0.4.2 documentation</title>
+  <title>pfd.exploration.inference.eval_model &mdash; pfd-kit 0.4.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=ff822928"></script>
+      <script src="../../../../_static/documentation_options.js?v=5bfaad31"></script>
       <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/js/theme.js"></script>
@@ -203,6 +203,16 @@
             <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">index</span><span class="p">:</span>
                 <span class="n">reports</span><span class="o">.</span><span class="n">add_report</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reports</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">reports</span></div>
+
+
+<div class="viewcode-block" id="TestReports.get_nframes">
+<a class="viewcode-back" href="../../../../development/pfd.exploration.inference.html#pfd.exploration.inference.eval_model.TestReports.get_nframes">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_nframes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n_frame</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reports</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span> <span class="s2">&quot;system&quot;</span><span class="p">):</span>
+                <span class="n">n_frame</span> <span class="o">+=</span> <span class="n">ii</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">get_nframes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">n_frame</span></div>
 </div>
 
 
