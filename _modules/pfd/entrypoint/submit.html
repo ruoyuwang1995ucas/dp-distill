@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.4.3 documentation</title>
+  <title>pfd.entrypoint.submit &mdash; pfd-kit 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../_static/documentation_options.js?v=5bfaad31"></script>
+      <script src="../../../_static/documentation_options.js?v=1dd76d02"></script>
       <script src="../../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
@@ -98,7 +98,11 @@
 <span class="kn">from</span> <span class="nn">dflow</span> <span class="kn">import</span> <span class="n">ArgoStep</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">Steps</span><span class="p">,</span> <span class="n">Workflow</span><span class="p">,</span> <span class="n">upload_artifact</span><span class="p">,</span> <span class="n">download_artifact</span>
 
 
-<span class="kn">from</span> <span class="nn">pfd.entrypoint.args</span> <span class="kn">import</span> <span class="n">normalize_infer_args</span><span class="p">,</span> <span class="n">normalize</span> <span class="k">as</span> <span class="n">normalize_args</span>
+<span class="kn">from</span> <span class="nn">pfd.entrypoint.args</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">normalize_infer_args</span><span class="p">,</span>
+    <span class="n">normalize_pert_gen</span><span class="p">,</span>
+    <span class="n">normalize</span> <span class="k">as</span> <span class="n">normalize_args</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">pfd.entrypoint.common</span> <span class="kn">import</span> <span class="n">global_config_workflow</span><span class="p">,</span> <span class="n">expand_idx</span>
 
 <span class="kn">from</span> <span class="nn">dpgen2.fp</span> <span class="kn">import</span> <span class="n">fp_styles</span>
@@ -472,6 +476,13 @@
         <span class="n">upload_python_packages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">fpop</span><span class="o">.</span><span class="n">__path__</span><span class="p">))</span>
 
         <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
+        <span class="n">pert_gen_tasks</span> <span class="o">=</span> <span class="n">pert_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pert_gen_tasks</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">pert_gen_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">pert_gen_tasks</span><span class="p">]</span>
+        <span class="n">pert_config</span><span class="p">[</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pert_gen_tasks</span>
+        <span class="k">for</span> <span class="n">pert_task</span> <span class="ow">in</span> <span class="n">pert_gen_tasks</span><span class="p">:</span>
+            <span class="n">pert_task</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">normalize_pert_gen</span><span class="p">(</span><span class="n">pert_task</span><span class="p">))</span>
+
         <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">init_confs</span> <span class="o">=</span> <span class="n">get_artifact_from_uri</span><span class="p">(</span>
                 <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">][</span><span class="s2">&quot;init_confs&quot;</span><span class="p">][</span><span class="s2">&quot;confs_uri&quot;</span><span class="p">]</span>
@@ -553,6 +564,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mass_map</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">elements</span><span class="p">,</span> <span class="n">ii</span><span class="p">)</span><span class="o">.</span><span class="n">mass</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="n">type_map</span><span class="p">]</span>
         <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
+        <span class="n">pert_gen_tasks</span> <span class="o">=</span> <span class="n">pert_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pert_gen_tasks</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">pert_gen_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">pert_gen_tasks</span><span class="p">]</span>
+        <span class="n">pert_config</span><span class="p">[</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pert_gen_tasks</span>
+        <span class="k">for</span> <span class="n">pert_task</span> <span class="ow">in</span> <span class="n">pert_gen_tasks</span><span class="p">:</span>
+            <span class="n">pert_task</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">normalize_pert_gen</span><span class="p">(</span><span class="n">pert_task</span><span class="p">))</span>
+
         <span class="c1"># exploration</span>
         <span class="n">explore_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
         <span class="n">explore_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
@@ -762,6 +780,13 @@
 
         <span class="n">numb_models</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">pert_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;conf_generation&quot;</span><span class="p">]</span>
+        <span class="n">pert_gen_tasks</span> <span class="o">=</span> <span class="n">pert_config</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pert_gen_tasks</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">pert_gen_tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">pert_gen_tasks</span><span class="p">]</span>
+        <span class="n">pert_config</span><span class="p">[</span><span class="s2">&quot;pert_generation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pert_gen_tasks</span>
+        <span class="k">for</span> <span class="n">pert_task</span> <span class="ow">in</span> <span class="n">pert_gen_tasks</span><span class="p">:</span>
+            <span class="n">pert_task</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">normalize_pert_gen</span><span class="p">(</span><span class="n">pert_task</span><span class="p">))</span>
+
         <span class="n">explore_style</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
         <span class="n">expl_stages</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;stages&quot;</span><span class="p">]</span>
         <span class="n">explore_config</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;exploration&quot;</span><span class="p">][</span><span class="s2">&quot;config&quot;</span><span class="p">]</span>
