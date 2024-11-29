@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arguments of the input script &mdash; pfd-kit 0.5.0 documentation</title>
+  <title>Arguments of the input script &mdash; pfd-kit 0.5.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=1dd76d02"></script>
+      <script src="../_static/documentation_options.js?v=b9afe91b"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -1593,10 +1593,10 @@
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation</span></code></div>
 </div>
-<p>Generation of perturbed structures for PFD exploration</p>
+<p>Structure perturbation settings. A list of multiple perturbation settings can also be supplied if neccesarry.</p>
 <dl id="conf-generation-pert-generation-conf-idx">
 <dt>conf_idx:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/conf_idx</span></code></div>
 </div>
 </dd>
@@ -1614,6 +1614,7 @@
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/cell_pert_fraction</span></code></div>
 </div>
+<p>The amount of lattice contraction or extension, relative to original lattice constant.</p>
 </dd>
 </dl>
 <dl id="conf-generation-pert-generation-pert-num">
@@ -1629,6 +1630,7 @@
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/replicate</span></code></div>
 </div>
+<p>Generate supercell by lattice replication. Either an integer number or a list of three integers. If an integer is given, the lattice is replicated uniformly in all three directions.</p>
 </dd>
 </dl>
 </dd>
@@ -2340,7 +2342,7 @@
 </dl>
 <dl id="exploration-lmp-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
 </div>
 <p>The teacher model in <cite>Knowledge Distillation</cite></p>
