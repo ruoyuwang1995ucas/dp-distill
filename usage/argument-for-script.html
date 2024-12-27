@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arguments of the input script &mdash; pfd-kit 1.1.0 documentation</title>
+  <title>Arguments of the input script &mdash; pfd-kit 1.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=fc837d61"></script>
+      <script src="../_static/documentation_options.js?v=58fbf978"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -1590,13 +1590,13 @@
 </dl>
 <dl id="conf-generation-pert-generation">
 <dt>pert_generation:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation</span></code></div>
 </div>
 <p>Structure perturbation settings. A list of multiple perturbation settings can also be supplied if neccesarry.</p>
 <dl id="conf-generation-pert-generation-conf-idx">
 <dt>conf_idx:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">default</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/conf_idx</span></code></div>
 </div>
 </dd>
@@ -1606,7 +1606,15 @@
 <div class="line">type: <code class="docutils literal notranslate"><span class="pre">float</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">0.0</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/atom_pert_distance</span></code></div>
 </div>
-<p>Perturb distance for atoms, in Angstrom</p>
+<p>Perturb distance for atoms, in Angstrom.</p>
+</dd>
+</dl>
+<dl id="conf-generation-pert-generation-orig">
+<dt>orig:</dt><dd><div class="line-block">
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">False</span></code></div>
+<div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/orig</span></code></div>
+</div>
+<p>Include unperturbed structures.</p>
 </dd>
 </dl>
 <dl id="conf-generation-pert-generation-cell-pert-fraction">
@@ -1627,7 +1635,7 @@
 </dl>
 <dl id="conf-generation-pert-generation-replicate">
 <dt>replicate:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">int</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">int</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">1</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">conf_generation/pert_generation/replicate</span></code></div>
 </div>
 <p>Generate supercell by lattice replication. Either an integer number or a list of three integers. If an integer is given, the lattice is replicated uniformly in all three directions.</p>
@@ -1794,7 +1802,7 @@
 </dl>
 <dl id="train-dp-template-script">
 <dt>template_script:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[str]</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">{}</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">train[dp]/template_script</span></code></div>
 </div>
 <p>File names of the template training script. It can be a <cite>List[str]</cite>, the length of which is the same as <cite>numb_models</cite>. Each template script in the list is used to train a model. Can be a <cite>str</cite>, the models share the same template training script.</p>
@@ -2066,7 +2074,7 @@
 <p>Configuration for running vasp tasks</p>
 <dl id="fp-deepmd-run-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">fp[deepmd]/run_config/teacher_model_path</span></code></div>
 </div>
 <p>The path of teacher model, which can be loaded by deepmd.infer.DeepPot</p>
@@ -2262,7 +2270,7 @@
 <p>The parameter for initial fp calculation</p>
 <dl id="aimd-confs">
 <dt>confs:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code> | <code class="docutils literal notranslate"><span class="pre">NoneType</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[int]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">aimd/confs</span></code></div>
 </div>
 <p>The systems selected for initial fp calculation</p>
@@ -2342,7 +2350,7 @@
 </dl>
 <dl id="exploration-lmp-config-teacher-model-path">
 <dt>teacher_model_path:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">NoneType</span></code> | <code class="docutils literal notranslate"><span class="pre">str</span></code> | <code class="docutils literal notranslate"><span class="pre">BinaryFileInput</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">None</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/config/teacher_model_path</span></code></div>
 </div>
 <p>The teacher model in <cite>Knowledge Distillation</cite></p>
@@ -2422,7 +2430,7 @@
 <p>The method of convergence check.</p>
 <dl id="exploration-lmp-convergence-conf-filter">
 <dt>conf_filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/convergence/conf_filter</span></code></div>
 </div>
 <p>Filtering configurations with too larger or too small prediction error</p>
@@ -2538,7 +2546,7 @@
 </dl>
 <dl id="exploration-lmp-filter">
 <dt>filter:</dt><dd><div class="line-block">
-<div class="line">type: <code class="docutils literal notranslate"><span class="pre">dict</span></code> | <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
+<div class="line">type: <code class="docutils literal notranslate"><span class="pre">typing.List[dict]</span></code> | <code class="docutils literal notranslate"><span class="pre">dict</span></code>, optional, default: <code class="docutils literal notranslate"><span class="pre">[{'type':</span> <span class="pre">'distance'}]</span></code></div>
 <div class="line">argument path: <code class="docutils literal notranslate"><span class="pre">exploration[lmp]/filter</span></code></div>
 </div>
 <p>Filter configuration for DFT calculation</p>
